@@ -22,9 +22,16 @@ Please be aware that the fpga firmware is only provided as binary and NOT under 
 
 # Parts List
 
-| part | nr required |
+| part | info |
 |------|-------------|
-| QM Tech board Spartan6 XC6SLX16 SDRAM (MT48LC16M16A2), NOT DDR3! | around $20 on AliExpress |
+| QM Tech board Spartan6 XC6SLX16 SDRAM (MT48LC16M16A2), NOT DDR3! | 1x around $20 on AliExpress |
+| Xilinx USB plattorm cable | 1x cheap chinese copy does the trick |
+| ESP32_WROVER-IB module | 1x |
+| u-FL to RP-SMA pigtail, most 2,4GHz WiFI Antennas are RP-SMA | 1x |
+| 2,4GHz WiFi antenna, see pigtail connector | 1x | 
+| USB FTDI-Adapter for programming the ESP32 | 1x |
+| DCDC step down converter | 2x |
+| MCP3201 SOP-8 buy a few more on AliExpress, i have seen DOA ones | 5x |
 
 
 # Videos
