@@ -4,9 +4,7 @@ FPV race timing system.
 ![picture of device](pics/RTsd_Geruest_small.jpg?raw=true "RTsd device")
 
 # ATTENTION
-This repository as well as the whole project are still works in progress.
-
-There is not even all information in here (yet) needed to build the device, let alone using it.
+This repository as well as the whole project are still works in progress and i'm only human, so expect mistakes and errors.
 
 So please be patient :)
 
