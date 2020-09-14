@@ -23,13 +23,13 @@ Some (rather ugly) videos recorded during development.
 Klick screenshots to view on youtube:
 
 1. Running a heat and switching control device while flying, result viewer on right side.
-[![Watch the video](pics/vlcsnap-2020-09-14-17h56_smaller.png?raw=true)](https://https://www.youtube.com/watch?v=o1VrKWGbu_8)
+[![Watch the video](pics/vlcsnap-2020-09-14-17h56_smaller.png?raw=true)](https://www.youtube.com/watch?v=o1VrKWGbu_8)
 
 2. Testing race control, exceptions, switching devices (well, browser..), race control on right side.
-[![Watch the video](pics/vlcsnap-2020-09-14-17h57_smaller.png?raw=true)](https://https://www.youtube.com/watch?v=Kj8n9SVtbG0)
+[![Watch the video](pics/vlcsnap-2020-09-14-17h57_smaller.png?raw=true)](https://www.youtube.com/watch?v=Kj8n9SVtbG0)
 
 3. Another race control test, switching heats.
-[![Watch the video](pics/vlcsnap-2020-09-14-18h13_smaller.png?raw=true)](https://https://www.youtube.com/watch?v=IwP20b6x6Jg)
+[![Watch the video](pics/vlcsnap-2020-09-14-18h13_smaller.png?raw=true)](https://www.youtube.com/watch?v=IwP20b6x6Jg)
 
 
 # ATTENTION
