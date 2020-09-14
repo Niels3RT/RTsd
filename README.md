@@ -1,2 +1,2 @@
 # RTsd
-FPC racing timing system.
+FPV racing timing system.
