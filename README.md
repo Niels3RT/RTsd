@@ -35,6 +35,6 @@ Klick screenshots to view on youtube:
 # ATTENTION
 This repository as well as the whole project are still works in progress.
 
-There is not even all information in here (yet) needed to build the device yet, let alone using it.
+There is not even all information in here (yet) needed to build the device, let alone using it.
 
 So please be patient :)
