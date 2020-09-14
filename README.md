@@ -15,12 +15,12 @@ FPV racing timing system.
 -as long as the sd card is intact, all other devices can be changed during a race (think of water, fire)  
 -all rx5808 modules (i have seen..) are supported (rssi to 1.xV and 3.xV)  
 -rssi data is saved and reprocessed in realtime whenever results are requested  
--integrated power supply, just connect lipo
-
+-integrated power supply, just connect lipo  
+-simple, easy to use ui  
 
 # ATTENTION
 This repository as well as the whole project are still works in progress.
 
-There is not even all information in here needed to build the device, let alone using it.
+There is not even all information in here (yet) needed to build the device yet, let alone using it.
 
 So please be patient :)
