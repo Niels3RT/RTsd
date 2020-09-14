@@ -24,15 +24,24 @@ Please be aware that the fpga firmware is only provided as binary and NOT under 
 
 | part | info |
 |------|-------------|
-| QM Tech board Spartan6 XC6SLX16 SDRAM (MT48LC16M16A2), NOT DDR3! | 1x around $20 on AliExpress |
-| Xilinx USB plattorm cable | 1x cheap chinese copy does the trick |
+| QM Tech board Spartan6 XC6SLX16 SDRAM (MT48LC16M16A2), NOT DDR3! Around $20 on AliExpress | 1x |
+| Xilinx USB plattorm cable (cheap chinese copy does the trick) | 1x |
 | ESP32_WROVER-IB module | 1x |
 | u-FL to RP-SMA pigtail, most 2,4GHz WiFI Antennas are RP-SMA | 1x |
 | 2,4GHz WiFi antenna, see pigtail connector | 1x | 
 | USB FTDI-Adapter for programming the ESP32 | 1x |
 | DCDC step down converter | 2x |
 | MCP3201 SOP-8 buy a few more on AliExpress, i have seen DOA ones | 5x |
-
+| Micro SD-Card socket, look at picture, there are different layouts | 1x |
+| Micro-SD Card 128mb/32GB should work | 1x |
+| Pin header | 143x |
+| 1206 100n (1uF should do too) ceramic capacitor | 10x |
+| 1210 1,0uF/min 35V ceramic capacitor | 10x |
+| 1206 330 Ohm resistor | 1x |
+| 1206 10 kOhm resistor | 1x |
+| SMD capcitor 470u min 6V ca. 6.Xmm diameter | 1x |
+| 1206 led (choose your color, might be brighter or a little darker) | 1x |
+| 32x2 stackable long pin socket/header | 2x |
 
 # Videos
 Some (rather ugly) videos recorded during development, top one is the oldest.  
