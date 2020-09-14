@@ -19,10 +19,11 @@ FPV racing timing system.
 -simple, easy to use ui  
 
 # Videos
-Some (rather ugly) videos recorded during development.
+Some (rather ugly) videos recorded during development.  
+Klick screenshots to view on youtube:
 
 1. Running a heat and switching control device while flying.
-[![Watch the video](https://img.youtube.com/vi/o1VrKWGbu_8/0.jpg)](https://youtu.be/o1VrKWGbu_8)
+[![Watch the video](https://img.youtube.com/vi/o1VrKWGbu_8/hqdefault.jpg)](https://https://www.youtube.com/watch?v=o1VrKWGbu_8)
 
 # ATTENTION
 This repository as well as the whole project are still works in progress.
