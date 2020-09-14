@@ -22,8 +22,15 @@ FPV racing timing system.
 Some (rather ugly) videos recorded during development.  
 Klick screenshots to view on youtube:
 
+1. Running a heat and switching control device while flying, result viewer on right side.
+[![Watch the video](pics/vlcsnap-2020-09-14-17h56_small.png?raw=true)](https://https://www.youtube.com/watch?v=o1VrKWGbu_8)
+
+1. Testing race control, exceptions, switching devices (well, browser..), race control on right side.
+[![Watch the video](pics/vlcsnap-2020-09-14-17h56_small.png?raw=true)](https://https://www.youtube.com/watch?v=Kj8n9SVtbG0)
+
 1. Running a heat and switching control device while flying.
 [![Watch the video](pics/vlcsnap-2020-09-14-17h56_small.png?raw=true)](https://https://www.youtube.com/watch?v=o1VrKWGbu_8)
+
 
 # ATTENTION
 This repository as well as the whole project are still works in progress.
