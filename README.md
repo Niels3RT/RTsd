@@ -1,5 +1,5 @@
 # RTsd
-FPV racing timing system.
+FPV race timing system.
 
 ![picture of device](pics/RTsd_Geruest_small.jpg?raw=true "RTsd device")
 
@@ -22,7 +22,7 @@ Please be aware that the fpga firmware is only provided as binary and NOT under 
 
 # Parts List
 
-| part | info |
+| part info | nr |
 |------|-------------|
 | QM Tech board Spartan6 XC6SLX16 SDRAM (MT48LC16M16A2), NOT DDR3! Around $20 on AliExpress | 1x |
 | Xilinx USB plattorm cable (cheap chinese copy does the trick) | 1x |
@@ -42,6 +42,7 @@ Please be aware that the fpga firmware is only provided as binary and NOT under 
 | SMD capcitor 470u min 6V ca. 6.Xmm diameter | 1x |
 | 1206 led (choose your color, might be brighter or a little darker) | 1x |
 | 32x2 stackable long pin socket/header | 2x |
+| a few cm silicone cable AWG20(ish) and a power connector of your choice | - |
 
 # Videos
 Some (rather ugly) videos recorded during development, top one is the oldest.  
