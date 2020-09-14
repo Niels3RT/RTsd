@@ -30,6 +30,7 @@ Please be aware that the fpga firmware is only provided as binary and NOT under 
 | u-FL to RP-SMA pigtail, most 2,4GHz WiFI Antennas are RP-SMA | 1x |
 | 2,4GHz WiFi antenna, see pigtail connector | 1x | 
 | USB FTDI-Adapter for programming the ESP32 | 1x |
+| 2x7 pin socket (1x7 will do too) | 1x |
 | DCDC step down converter | 2x |
 | MCP3201 SOP-8 buy a few more on AliExpress, i have seen DOA ones | 5x |
 | Micro SD-Card socket, look at picture, there are different layouts | 1x |
@@ -42,11 +43,11 @@ Please be aware that the fpga firmware is only provided as binary and NOT under 
 | SMD capcitor 470u min 6V ca. 6.Xmm diameter | 1x |
 | 1206 led (choose your color, might be brighter or a little darker) | 1x |
 | 32x2 stackable long pin socket/header | 2x |
-| a few cm silicone cable AWG20(ish) and a power connector of your choice | - |
+| a few cm silicone cable AWG20(ish) and a power connector of your choice | 1x |
 
 # Videos
 Some (rather ugly) videos recorded during development, top one is the oldest.  
-Klick screenshots to view on youtube:
+Klick screenshots to watch on youtube:
 
 1. Running a heat and switching control device while flying, result viewer on right side.
 [![Watch the video](pics/vlcsnap-2020-09-14-17h56_smaller.png?raw=true)](https://www.youtube.com/watch?v=o1VrKWGbu_8)
