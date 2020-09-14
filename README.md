@@ -20,6 +20,13 @@ FPV racing timing system.
 
 Please be aware that the fpga firmware is only provided as binary and NOT under GPL-3.0 license, see /fpga/ directory for info.
 
+# Parts List
+
+| part | nr required |
+|------|-------------|
+| QM Tech board Spartan6 XC6SLX16 SDRAM (MT48LC16M16A2), NOT DDR3! | around $20 on AliExpress |
+
+
 # Videos
 Some (rather ugly) videos recorded during development, top one is the oldest.  
 Klick screenshots to view on youtube:
