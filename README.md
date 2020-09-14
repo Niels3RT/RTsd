@@ -4,6 +4,7 @@ FPV racing timing system.
 ![picture of device](pics/RTsd_Geruest_small.jpg?raw=true "RTsd device")
 
 # Features
+-4 channels  
 -around 40kHz sampling rate per channel  
 -all channels are sampled simultaneously, at the same clock edges  
 -all sampling, timing, peak detection etc. are done in an FPGA (right now a Xilinx Spartan6 XC6SLX16)  
