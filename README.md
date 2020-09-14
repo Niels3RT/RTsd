@@ -14,7 +14,9 @@ FPV racing timing system.
 -all race data is saved to sd card, device dependend data (rx module calibration) to esp nv storage  
 -as long as the sd card is intact, all other devices can be changed during a race (think of water, fire)  
 -all rx5808 modules (i have seen..) are supported (rssi to 1.xV and 3.xV)  
--rssi data is saved and reprocessed in realtime whenever results are requested
+-rssi data is saved and reprocessed in realtime whenever results are requested  
+-integrated power supply, just connect lipo
+
 
 # ATTENTION
 This repository as well as the whole project are still works in progress.
