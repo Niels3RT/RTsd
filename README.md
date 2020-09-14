@@ -18,6 +18,8 @@ FPV racing timing system.
 -integrated power supply, just connect lipo  
 -simple, easy to use ui  
 
+Please be aware that the fpga firmware is only provided as binary and NOT under GPL-3.0 license, see /fpga/ directory for info.
+
 # Videos
 Some (rather ugly) videos recorded during development, top one is the oldest.  
 Klick screenshots to view on youtube:
