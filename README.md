@@ -3,6 +3,13 @@ FPV race timing system.
 
 ![picture of device](pics/RTsd_Geruest_small.jpg?raw=true "RTsd device")
 
+# ATTENTION
+This repository as well as the whole project are still works in progress.
+
+There is not even all information in here (yet) needed to build the device, let alone using it.
+
+So please be patient :)
+
 # Features
 -4 channels  
 -around 40kHz sampling rate per channel  
@@ -57,11 +64,3 @@ Klick screenshots to watch on youtube:
 
 3. Another race control test, switching heats.
 [![Watch the video](pics/vlcsnap-2020-09-14-18h13_smaller.png?raw=true)](https://www.youtube.com/watch?v=IwP20b6x6Jg)
-
-
-# ATTENTION
-This repository as well as the whole project are still works in progress.
-
-There is not even all information in here (yet) needed to build the device, let alone using it.
-
-So please be patient :)
