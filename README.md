@@ -23,7 +23,7 @@ Some (rather ugly) videos recorded during development.
 Klick screenshots to view on youtube:
 
 1. Running a heat and switching control device while flying.
-[![Watch the video](https://img.youtube.com/vi/o1VrKWGbu_8/hqdefault.jpg)](https://https://www.youtube.com/watch?v=o1VrKWGbu_8)
+[![Watch the video](pics/vlcsnap-2020-09-14-17h56_small.png?raw=true)](https://https://www.youtube.com/watch?v=o1VrKWGbu_8)
 
 # ATTENTION
 This repository as well as the whole project are still works in progress.
