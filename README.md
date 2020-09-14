@@ -31,13 +31,12 @@ Please be aware that the fpga firmware is only provided as binary and NOT under 
 
 | part info | nr |
 |------|-------------|
-| QM Tech board Spartan6 XC6SLX16 SDRAM (MT48LC16M16A2), NOT DDR3! Around $20 on AliExpress ![QM SP6](pics/QM-Tech_SP6_XC6SLX16_small.png?raw=true "QM SP6") | 1x |
+| QM Tech board Spartan6 XC6SLX16 SDRAM (MT48LC16M16A2), NOT DDR3! Around $20 on AliExpress<br>![QM SP6](pics/QM-Tech_SP6_XC6SLX16_small.png?raw=true "QM SP6") | 1x |
 | Xilinx USB plattorm cable (cheap chinese copy does the trick) | 1x |
 | ESP32_WROVER-IB module | 1x |
 | u-FL to RP-SMA pigtail, most 2,4GHz WiFI Antennas are RP-SMA | 1x |
 | 2,4GHz WiFi antenna, see pigtail connector | 1x | 
-| USB FTDI-Adapter for programming the ESP32 (pictured with pins removed and prepared to fit pin header on pcb)
-![FTDI](pics/FTDI_small.png?raw=true "FTDI") | 1x |
+| USB FTDI-Adapter for programming the ESP32 (pictured with pins removed and prepared to fit pin header on pcb)<br>![FTDI](pics/FTDI_small.png?raw=true "FTDI") | 1x |
 | 2x7 pin socket (1x7 will do too) | 1x |
 | DCDC step down converter | 2x |
 | MCP3201 SOP-8 buy a few more on AliExpress, i have seen DOA ones | 5x |
@@ -50,7 +49,7 @@ Please be aware that the fpga firmware is only provided as binary and NOT under 
 | 1206 10 kOhm resistor | 1x |
 | SMD capcitor 470u min 6V ca. 6.Xmm diameter | 1x |
 | 1206 led (choose your color, might be brighter or a little darker) | 1x |
-| 32x2 stackable long pin socket/header ![FTDI](pics/long_pin_socket_header_small.png?raw=true "FTDI") | 2x |
+| 32x2 stackable long pin socket/header<br>![FTDI](pics/long_pin_socket_header_small.png?raw=true "FTDI") | 2x |
 | a few cm silicone cable AWG20(ish) and a power connector of your choice | 1x |
 
 # Videos
