@@ -6,7 +6,7 @@ FPV race timing system.
 # ATTENTION
 This repository as well as the whole project are still works in progress and i'm only human, so expect mistakes and errors.
 
-So please be patient :)
+Please be patient :)
 
 # Features
 -4 channels  
