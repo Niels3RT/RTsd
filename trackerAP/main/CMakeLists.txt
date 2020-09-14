@@ -1,0 +1,2 @@
+idf_component_register(SRCS "main.cpp" "wifi.cpp" "rt_spi.cpp" "timer.cpp" "oled.cpp" "buffer.cpp" "http.cpp" "rt.cpp" "sdcard.cpp" "cfg.cpp" "heat.cpp" "session.cpp" "event.cpp"
+                    INCLUDE_DIRS ".")
