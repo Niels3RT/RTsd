@@ -1,0 +1,160 @@
+div#div_tab_event {
+	width:				100%;
+	text-align:			right;
+	clear:				none;
+}
+
+div#div_event_top {
+	width:				100%;
+	border:				1px solid #003300;
+}
+
+div#div_event_open {
+	float:				left;
+	width:				30%;
+	border:				1px solid #003300;
+}
+
+#btn_event_open {
+	float:				left;
+	margin-top:			8px;
+}
+
+div#div_event_new {
+	float:				right;
+	width:				40%;
+	border:				1px solid #003300;
+}
+
+div#div_event_mod {
+	float:				right;
+	width:				40%;
+	border:				1px solid #003300;
+}
+
+#btn_event_new {
+	float:				right;
+}
+
+div#div_event_main {
+	clear:				both;
+	float:				left;
+	font-size:			2vh;
+	width:				100%;
+	margin-top:			1vh;
+	border:				1px solid #003300;
+}
+
+div#div_event_results {
+	float:				left;
+	width:				40%;
+	text-align:			left;
+	border:				1px solid #003300;
+}
+
+div#div_event_results_table {
+	float:				left;
+	width:				98%;
+	text-align:			left;
+	border:				1px solid #003300;
+}
+
+div#div_event_pilots {
+	float:				right;
+	width:				58%;
+	border:				1px solid #003300;
+}
+
+div#canvas_pilots_event {
+	float:				left;
+	width:				40%;
+	height:				600px;
+	border:				1px solid #003300;
+}
+
+div#div_event_edit_btns {
+	float:				left;
+	width:				10%;
+	height:				600px;
+	border:				1px solid #003300;
+}
+
+div#canvas_pilots_all {
+	float:				right;
+	width:				40%;
+	height:				600px;
+	border:				1px solid #003300;
+}
+
+.cls_event_res_table_table {
+	margin:				0px;
+	border:				2px solid #003300;
+	border-collapse:	collapse;
+}
+
+.cls_event_table_tdr {
+	height:				20px;
+	margin:				0px;
+	border:				1px solid #003300;
+	border-collapse:	collapse;
+}
+
+.cls_event_btn {
+	width:				100px;
+	height:				40px;
+	background-color:	#222222;
+	border:				2px solid #003300;
+	color:				#00cc00;
+	text-align:			center;
+	text-decoration:	none;
+	display:			inline-block;
+}
+
+.cls_event_btn_small {
+	width:				32px;
+	height:				32px;
+	background-color:	#222222;
+	border:				2px solid #003300;
+	color:				#00cc00;
+	text-align:			center;
+	text-decoration:	none;
+	display:			inline-block;
+}
+
+.cls_event_mod_part {
+	float:				right;
+	width:				98%;
+	border:				1px solid #003300;
+}
+
+.cls_event_number {
+	float:				right;
+	width:				80px;
+	background-color:	#222222;
+	color:				#00cc00;
+	border:				1px solid #003300;
+	text-align:			right;
+}
+
+.cls_event_select {
+	float:				right;
+	width:				86px;
+	background-color:	#222222;
+	color:				#00cc00;
+	border:				1px solid #003300;
+	text-align:			right;
+}
+
+.cls_event_input {
+	float:				left;
+	width:				80px;
+	background-color:	#222222;
+	color:				#00cc00;
+	border:				1px solid #003300;
+	text-align:			left;
+}
+
+.cls_event_rb_label {
+	float:				left;
+	display:			inline-block;
+}

@@ -1,0 +1,26 @@
+div#div_tab_view {
+	width:				100%;
+	background-color: 	#000000;
+	color: 				#00CC00;
+	font-family: 		Courier, Courier New, monospace;
+	font-weight:		bold;
+	font-size:			3.4vh;
+	text-align:			right;
+	clear:				none;
+}
+
+div#div_tab_btn_rt {
+	float:				left;
+	width:				30vw;
+	min-height:			16px;
+	margin:				1vh;
+	margin-left:		2vw;
+	padding-left:		0vw;
+	margin-right:		0vw;
+	text-align:			left;
+}
+
+body {
+	background-color: 	#000000;
+	color: 				#00CC00;
+}

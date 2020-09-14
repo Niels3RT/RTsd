@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4s01 Frameset//EN"
+"http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+	<head>
+		<title>RT_sd_view</title>
+		<link rel="stylesheet" type="text/css" href="common.css" />
+		<link rel="stylesheet" type="text/css" href="view.css" />
+		<link rel="stylesheet" type="text/css" href="tab_results.css" />
+		<script src="common.js"></script>
+		<script src="tab_results.js"></script>
+		<script src="net.js"></script>
+		<link rel="icon" href="favicon.png" type="image/x-icon">
+		<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+	</head>
+<body link="#00CC00" vlink="#00CC00" alink="#FFFFFF" oncontextmenu="return false;">
+
+<div id="div_header">		
+	<div id="div_header_l">
+		<div id="div_tab_btn_rt">RT view</div>
+	</div>
+	<div id="div_header_m">						</div>
+	<div id="div_header_r">						</div>
+</div>
+<div id="div_headspace">						</div>
+<div id="div_tab_results">
+	<div id="div_heat_table_res">
+		<table id="table_heat_top" cellspacing="0" cellpadding="0" border="none">
+			<tr>	<td id="tt0-0" style="border: none;"></td>	<td id="tt0-3" style="border: none;text-align: right;"></td>	</tr>
+			<tr>	<td id="tt1-0" style="border: none;"></td>	<td id="tt1-3" style="border: none;"></td>						</tr>
+			<tr>	<td id="tt2-0" style="border: none;"></td>	<td id="tt2-3" style="border: none;"></td>						</tr>
+		</table>
+		<div id="div_heat_top4s">
+			<div id="div_heat_top4s_left_name">Fastest Laps</div>
+			<div id="div_heat_top4s_right_name">Position</div>
+			<div id="div_heat_top4s_left">
+				<table id="table_heat_top4s_left" cellspacing="0" cellpadding="0">
+					<tr>	<td id="ttl0-0" style="border:1px solid #004000">1</td>	<td id="ttl0-1" style="border:1px solid #004000"></td>	<td id="ttl0-2" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttl1-0" style="border:1px solid #004000">2</td>	<td id="ttl1-1" style="border:1px solid #004000"></td>	<td id="ttl1-2" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttl2-0" style="border:1px solid #004000">3</td>	<td id="ttl2-1" style="border:1px solid #004000"></td>	<td id="ttl2-2" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttl3-0" style="border:1px solid #004000">4</td>	<td id="ttl3-1" style="border:1px solid #004000"></td>	<td id="ttl3-2" style="border:1px solid #004000"></td>	</tr>
+				</table>
+			</div>
+			<div id="div_heat_top4s_right">
+				<table id="table_heat_top4s_right" cellspacing="0" cellpadding="0">
+					<tr>	<td id="ttr0-0" style="border:1px solid #004000">1</td>	<td id="ttr0-1" style="border:1px solid #004000"></td>	<td id="ttr0-2" style="border:1px solid #004000"></td>	<td id="ttr0-3" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttr1-0" style="border:1px solid #004000">2</td>	<td id="ttr1-1" style="border:1px solid #004000"></td>	<td id="ttr1-2" style="border:1px solid #004000"></td>	<td id="ttr1-3" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttr2-0" style="border:1px solid #004000">3</td>	<td id="ttr2-1" style="border:1px solid #004000"></td>	<td id="ttr2-2" style="border:1px solid #004000"></td>	<td id="ttr2-3" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttr3-0" style="border:1px solid #004000">4</td>	<td id="ttr3-1" style="border:1px solid #004000"></td>	<td id="ttr3-2" style="border:1px solid #004000"></td>	<td id="ttr3-3" style="border:1px solid #004000"></td>	</tr>
+				</table>
+			</div>
+		</div>
+		<table id="table_heat_top" cellspacing="0" cellpadding="0">
+			<tr>	<td id="trn2-0" style="border: none;height: 10px;"></td>	<td id="trn2-1" style="border: none;"></td>				<td id="trn2-2" style="border: none;"></td>				<td id="trn2-3" style="border: none;"></td>					</tr>
+			<tr>	<td id="trn3-0" style="border: 1px solid #004000"></td>		<td id="trn3-1" style="border: 1px solid #004000"></td>	<td id="trn3-2" style="border: 1px solid #004000"></td>	<td id="trn3-3" style="border:1px solid #004000"></td>		</tr>
+			<tr>	<td id="trn4-0" style="border: none;height: 0.5vh;"></td>	<td id="trn4-1" style="border: none;"></td>				<td id="trn4-2" style="border: none;"></td>				<td id="trn4-3" style="border: none;"></td>		</tr>
+		</table>
+		<table id="table_heat_res" cellspacing="0" cellpadding="0">					</table>
+	</div>
+</div>
+
+<script language="javascript" type="text/javascript">
+	<!-- Hide Javascript
+	batch_cmd = [3, 14, 13, 12, 1];
+	batch_cnt = 0;
+	batch_cnt_top = 5;
+	do_rssi = false;
+	
+	// ****** init everything
+	function init() {
+		// ------   results table      ------
+        init_tab_results();
+	}
+	
+	// ****** some dummies...
+	function update_sys() {}
+	function switch_state(state_target) {}
+	function translate_rssi() {}
+	function draw_rssi() {}
+	function draw_tab_sessions() {}
+	function draw_tab_event() {}
+	function clear_event_results() {}
+	
+	// ****** init page on loaad
+	window.onload=init;
+	-->
+</script>
+
+<noscript>
+	<h3>You need to enable javascript!</h3>
+</noscript>
+
+</body>
+</html>

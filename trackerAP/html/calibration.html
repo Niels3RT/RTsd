@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4s01 Frameset//EN"
+"http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+	<head>
+		<title>RT_sd_cal</title>
+		<link rel="stylesheet" type="text/css" href="common.css" />
+		<link rel="stylesheet" type="text/css" href="calibration.css" />
+		<script src="common.js"></script>
+		<script src="net.js"></script>
+		<link rel="icon" href="favicon.png" type="image/x-icon">
+		<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+	</head>
+<body link="#00CC00" vlink="#00CC00" alink="#FFFFFF" oncontextmenu="return false;">
+
+<div id="div_header">		
+	<div id="div_header_l">
+		<div id="div_tab_btn_rt">RT cal</div>
+		<div id="div_tab_btn_rssi"></div>
+		<div id="div_tab_btn_sys"></div>
+	</div>
+	<div id="div_header_m">						</div>
+	<div id="div_header_r">						</div>
+</div>
+<div id="div_headspace">						</div>
+<div id="div_tab_cal">
+	<table id="table_cal">					</table>
+</div>
+<div id="div_footspace">						</div>
+<div id="div_footer">
+	<button id="btn_start">Start</button>
+	<button id="btn_clear">Save</button>
+	<button id="btn_stop">Stop</button>
+</div>
+
+<script language="javascript" type="text/javascript">
+	<!-- Hide Javascript
+	boot_cmd = [8];
+	boot_cnt = 0;
+	do_cal = true;
+	
+	var redrawCalID = setInterval(function(){ redraw_table(); }, 800);
+	
+	var p_btn_start = document.getElementById("btn_start");
+	var p_btn_clear = document.getElementById("btn_clear");
+	var p_btn_stop  = document.getElementById("btn_stop");
+	
+	// -------------------------------------------------------------------------------------------------------------------------
+	// init everything
+	// -------------------------------------------------------------------------------------------------------------------------
+	function init() {
+		// ------   work some buttons on footer   ------
+		// --- start calibration
+		p_btn_start.style.background  = '#66f466';
+		p_btn_start.onclick = function() {
+			comm_request = 9;
+		}
+		// --- save calibration data
+		p_btn_clear.style.background = '#66f466';
+		p_btn_clear.onclick = function() {
+			comm_request = 11;
+		}
+		// --- stop calibration
+		p_btn_stop.style.background  = '#66f466';
+		p_btn_stop.onclick = function() {
+			comm_request = 10;
+		}
+		
+		// ------   results table      ------
+        // --- create rows in result table
+        for (var r = 0; r < 4; r++) {
+			var row = document.createElement("tr");
+			var tbl = document.getElementById("table_cal");
+			// -- create and append cells to row
+			for (var c = 0; c < 3; c++) {
+				var cell = document.createElement("td");
+				cell.setAttribute("id", (r) + "-" + c);
+				cell.style.borderSpacing  = "0";
+				cell.style.padding = "0px 0px 0px 0px";
+				var cellText = document.createTextNode(cell.id);
+				cell.appendChild(cellText);
+				row.appendChild(cell);
+			}
+			// -- add the row to the end of the table body
+			tbl.appendChild(row);
+		}
+		
+		// --- table properties
+		document.getElementById("0-0").style.width = "4vw";
+		document.getElementById("0-1").style.width = "20vw";
+		document.getElementById("0-2").style.width = "20vw";
+	}
+	
+	// --- timer function, update table
+	function redraw_table() {
+		for (var i = 0; i < 4; i++) {
+			document.getElementById(i + "-0").textContent = " " + i;
+			document.getElementById(i + "-1").textContent = "min " + rssi_min[i];
+			document.getElementById(i + "-2").textContent = "max " + rssi_max[i];
+		}
+	}
+	
+	// - update values in system tab
+	function update_sys() { }
+	function switch_state() { }
+	function printLaps() { }
+	function draw_rssi() { }
+	
+	// --- init page on loaad
+	window.onload=init;
+	-->
+</script>
+
+<noscript>
+	<h3>You need to enable javascript!</h3>
+</noscript>
+
+</body>
+</html>

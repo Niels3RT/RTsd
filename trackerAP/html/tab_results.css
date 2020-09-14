@@ -1,0 +1,137 @@
+div#div_tab_results {
+	width:				98%;
+	background-color: 	#000000;
+	color: 				#00CC00;
+	font-size:			3.0vh;
+	text-align:			right;
+	clear:				none;
+}
+
+div#div_top_buttons {
+	position:			fixed;
+	left:				0;
+	bottom:				0;
+	height:				9vh;
+	min-height:			40px;
+	width:				100%;
+	left:				0;
+	background-color:	#222222;
+	color: 				#CC0000;
+}
+
+#btn_back {
+	float:				left;
+	width:				32vw;
+	height:				8vh;
+	min-height:			36px;
+	margin:				0.4vh;
+	margin-right:		1vw;
+	font-weight:		bold;
+	font-size:			3.8vh;
+}
+
+#btn_clr {
+	float:				none;
+	width:				30.4vw;
+	height:				8vh;
+	min-height:			36px;
+	margin:				0.4vh;
+	margin-left:		1vw;
+	font-weight:		bold;
+	font-size:			3.8vh;
+}
+
+#btn_next {
+	float:				right;
+	width:				32vw;
+	height:				8vh;
+	min-height:			36px;
+	margin:				0.4vh;
+	margin-left:		1vw;
+	margin-right:		1vw;
+	font-weight:		bold;
+	font-size:			3.8vh;
+}
+
+#div_top_middle {
+	float:				none;
+	width:				27vw;
+	height:				8vh;
+	min-height:			36px;
+	margin:				0.4vh;
+	margin-left:		1vw;
+	font-weight:		bold;
+	font-size:			2.8vh;
+}
+
+#table_heat_top {
+	font-weight:		bold;
+	font-size:			2.2vh;
+	text-align:			left;
+	height:				1vh;
+	border:				1px solid #000000;
+	border-collapse:	collapse;
+}
+
+#div_heat_top4s_left_name {
+	float:				left;
+	width:				46vw;
+	text-align:			left;
+}
+
+#div_heat_top4s_right_name {
+	float:				right;
+	width:				46vw;
+	text-align:			right;
+}
+
+#div_heat_top4s_left {
+	float:				left;
+	width:				46vw;
+}
+
+#div_heat_top4s_right {
+	float:				right;
+	width:				46vw;
+}
+
+#table_heat_top4s_left {
+	font-weight:		bold;
+	font-size:			2.2vh;
+	text-align:			left;
+	height:				3vh;
+	border:				1px solid #000000;
+	border-collapse:	collapse;
+}
+#table_heat_top4s_right {
+	font-weight:		bold;
+	font-size:			2.2vh;
+	text-align:			left;
+	height:				3vh;
+	border:				1px solid #000000;
+	border-collapse:	collapse;
+}
+
+#table_heat_res_top {
+	font-weight:		bold;
+	font-size:			2.2vh;
+	text-align:			left;
+	height:				1vh;
+	border:				1px solid #000000;
+	border-collapse:	collapse;
+}
+
+#div_heat_table_res {
+	float:				left;
+	width:				100%;
+	min-height:			36px;
+	margin:				0.4vh;
+	margin-left:		1vw;
+	font-weight:		bold;
+	font-size:			3.2vh;
+}
+
+#table_heat_res {
+	border:				1px solid #004000;
+	border-collapse:	collapse;
+}

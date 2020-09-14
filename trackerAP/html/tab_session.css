@@ -1,0 +1,149 @@
+div#div_tab_session {
+	width:				100%;
+	text-align:			right;
+	clear:				none;
+}
+
+div#div_sess_top {
+	width:				100%;
+	margin-bottom:		1vh;
+}
+
+div#div_sess_open {
+	float:				left;
+	width:				40%;
+	margin-right:		2vw;
+	margin-bottom:		1vh;
+}
+
+#btn_sess_open {
+	float:				left;
+	margin-top:			8px;
+}
+
+div#div_sess_new {
+	float:				right;
+	width:				10%;
+	min-width:			120px;
+	margin-right:		2vw;
+	margin-bottom:		1vh;
+}
+
+#btn_sess_new {
+	float:				right;
+	clear:				both;
+	margin-top:			2vh;
+}
+
+div#div_sess_gen {
+	float:				right;
+	width:				20%;
+	min-width:			220px;
+	margin-right:		2vw;
+	margin-bottom:		1vh;
+}
+
+#btn_sess_gen {
+	float:				left;
+	clear:				both;
+	margin-top:			2vh;
+}
+
+div#div_sess_results {
+	clear:				both;
+	width:				100%;
+	margin-top:			1vh;
+	margin-bottom:		1vh;
+}
+
+.cls_session_table_tdr {
+	height:				20px;
+	min-width:			200px;
+	margin:				0px;
+	border:				1px solid #003300;
+	border-collapse:	collapse;
+}
+
+.cls_sess_btn {
+	width:				100px;
+	height:				40px;
+	background-color:	#222222;
+	border:				2px solid #003300;
+	color:				#00cc00;
+	text-align:			center;
+	display:			inline-block;
+}
+
+.cls_sess_rb {
+	clear:				both;
+	float:				left;
+	text-align:			left;
+	display:			inline-block;
+}
+
+.cls_sess_rb_label {
+	float:				left;
+	display:			inline-block;
+}
+
+.cls_sess_new_label {
+	clear:				both;
+	float:				left;
+	text-align:			center;
+	display:			inline-block;
+	margin-top:			1vh;
+	margin-bottom:		1vh;
+}
+
+.cls_sess_number {
+	clear:				both;
+	float:				right;
+	width:				80px;
+	background-color:	#222222;
+	color:				#00cc00;
+	text-align:			left;
+	display:			inline-block;
+}
+
+.cls_sess_res_table_div {
+	float:				left;
+	width:				22%;
+	min-width:			100px;
+	margin-right:		8px;
+	margin-top:			8px;
+}
+
+.cls_sess_res_table_table {
+	margin:				0px;
+	border:				2px solid #003300;
+	border-collapse:	collapse;
+}
+
+.cls_sess_res_table_t0 {
+	width:				10vw;
+	height:				2.4vh;
+	margin:				0px;
+}
+
+.cls_sess_res_table_t1 {
+	width:				4vw;
+	height:				2.4vh;
+	margin:				0px;
+}
+
+.cls_sess_res_table_t2 {
+	width:				10vw;
+	height:				2.4vh;
+	margin:				0px;
+}
+
+.cls_sess_btn_small {
+	width:				32px;
+	height:				32px;
+	background-color:	#222222;
+	border:				2px solid #003300;
+	color:				#00cc00;
+	text-align:			center;
+	text-decoration:	none;
+	display:			inline-block;
+}

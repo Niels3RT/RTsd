@@ -1,0 +1,90 @@
+#div_sys_freq {
+	font-size:			3.4vh;
+	text-align:			center;
+}
+
+#div_sys_menu {
+	position:			absolute;
+	top:				20vh;
+	left:				30vw;
+	display:			inline;
+	font-size:			4.4vh;
+	text-align:			center;
+}
+
+.cls_menu_name {
+	border:				1px solid #004000;
+	background-color: 	#222222;
+	color: 				#00CC00;
+	width:				70vw;
+	margin-left:		15vw;
+	margin-bottom:		2vw;
+	text-align:			center;
+}
+
+.cls_menu_name:hover {
+	background-color: 	#444444;
+}
+
+.cls_menu_entry {
+	position:			relative;
+	border:				1px solid #004000;
+	border-collapse:	collapse;
+	background-color: 	#222222;
+	color: 				#00CC00;
+	width:				40vw;
+}
+
+.cls_menu_entry:hover {
+	background-color: 	#444444;
+}
+
+#div_sys_edit {
+	position:			absolute;
+	top:				20vh;
+	left:				20vw;
+	width:				60vw;
+	border:				1px solid #004000;
+	background-color: 	#222222;
+	color: 				#00CC00;
+	display:			inline;
+	font-size:			4.4vh;
+	text-align:			center;
+}
+
+#div_sys_edit_l {
+	float:				left;
+	margin-bottom:		0vh;
+}
+
+.cls_edit {
+	background-color: 	#222222;
+	color: 				#00CC00;
+	margin:				2vh;
+	font-size:			4.4vh;
+	text-align:			center;
+}
+
+#div_sys_edit_r {
+	float:				right;
+	font-size:			4.4vh;
+	margin-right:		8vw;
+	margin-bottom:		0vh;
+	font-weight:		bold;
+}
+
+#div_sys_edit_submit {
+	float:				none;
+	width:				60vw;
+}
+
+#div_sys_edit_cancel {
+	float:				left;
+	margin:				1vh;
+}
+
+#div_sys_edit_ok {
+	float:				right;
+	margin:				1vh;
+	text-align:			right;
+}

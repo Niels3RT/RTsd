@@ -1,0 +1,66 @@
+#div_tab_btn_heat {
+	float:				left;
+	width:				16vw;
+	min-height:			16px;
+	margin:				1vh;
+	margin-left:		0vw;
+	padding-left:		0vw;
+	margin-right:		0vw;
+	text-align:			center;
+}
+
+#div_tab_btn_session {
+	float:				left;
+	width:				16vw;
+	min-height:			16px;
+	margin:				1vh;
+	margin-left:		0vw;
+	padding-left:		0vw;
+	margin-right:		0vw;
+	text-align:			center;
+}
+
+#div_tab_btn_event {
+	float:				left;
+	width:				18vw;
+	min-height:			16px;
+	margin:				1vh;
+	margin-left:		0vw;
+	margin-right:		1vw;
+	text-align:			center;
+}
+
+div#div_tab_heat {
+	width:				98%;
+}
+
+div#div_top_buttons {
+	position:			fixed;
+	height:				9vh;
+	min-height:			40px;
+	width:				100%;
+	background-color:	#222222;
+	color: 				#CC0000;
+}
+
+div#btn_back {
+	float:				left;
+	width:				32vw;
+	height:				8vh;
+	min-height:			36px;
+}
+
+div#btn_next {
+	float:				right;
+	width:				32vw;
+	height:				8vh;
+	min-height:			36px;
+}
+
+div#div_tab_session {
+	width:				98%;
+}
+
+div#div_tab_event {
+	width:				98%;
+}

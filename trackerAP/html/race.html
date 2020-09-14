@@ -1,0 +1,368 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4s01 Frameset//EN"
+"http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+	<head>
+		<title>RT_sd_race</title>
+		<link rel="stylesheet" type="text/css" href="common.css" />
+		<link rel="stylesheet" type="text/css" href="race.css" />
+		<link rel="stylesheet" type="text/css" href="tab_results.css" />
+		<link rel="stylesheet" type="text/css" href="tab_session.css" />
+		<link rel="stylesheet" type="text/css" href="tab_event.css" />
+		<script src="common.js"></script>
+		<script src="net.js"></script>
+		<script src="tab_results.js"></script>
+		<script src="tab_session.js"></script>
+		<script src="tab_event.js"></script>
+		<link rel="icon" href="favicon.png" type="image/x-icon">
+		<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+	</head>
+<body link="#00CC00" vlink="#00CC00" alink="#FFFFFF" oncontextmenu="return false;">
+
+<div id="div_header">		
+	<div id="div_header_l">
+		<div id="div_tab_btn_heat">Heat</div>
+		<div id="div_tab_btn_session">Session</div>
+		<div id="div_tab_btn_event">Event</div>
+	</div>
+	<div id="div_header_m">						</div>
+	<div id="div_header_r">						</div>
+</div>
+<div id="div_headspace">						</div>
+<div id="div_tab_heat">
+	<div id="div_heat_table_res">
+		<table id="table_heat_top" cellspacing="0" cellpadding="0" border="none">
+			<tr>	<td id="tt0-0" style="border: none;"></td>	<td id="tt0-3" style="border: none;text-align: right;"></td>	</tr>
+			<tr>	<td id="tt1-0" style="border: none;"></td>	<td id="tt1-3" style="border: none;"></td>						</tr>
+			<tr>	<td id="tt2-0" style="border: none;"></td>	<td id="tt2-3" style="border: none;"></td>						</tr>
+		</table>
+		<div id="div_heat_top4s">
+			<div id="div_heat_top4s_left_name">Fastest Laps</div>
+			<div id="div_heat_top4s_right_name">Position</div>
+			<div id="div_heat_top4s_left">
+				<table id="table_heat_top4s_left" cellspacing="0" cellpadding="0">
+					<tr>	<td id="ttl0-0" style="border:1px solid #004000">1</td>	<td id="ttl0-1" style="border:1px solid #004000"></td>	<td id="ttl0-2" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttl1-0" style="border:1px solid #004000">2</td>	<td id="ttl1-1" style="border:1px solid #004000"></td>	<td id="ttl1-2" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttl2-0" style="border:1px solid #004000">3</td>	<td id="ttl2-1" style="border:1px solid #004000"></td>	<td id="ttl2-2" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttl3-0" style="border:1px solid #004000">4</td>	<td id="ttl3-1" style="border:1px solid #004000"></td>	<td id="ttl3-2" style="border:1px solid #004000"></td>	</tr>
+				</table>
+			</div>
+			<div id="div_heat_top4s_right">
+				<table id="table_heat_top4s_right" cellspacing="0" cellpadding="0">
+					<tr>	<td id="ttr0-0" style="border:1px solid #004000">1</td>	<td id="ttr0-1" style="border:1px solid #004000"></td>	<td id="ttr0-2" style="border:1px solid #004000"></td>	<td id="ttr0-3" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttr1-0" style="border:1px solid #004000">2</td>	<td id="ttr1-1" style="border:1px solid #004000"></td>	<td id="ttr1-2" style="border:1px solid #004000"></td>	<td id="ttr1-3" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttr2-0" style="border:1px solid #004000">3</td>	<td id="ttr2-1" style="border:1px solid #004000"></td>	<td id="ttr2-2" style="border:1px solid #004000"></td>	<td id="ttr2-3" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttr3-0" style="border:1px solid #004000">4</td>	<td id="ttr3-1" style="border:1px solid #004000"></td>	<td id="ttr3-2" style="border:1px solid #004000"></td>	<td id="ttr3-3" style="border:1px solid #004000"></td>	</tr>
+				</table>
+			</div>
+		</div>
+		<table id="table_heat_top" cellspacing="0" cellpadding="0">
+			<tr>	<td id="trn2-0" style="border: none;height: 10px;"></td>	<td id="trn2-1" style="border: none;"></td>				<td id="trn2-2" style="border: none;"></td>				<td id="trn2-3" style="border: none;"></td>					</tr>
+			<tr>	<td id="trn3-0" style="border: 1px solid #004000"></td>		<td id="trn3-1" style="border: 1px solid #004000"></td>	<td id="trn3-2" style="border: 1px solid #004000"></td>	<td id="trn3-3" style="border:1px solid #004000"></td>		</tr>
+			<tr>	<td id="trn4-0" style="border: none;height: 0.5vh;"></td>	<td id="trn4-1" style="border: none;"></td>				<td id="trn4-2" style="border: none;"></td>				<td id="trn4-3" style="border: none;"></td>		</tr>
+		</table>
+		<table id="table_heat_res" cellspacing="0" cellpadding="0">					</table>
+	</div>
+	<div id="div_top_buttons">
+		<button id="btn_back"><</button>
+		<button id="btn_clr">Clear</button>
+		<button id="btn_next">></button>
+	</div>
+</div>
+<div id="div_tab_session">
+	<div id="div_sess_top">
+		<div id="div_sess_open">
+			<table id="table_sess_available" cellspacing="0" cellpadding="0" border="none"  class="cls_sess_res_table_table">
+				<tr>	<td id="t_sessions0" class="cls_session_table_tdr"></td>	</tr>
+				<tr>	<td id="t_sessions1" class="cls_session_table_tdr"></td>	</tr>
+				<tr>	<td id="t_sessions2" class="cls_session_table_tdr"></td>	</tr>
+				<tr>	<td id="t_sessions3" class="cls_session_table_tdr"></td>	</tr>
+			</table>
+			<button id="btn_sess_list_up" class="cls_sess_btn_small">-</button>
+			<button id="btn_sess_list_down" class="cls_sess_btn_small">+</button>
+			<button id="btn_sess_open" class="cls_sess_btn">open</button>
+			<button id="btn_sess_close" class="cls_sess_btn">close</button>
+		</div>
+		<div id="div_sess_new">
+			<input type="radio" id="sess_new_rb_type_train" name="sess_type" class="cls_sess_rb" checked>
+			<label for="sess_new_rb_type_train" class="cls_sess_rb_label">Training</label>
+			<input type="radio" id="sess_new_rb_type_quali" name="sess_type" class="cls_sess_rb">
+			<label for="sess_new_rb_type_quali" class="cls_sess_rb_label">Quali</label>
+			<input type="radio" id="sess_new_rb_type_race" name="sess_type" class="cls_sess_rb">
+			<label for="sess_new_rb_type_race" class="cls_sess_rb_label">Race</label>
+			<button id="btn_sess_new" class="cls_sess_btn">add new</button>
+		</div>
+		<div id="div_sess_gen">
+			<label class="cls_sess_new_label">gen field from</label>
+			<input type="radio" id="sess_new_rb_gen_all" name="sess_gen_src" class="cls_sess_rb" checked>
+			<label for="sess_new_rb_gen_all" class="cls_sess_rb_label">all pilots</label>
+			<input type="radio" id="sess_new_rb_gen_quali" name="sess_gen_src" class="cls_sess_rb">
+			<label for="sess_new_rb_gen_quali" class="cls_sess_rb_label">quali results</label>
+		</div>
+	</div>
+	<div id="div_sess_results">
+	</div>
+</div>
+<div id="div_tab_event">
+	<div id="div_event_top">
+		<div id="div_event_open">
+			<table id="table_event_available" cellspacing="0" cellpadding="0" border="none"  class="cls_event_res_table_table">
+				<tr>	<td id="t_events0" class="cls_event_table_tdr"></td>	</tr>
+				<tr>	<td id="t_events1" class="cls_event_table_tdr"></td>	</tr>
+				<tr>	<td id="t_events2" class="cls_event_table_tdr"></td>	</tr>
+				<tr>	<td id="t_events3" class="cls_event_table_tdr"></td>	</tr>
+			</table>
+			<button id="btn_event_list_up" class="cls_event_btn_small">-</button>
+			<button id="btn_event_list_down" class="cls_event_btn_small">+</button>
+			<button id="btn_event_open" class="cls_event_btn">open</button>
+			<button id="btn_event_close" class="cls_event_btn">close</button>
+		</div>
+		<div id="div_event_new">
+			<input type="text" id="txt_event_new_name" class="cls_event_input">
+			<button id="btn_event_new" class="cls_event_btn">new</button>
+		</div>
+		<div id="div_event_mod">
+			<div id="div_event_mod_qmode" class="cls_event_mod_part">
+				<select name="quali_mode" id="sel_event_mod_qmode" class="cls_event_select">
+					<option value="0">overtime</option>
+				</select>
+				<label for="sel_event_mod_qmode" class="cls_event_rb_label">quali mode</label>
+			</div>
+			<div id="div_event_mod_qlaps" class="cls_event_mod_part">
+				<input type="number" id="event_mod_nb_qlaps" class="cls_event_number" value="3">
+				<label for="event_mod_nb_qlaps" class="cls_event_rb_label">quali laps</label>
+			</div>
+			<div id="div_event_mod_qotime" class="cls_event_mod_part">
+				<input type="number" id="event_mod_nb_qotime" class="cls_event_number" value="120">
+				<label for="event_mod_nb_qotime" class="cls_event_rb_label">quali overtime</label>
+			</div>
+			<div id="div_event_mod_rmode" class="cls_event_mod_part">
+				<select name="race_mode" id="sel_event_mod_rmode" class="cls_event_select">
+					<option value="0">n laps</option>
+				</select>
+				<label for="sel_event_mod_rmode" class="cls_event_rb_label">race mode</label>
+			</div>
+			<div id="div_event_mod_rlaps" class="cls_event_mod_part">
+				<input type="number" id="event_mod_nb_rlaps" class="cls_event_number" value="3">
+				<label for="event_mod_nb_rlaps" class="cls_event_rb_label">race laps</label>
+			</div>
+			<div id="div_event_mod_btn" class="cls_event_mod_part">
+				<button id="btn_event_mod" class="cls_event_btn">modify</button>
+			</div>
+		</div>
+	</div>
+	<div id="div_event_main">
+		<div id="div_event_results">
+			<div id="div_event_results_mode">
+				<input type="radio" id="event_res_laps" name="res_type" class="cls_sess_rb" onclick="event_result_radio_click(0);" checked>
+				<label for="event_res_laps" class="cls_sess_rb_label">fastest laps</label>
+				<input type="radio" id="event_res_quali" name="res_type" class="cls_sess_rb" onclick="event_result_radio_click(1);">
+				<label for="event_res_quali" class="cls_sess_rb_label">quali</label>
+				<input type="radio" id="event_res_race" name="res_type" class="cls_sess_rb" onclick="event_result_radio_click(2);">
+				<label for="event_res_race" class="cls_sess_rb_label">race</label>
+			</div>
+			<div id="div_event_results_table" class="cls_event_res_table_div">
+			</div>
+		</div>
+		<div id="div_event_pilots">
+			<div id="canvas_pilots_event"></div>
+			<div id="div_event_edit_btns">
+				<button id="btn_event_edit" class="cls_event_btn_small">e</button>
+				<button id="btn_event_toleft" class="cls_event_btn_small"><<</button>
+				<button id="btn_event_pup" class="cls_event_btn_small">+</button>
+				<button id="btn_event_pdown" class="cls_event_btn_small">-</button>
+				<button id="btn_event_toright" class="cls_event_btn_small">>></button>
+			</div>
+			<div id="canvas_pilots_all"></div>
+		</div>
+	</div>
+</div>
+
+<script language="javascript" type="text/javascript">
+	<!-- Hide Javascript
+	batch_cmd = [3, 14, 13, 12, 15, 1];
+	batch_cnt = 0;
+	batch_cnt_top = 6;
+	do_rssi = false;
+	
+	var p_div_tab_heat		  = document.getElementById('div_tab_heat');
+	var p_div_tab_session	  = document.getElementById('div_tab_session');
+	var p_div_tab_event		  = document.getElementById('div_tab_event');
+	
+	var p_div_tab_btn_heat    = document.getElementById("div_tab_btn_heat");
+	var p_div_tab_btn_session = document.getElementById("div_tab_btn_session");
+	var p_div_tab_btn_event	  = document.getElementById("div_tab_btn_event");
+	
+	var p_btn_back            = document.getElementById("btn_back");
+	var p_btn_clr             = document.getElementById("btn_clr");
+	var p_btn_next            = document.getElementById("btn_next");
+	
+	var p_event_btn_open      = document.getElementById("btn_event_open");
+	var p_event_btn_close     = document.getElementById("btn_event_close");
+	var p_event_btn_new       = document.getElementById("btn_event_new");
+	var p_event_btn_mod       = document.getElementById("btn_event_mod");
+	
+	var p_event_btn_pedit_edit    = document.getElementById("btn_event_edit");
+	var p_event_btn_pedit_toleft  = document.getElementById("btn_event_toleft");
+	var p_event_btn_pedit_pup     = document.getElementById("btn_event_pup");
+	var p_event_btn_pedit_pdown   = document.getElementById("btn_event_pdown");
+	var p_event_btn_pedit_toright = document.getElementById("btn_event_toright");
+	
+	var p_btn_sess_open       = document.getElementById("btn_sess_open");
+	var p_btn_sess_close      = document.getElementById("btn_sess_close");
+	var p_btn_sess_new        = document.getElementById("btn_sess_new");
+	
+	// -------------------------------------------------------------------------------------------------------------------------
+	// init everything
+	// -------------------------------------------------------------------------------------------------------------------------
+	function init() {
+		// ------   tab selection mal anders   ------
+		// --- set text + functions
+		p_div_tab_btn_heat.onclick = function() {
+			show_tab = 0;
+			handle_tab();
+		}
+		p_div_tab_btn_session.onclick = function() {
+			show_tab = 1;
+			handle_tab();
+		}
+		p_div_tab_btn_event.onclick = function() {
+			show_tab = 2;
+			handle_tab();
+		}
+		
+		// ------   work some buttons on footer   ------
+		p_btn_back.onclick = function() {
+			if ((state == 0) || (state == 3)) {	// states clear/commit done
+				p_btn_back.style.background = '#f4f466';
+				if (heat_nr_current > 0) heat_nr_current--;
+				batch_cmd = [21, 13];
+				batch_cnt = 0;
+				batch_cnt_top = 2;
+			}
+		}
+		p_btn_clr.onclick = function() {
+			if ((state == 2) || (state == 3)) {	// state stopped
+				p_btn_clr.style.background = '#f4f466';
+				translate_rssi(0, true);
+				g_auto = true;
+				exfile = "cmd_clear;";
+				comm_request = 2;
+				// -- redraw rssi graph and lap table
+				printLaps();
+				draw_rssi();
+			}
+		}
+		p_btn_next.onclick = function() {
+			if ((state == 0) || (state == 3)) {	// states clear/commit done
+				p_btn_next.style.background  = '#f4f466';
+				heat_nr_current++;
+				batch_cmd = [21, 13];
+				batch_cnt = 0;
+				batch_cnt_top = 2;
+			}
+		}
+		
+		// ------   init heat tab
+        init_tab_results();
+		
+		// ------   init session tab
+		init_tab_session();
+		
+		// ------   init event tab
+		init_tab_event();
+		
+		// --- handle tabs
+		handle_tab();
+		
+		// --- handle window resize
+		window.addEventListener("resize", function() { window_resize() }, false);
+	}
+	
+	// -------------------------------------------------------------------------------------------------------------------------
+	// handle visible tab
+	// -------------------------------------------------------------------------------------------------------------------------
+	// ****** handle tabs
+	function handle_tab() {
+		switch(show_tab) {
+			// -- show tab heat
+			case 0:
+				p_div_tab_heat.style.display    = "block";
+				p_div_tab_session.style.display = "none";
+				p_div_tab_event.style.display   = "none";
+				break;
+			// -- show tab session
+			case 1:
+				p_div_tab_heat.style.display    = "none";
+				p_div_tab_session.style.display = "block";
+				p_div_tab_event.style.display   = "none";
+				break;
+			// -- default: show tab event
+			default:
+				p_div_tab_heat.style.display    = "none";
+				p_div_tab_session.style.display = "none";
+				p_div_tab_event.style.display   = "block";
+				break;
+		}
+	}
+	
+	// ****** handle table sizes when resizing
+	function window_resize() {
+		session_resize();
+	}
+	
+	// -------------------------------------------------------------------------------------------------------------------------
+	// handle system state (running, stopped,...)
+	// -------------------------------------------------------------------------------------------------------------------------
+	// ****** switch state
+	function switch_state(state_target) {
+		if (use_event_mode > 0) {
+			// --- set state
+			state = state_target;
+			// --- paint the buttons
+			switch(state) {
+				case 0:		// clear, may switch heats
+					p_btn_back.style.background = '#66f466';
+					p_btn_clr.style.background  = '#f46666';
+					p_btn_next.style.background = '#66f466';
+					break;
+				case 1:		// running, don't switch heats
+					p_btn_back.style.background = '#f46666';
+					p_btn_clr.style.background  = '#f46666';
+					p_btn_next.style.background = '#f46666';
+					break;
+				case 2:		// stopped, but not committed, don't switch heats
+					p_btn_back.style.background = '#f46666';
+					p_btn_clr.style.background  = '#f46666';
+					p_btn_next.style.background = '#f46666';
+					break;
+				case 3:		// stopped, committed, may switch heats
+					p_btn_back.style.background = '#66f466';
+					p_btn_clr.style.background  = '#66f466';
+					p_btn_next.style.background = '#66f466';
+					break;
+				default:	// something stupid happened :P
+					p_btn_back.style.background = '#666666';
+					p_btn_clr.style.background  = '#666666';
+					p_btn_next.style.background = '#666666';
+					break;
+			}
+		}
+	}
+	
+	// ****** some dummies...
+	function update_sys() {}
+	//function switch_state(state_target) {}
+	function translate_rssi() {}
+	function draw_rssi() {}
+	
+	// --- init page on loaad
+	window.onload=init;
+	-->
+</script>
+
+<noscript>
+	<h3>You need to enable javascript!</h3>
+</noscript>
+
+</body>
+</html>

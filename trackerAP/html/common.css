@@ -1,0 +1,136 @@
+div#div_headspace {
+	height:				6vh;
+	min-height:			20px;
+	width:				100%;
+	left:				0;
+	top:				0;
+}
+
+div#div_header {
+	height:				6vh;
+	min-height:			20px;
+	width:				100%;
+	position:			fixed;
+	left:				0;
+	top:				0;
+	background-color:	#222222;
+	color: 				#00cc00;
+	font-weight:		bold;
+	font-size:			3.8vh;
+	text-align:			center;
+}
+
+div#div_header_l {
+	float:				left;
+	width:				52vw;
+	margin-left:		0vw;
+	text-align:			left;
+}
+
+div#div_header_m {
+	float:				left;
+	width:				16vw;
+	margin-right:		1vw;
+	margin-top:			1vh;
+	text-align:			right;
+}
+
+div#div_header_r {
+	float:				right;
+	width:				26vw;
+	margin-right:		2vw;
+	margin-top:			1vh;
+	text-align:			right;
+}
+
+div#div_footer {
+	height:				9vh;
+	min-height:			40px;
+	width:				100%;
+	position:			fixed;
+	left:				0;
+	bottom:				0;
+	background-color:	#222222;
+	color: 				#CC0000;
+}
+
+div#div_footspace {
+	height:				9vh;
+	min-height:			40px;
+	width:				100%;
+	left:				0;
+	bottom:				0;
+}
+
+#btn_start {
+	float:				left;
+	width:				32vw;
+	height:				8vh;
+	min-height:			36px;
+	margin:				0.4vh;
+	margin-right:		1vw;
+	font-weight:		bold;
+	font-size:			3.8vh;
+}
+
+#btn_stop {
+	float:				right;
+	width:				32vw;
+	height:				8vh;
+	min-height:			36px;
+	margin:				0.4vh;
+	margin-left:		1vw;
+	margin-right:		1vw;
+	font-weight:		bold;
+	font-size:			3.8vh;
+}
+
+#btn_clear {
+	float:				none;
+	width:				30.4vw;
+	height:				8vh;
+	min-height:			36px;
+	margin:				0.4vh;
+	margin-left:		1vw;
+	font-weight:		bold;
+	font-size:			3.8vh;
+}
+
+#div_tab_btn_rt {
+	float:				left;
+	width:				16vw;
+	min-height:			16px;
+	margin:				1vh;
+	margin-left:		0vw;
+	padding-left:		0vw;
+	margin-right:		0vw;
+	text-align:			center;
+}
+
+#div_tab_btn_rssi {
+	float:				left;
+	width:				16vw;
+	min-height:			16px;
+	margin:				1vh;
+	margin-left:		0vw;
+	padding-left:		0vw;
+	margin-right:		0vw;
+	text-align:			center;
+}
+
+#div_tab_btn_sys {
+	float:				left;
+	width:				18vw;
+	min-height:			16px;
+	margin:				1vh;
+	margin-left:		0vw;
+	margin-right:		1vw;
+	text-align:			center;
+}
+
+body {
+	background-color: 	#000000;
+	color: 				#00CC00;
+	font-family: 		Courier, Courier New, monospace;
+	font-weight:		bold;
+}

@@ -1,0 +1,57 @@
+#div_rssi_exception {
+	position:			absolute;
+	top:				20vh;
+	left:				25vw;
+	width:				50vw;
+	--border:				1px solid #004000;
+	background-color: 	#000000;
+	color: 				#00CC00;
+	display:			inline;
+	font-size:			4.4vh;
+	text-align:			center;
+}
+
+.cls_ex_menu_entry {
+	position:			relative;
+	left:				5vw;
+	width:				40vw;
+	margin-top:			1vh;
+	margin-bottom:		1vh;
+	border:				1px solid #004000;
+	border-collapse:	collapse;
+	z-index:			1;
+	background-color: 	#222222;
+	color: 				#00CC00;
+}
+
+.cls_ex_menu_entry:hover {
+	background-color: 	#444444;
+}
+
+.cls_rssi {
+	float:				right;
+	height:				626px;
+	width:				300px;
+	margin-bottom:		2vw;
+
+}
+
+.cls_rssi_graph {
+	width:				460px;
+	height:				626px;
+	float:				left;
+	overflow-x			: hidden;
+	overflow-y			: hidden;
+}
+
+.cls_rssi_btn {
+	float:				left;
+	height:				117px;
+	margin-top:			8px;
+	margin-left:		8px;
+	margin-right:		8px;
+	width:				42px;
+	border:				1px solid #004000;
+	background-color: 	#222822;
+	color: 				#00CC00;
+}

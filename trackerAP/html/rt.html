@@ -1,0 +1,350 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4s01 Frameset//EN"
+"http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+	<head>
+		<title>RT_sd</title>
+		<link rel="stylesheet" type="text/css" href="common.css" />
+		<link rel="stylesheet" type="text/css" href="tab_rssi.css" />
+		<link rel="stylesheet" type="text/css" href="tab_sys.css" />
+		<link rel="stylesheet" type="text/css" href="tab_results.css" />
+		<script src="common.js"></script>
+		<script src="tab_rssi.js"></script>
+		<script src="tab_results.js"></script>
+		<script src="tab_sys.js"></script>
+		<script src="net.js"></script>
+		<link rel="icon" href="favicon.png" type="image/x-icon">
+		<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+	</head>
+<body link="#00CC00" vlink="#00CC00" alink="#FFFFFF" oncontextmenu="return false;">
+
+<div id="div_header">		
+	<div id="div_header_l">
+		<div id="div_tab_btn_rt">RT</div>
+		<div id="div_tab_btn_rssi">RSSI</div>
+		<div id="div_tab_btn_sys">SYS</div>
+	</div>
+	<div id="div_header_m">						</div>
+	<div id="div_header_r">						</div>
+</div>
+<div id="div_headspace">						</div>
+<div id="div_tab_results">
+	<div id="div_heat_table_res">
+		<table id="table_heat_top" cellspacing="0" cellpadding="0" border="none">
+			<tr>	<td id="tt0-0" style="border: none;"></td>	<td id="tt0-3" style="border: none;text-align: right;"></td>	</tr>
+			<tr>	<td id="tt1-0" style="border: none;"></td>	<td id="tt1-3" style="border: none;"></td>						</tr>
+			<tr>	<td id="tt2-0" style="border: none;"></td>	<td id="tt2-3" style="border: none;"></td>						</tr>
+		</table>
+		<div id="div_heat_top4s">
+			<div id="div_heat_top4s_left_name">Fastest Laps</div>
+			<div id="div_heat_top4s_right_name">Position</div>
+			<div id="div_heat_top4s_left">
+				<table id="table_heat_top4s_left" cellspacing="0" cellpadding="0">
+					<tr>	<td id="ttl0-0" style="border:1px solid #004000">1</td>	<td id="ttl0-1" style="border:1px solid #004000"></td>	<td id="ttl0-2" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttl1-0" style="border:1px solid #004000">2</td>	<td id="ttl1-1" style="border:1px solid #004000"></td>	<td id="ttl1-2" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttl2-0" style="border:1px solid #004000">3</td>	<td id="ttl2-1" style="border:1px solid #004000"></td>	<td id="ttl2-2" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttl3-0" style="border:1px solid #004000">4</td>	<td id="ttl3-1" style="border:1px solid #004000"></td>	<td id="ttl3-2" style="border:1px solid #004000"></td>	</tr>
+				</table>
+			</div>
+			<div id="div_heat_top4s_right">
+				<table id="table_heat_top4s_right" cellspacing="0" cellpadding="0">
+					<tr>	<td id="ttr0-0" style="border:1px solid #004000">1</td>	<td id="ttr0-1" style="border:1px solid #004000"></td>	<td id="ttr0-2" style="border:1px solid #004000"></td>	<td id="ttr0-3" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttr1-0" style="border:1px solid #004000">2</td>	<td id="ttr1-1" style="border:1px solid #004000"></td>	<td id="ttr1-2" style="border:1px solid #004000"></td>	<td id="ttr1-3" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttr2-0" style="border:1px solid #004000">3</td>	<td id="ttr2-1" style="border:1px solid #004000"></td>	<td id="ttr2-2" style="border:1px solid #004000"></td>	<td id="ttr2-3" style="border:1px solid #004000"></td>	</tr>
+					<tr>	<td id="ttr3-0" style="border:1px solid #004000">4</td>	<td id="ttr3-1" style="border:1px solid #004000"></td>	<td id="ttr3-2" style="border:1px solid #004000"></td>	<td id="ttr3-3" style="border:1px solid #004000"></td>	</tr>
+				</table>
+			</div>
+		</div>
+		<table id="table_heat_top" cellspacing="0" cellpadding="0">
+			<tr>	<td id="trn2-0" style="border: none;height: 10px;"></td>	<td id="trn2-1" style="border: none;"></td>				<td id="trn2-2" style="border: none;"></td>				<td id="trn2-3" style="border: none;"></td>					</tr>
+			<tr>	<td id="trn3-0" style="border: 1px solid #004000"></td>		<td id="trn3-1" style="border: 1px solid #004000"></td>	<td id="trn3-2" style="border: 1px solid #004000"></td>	<td id="trn3-3" style="border:1px solid #004000"></td>		</tr>
+			<tr>	<td id="trn4-0" style="border: none;height: 0.5vh;"></td>	<td id="trn4-1" style="border: none;"></td>				<td id="trn4-2" style="border: none;"></td>				<td id="trn4-3" style="border: none;"></td>		</tr>
+		</table>
+		<table id="table_heat_res" cellspacing="0" cellpadding="0">					</table>
+	</div>
+</div>
+<div id="div_tab_sys">
+	<div id="div_sys_menu">						</div>
+	<div id="div_sys_edit">
+		<div id="div_sys_edit_l">
+			<input id="sys_edit" size="6" value="1350" class="cls_edit">
+		</div>
+		<div id="div_sys_edit_r">
+			<div id="div_sys_edit_up">+</div>
+			<div id="div_sys_edit_down">-</div>
+		</div>
+		<div id="div_sys_edit_submit">
+			<div id="div_sys_edit_ok">OK</div>
+			<div id="div_sys_edit_cancel">Cancel</div>
+		</div>
+	</div>
+	<div id="div_sys_freq">
+		<div id="div_sys_chn0"			class="cls_menu_name">	</div>
+		<div id="div_sys_chn1"			class="cls_menu_name">	</div>
+		<div id="div_sys_chn2"			class="cls_menu_name">	</div>
+		<div id="div_sys_chn3"			class="cls_menu_name">	</div>
+		<div id="div_sys_det_dead"		class="cls_menu_name">	</div>
+		<div id="div_sys_det_percent"	class="cls_menu_name">	</div>
+		<div id="div_sys_det_min"		class="cls_menu_name">	</div>
+		<div id="div_sys_det_filter"	class="cls_menu_name">	</div>
+		<div id="div_sys_submit" 		class="cls_menu_name">	</div>
+	</div>
+	<div id="div_sys_ip">						</div>
+</div>
+<div id="div_tab_rssi">
+	<div id="div_rssi_exception" >
+		<div id="div_rssi_ex_6s" class="cls_ex_menu_entry">
+			6 sec
+		</div>
+		<div id="div_rssi_ex_12s" class="cls_ex_menu_entry">
+			12 sec
+		</div>
+		<div id="div_rssi_ex_del" class="cls_ex_menu_entry">
+			delete
+		</div>
+	</div>
+	<div id="div_rssi_top" class="cls_rssi">
+		<div id="div_rssi_graph" class="cls_rssi_graph">
+			<canvas id="canvas_rssi"></canvas>
+		</div>
+	</div>
+</div>
+<div id="div_footspace">						</div>
+<div id="div_footer">
+	<button id="btn_start">Start</button>
+	<button id="btn_clear">Clear</button>
+	<button id="btn_stop">Stop</button>
+</div>
+
+<script language="javascript" type="text/javascript">
+	<!-- Hide Javascript
+	batch_cmd = [3, 14, 13, 12, 1];
+	batch_cnt = 0;
+	batch_cnt_top = 5;
+	do_rssi = true;
+	
+	var p_div_tab_rt   = document.getElementById('div_tab_results');
+	var p_div_tab_rssi = document.getElementById('div_tab_rssi');
+	var p_div_tab_sys  = document.getElementById('div_tab_sys');
+	
+	var p_canvas_rssi = document.getElementById("canvas_rssi");
+	
+	var p_div_tab_btn_rt   = document.getElementById("div_tab_btn_rt");
+	var p_div_tab_btn_rssi = document.getElementById("div_tab_btn_rssi");
+	var p_div_tab_btn_sys  = document.getElementById("div_tab_btn_sys");
+	
+	var p_div_ex_6s		= document.getElementById("div_rssi_ex_6s");
+	var p_div_ex_12s	= document.getElementById("div_rssi_ex_12s");
+	var p_div_ex_del	= document.getElementById("div_rssi_ex_del");
+	
+	var p_btn_start = document.getElementById("btn_start");
+	var p_btn_clear = document.getElementById("btn_clear");
+	var p_btn_stop  = document.getElementById("btn_stop");
+	
+	// -------------------------------------------------------------------------------------------------------------------------
+	// init everything
+	// -------------------------------------------------------------------------------------------------------------------------
+	function init() {
+
+		// ------   tab selection mal anders   ------
+		// --- set text + functions
+		p_div_tab_btn_rt.onclick = function() {
+			show_tab = 0;
+			handle_tab();
+		}
+		p_div_tab_btn_rssi.onclick = function() {
+			show_tab = 2;
+			handle_tab();
+		}
+		p_div_tab_btn_sys.onclick = function() {
+			show_tab = 1;
+			handle_tab();
+		}
+		// --- handle tabs
+		handle_tab();
+		
+		// ------   work some buttons on footer   ------
+		p_btn_start.onclick = function() {
+			if (state == 0) {	// state clear
+				p_btn_start.style.background = '#f4f466';
+				exfile = "cmd_start;";
+				comm_request = 2;
+				g_auto = true;
+				//det_level_auto = true;
+			}
+		}
+		p_btn_clear.onclick = function() {
+			if (state == 2) {	// state stopped
+				p_btn_clear.style.background = '#f4f466';
+				translate_rssi(0, true);
+				g_auto = true;
+				if (use_event_mode == 0) {
+					exfile = "cmd_clear;";
+				} else {
+					exfile = "cmd_commit;";
+				}
+				comm_request = 2;
+				// -- redraw rssi graph and lap table
+				printLaps();
+				draw_rssi();
+			}
+		}
+		p_btn_stop.onclick = function() {
+			if (state == 1) {	// state running
+				p_btn_stop.style.background  = '#f4f466';
+				exfile = "cmd_stop;";
+				comm_request = 2;
+			}
+		}
+		// --- set button colors to useful state
+		switch_state(state);
+ 
+		// ------   results table      ------
+		init_tab_results();
+        	
+		// ------   sys tab stuff   ------
+		// --- channels
+		for (var i = 0; i < 4; i++) {
+			// -- on click
+			document.getElementById("div_sys_chn" + i).onclick	= function() {
+				menu_target = parseInt(this.id.substring(this.id.length-1));
+				handle_menu(true);
+			}
+		}
+		// --- values for detect etc.
+		document.getElementById("div_sys_det_dead").onclick 	= function() {	handle_edit(1);	}
+		document.getElementById("div_sys_det_percent").onclick	= function() {	handle_edit(2);	}
+		document.getElementById("div_sys_det_min").onclick		= function() {	handle_edit(3);	}
+		document.getElementById("div_sys_det_filter").onclick	= function() {	handle_edit(4);	}
+		// --- submit
+		document.getElementById("div_sys_submit").textContent	= "-=*=- save to rt -=*=-";
+		document.getElementById("div_sys_submit").onclick		= function() {
+			// -- send config to rt
+			comm_request = 4;
+		}
+		// --- update values in system tab
+		update_sys();
+		// --- create menu for select
+		for (var k = 0; k < 8; k++) {
+			var div_tmp = document.createElement("div");
+			var ntmp = "div_sys_menu_entry" + k;
+			div_sys_menu.appendChild(div_tmp);
+			div_tmp.setAttribute("id", ntmp);
+			div_tmp.setAttribute("class", "cls_menu_entry");
+			div_tmp.onclick = function() {
+				menu_change_value(this);
+			}
+			div_tmp.style.display = "none";
+			div_tmp.textContent = "R" + (k+1) + " " + f_chnR[k];
+		}
+		// --- bring menu to sane state
+		handle_menu(false);
+		// --- create menu for editing values
+		document.getElementById("div_sys_edit_up").onclick		= function() {	edit_change_value(1);	}
+		document.getElementById("div_sys_edit_down").onclick	= function() {	edit_change_value(2);	}
+		document.getElementById("div_sys_edit_cancel").onclick	= function() {	edit_change_value(3);	}
+		document.getElementById("div_sys_edit_ok").onclick		= function() {	edit_change_value(4);	}
+		document.getElementById("div_sys_edit").style.display	= "none";
+		
+		// ------   rssi tab stuff   ------
+		// --- draw rssi, set sizes...
+		draw_rssi();
+		// --- hide exception menu
+		p_div_ex_6s.addEventListener  ("mousedown", function() {	add_exception(lt_chn, lt_clickposX, 0);	}, false);
+		p_div_ex_12s.addEventListener ("mousedown", function() {	add_exception(lt_chn, lt_clickposX, 1);	}, false);
+		p_div_ex_del.addEventListener ("mousedown", function() {	delete_exception(lt_chn, lt_clickposX);	}, false);
+		handle_rssiex(false);
+		// --- longtouch for rssi exception menu
+		onlongtouch = function() { do_longtouch(); };
+		// --- add events for scrolling
+		addEvent('mousedown',	p_div_tab_rssi, onMouseDown);
+		addEvent('mousemove',	p_div_tab_rssi, onMouseMove);
+		addEvent('mouseup',		p_div_tab_rssi, onMouseUp);
+		addEvent('mouseleave',	p_div_tab_rssi, onMouseLeave);
+		addEvent('touchstart',	p_div_tab_rssi, onTouchDown);
+		addEvent('touchmove',	p_div_tab_rssi, onMouseMove);
+		addEvent('touchend',   	p_div_tab_rssi, onMouseUp);
+		// --- window resize
+		//window.addEventListener("resize", draw_rssi());translate_rssi(dx, save_pos)
+		//window.addEventListener("resize", function() { draw_rssi(); }, false);
+		window.addEventListener("resize", function() { draw_rssi();translate_rssi(g_pos, false); }, false);
+	}
+	
+	// -------------------------------------------------------------------------------------------------------------------------
+	// handle visible tab
+	// -------------------------------------------------------------------------------------------------------------------------
+	// ****** handle tabs
+	function handle_tab() {
+		switch(show_tab) {
+			// -- show tab sys
+			case 1:
+				p_div_tab_rt.style.display   = "none";
+				p_div_tab_rssi.style.display = "none";
+				p_div_tab_sys.style.display  = "block";
+				break;
+			// -- show tab rssi
+			case 2:
+				p_div_tab_rt.style.display   = "none";
+				p_div_tab_sys.style.display  = "none";
+				p_div_tab_rssi.style.display = "block";
+				break;
+			// -- default: show rt tab
+			default:
+				p_div_tab_sys.style.display  = "none";
+				p_div_tab_rssi.style.display = "none";
+				p_div_tab_rt.style.display   = "block";
+				break;
+		}
+	}
+	
+	// -------------------------------------------------------------------------------------------------------------------------
+	// handle system state (running, stopped,...)
+	// -------------------------------------------------------------------------------------------------------------------------
+	// ****** switch state
+	function switch_state(state_target) {
+		// --- set state
+		state = state_target;
+		// --- paint the buttons
+		switch(state) {
+			case 0:		// clear, may start
+				p_btn_start.style.background = '#66f466';
+				p_btn_clear.style.background = '#f46666';
+				p_btn_stop.style.background  = '#f46666';
+				break;
+			case 1:		// running, allow only stop
+				p_btn_start.style.background = '#f46666';
+				p_btn_clear.style.background = '#f46666';
+				p_btn_stop.style.background  = '#66f466';
+				break;
+			case 2:		// stopped, show final result, allow only clear/commit
+				p_btn_start.style.background = '#f46666';
+				p_btn_clear.style.background = '#66f466';
+				p_btn_stop.style.background  = '#f46666';
+				break;
+			case 3:		// stopped, show final result, allow nothing
+				p_btn_start.style.background = '#f46666';
+				p_btn_clear.style.background = '#f46666';
+				p_btn_stop.style.background  = '#f46666';
+				break;
+			default:	// something stupid happened :P
+				p_btn_start.style.background = '#f46666';
+				p_btn_clear.style.background = '#f46666';
+				p_btn_stop.style.background  = '#f46666';
+				break;
+		}
+	}
+	
+	// --- init page on loaad
+	window.onload=init;
+	
+	// ****** some dummies...
+	function draw_tab_event() {}
+	function draw_tab_sessions() {}
+	-->
+</script>
+
+<noscript>
+	<h3>You need to enable javascript!</h3>
+</noscript>
+
+</body>
+</html>
