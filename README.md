@@ -39,15 +39,15 @@ Please be aware that the fpga firmware is only provided as binary and NOT under 
 | USB FTDI-Adapter for programming the ESP32 (pictured with pins removed and prepared to fit pin header on pcb)<br>![FTDI](pics/FTDI_small.png?raw=true "FTDI") | 1x |
 | 2x7 pin socket (1x7 will do too) | 1x |
 | DCDC step down converter<br>![FTDI](pics/DCDC_small.png?raw=true "FTDI") | 2x |
-| MCP3201 SOP-8 buy a few more on AliExpress, i have seen DOA ones | 5x |
+| MCP3201 SOP-8, buy a few more on AliExpress, i have seen DOA ones | 5x |
 | Micro SD-Card socket, look at picture, there are different layouts<br>![FTDI](pics/sd_socket_small.png?raw=true "FTDI") | 1x |
-| Micro-SD Card 128mb/32GB should work | 1x |
+| Micro-SD Card 32mb/32GB should work | 1x |
 | Pin header | 143x |
 | 1206 100n (1uF should do too) ceramic capacitor | 10x |
 | 1210 1,0uF/min 35V ceramic capacitor | 10x |
 | 1206 330 Ohm resistor | 1x |
 | 1206 10 kOhm resistor | 1x |
-| SMD capcitor 470u min 6V ca. 6.Xmm diameter | 1x |
+| SMD capacitor 470u min 6V ca. 6.Xmm diameter | 1x |
 | 1206 led (choose your color, might be brighter or a little darker) | 1x |
 | 32x2 stackable long pin socket/header<br>![FTDI](pics/long_pin_socket_header_small.png?raw=true "FTDI") | 2x |
 | a few cm silicone cable AWG20(ish) and a power connector of your choice | 1x |
