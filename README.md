@@ -18,6 +18,13 @@ FPV racing timing system.
 -integrated power supply, just connect lipo  
 -simple, easy to use ui  
 
+# Videos
+Some (rather ugly) videos recorded during development.
+
+1. Running a heat and switching control device while flying.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/o1VrKWGbu_8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
 # ATTENTION
 This repository as well as the whole project are still works in progress.
 
