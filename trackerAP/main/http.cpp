@@ -842,7 +842,7 @@ static void httpn_server_task(void *pvParameters)
 									in_progress = true;
 									break;
 								case 2:
-									// - commit final, send answer
+									// - open session final, send answer
 									heat.op_in_progress = 0;
 									break;
 							}
@@ -871,7 +871,7 @@ static void httpn_server_task(void *pvParameters)
 									in_progress = true;
 									break;
 								case 2:
-									// - commit final, send answer
+									// - open heat final, send answer
 									heat.op_in_progress = 0;
 									break;
 							}
@@ -888,8 +888,29 @@ static void httpn_server_task(void *pvParameters)
 						// --- cmd clear
 						if (strstr(tmp_header, HTTP_CMD_CLEAR)) {
 							is_good_cmd = true;
-							// -- clear heat, but keep pilots
-							rt.clear(true);
+							// -- if event is open, commit cleared heat
+							if (event.is_open) {
+								// - do commit
+								switch(heat.op_in_progress) {
+								case 0:
+									// - clear heat, but keep pilots
+									rt.clear(true);
+									// - start commit in new thread
+									rt.state = 3;
+									rt.set_state();
+									ESP_ERROR_CHECK(esp_event_post_to(main_loop_handle, TRACKER_EVENTS, EVENT_RT_DO_COMMIT, NULL, 0, portMAX_DELAY));
+									is_good_cmd = false;
+									in_progress = true;
+									break;
+								case 2:
+									// - commit final, send answer
+									heat.op_in_progress = 0;
+									break;
+								}
+							} else {
+								// - clear heat, but keep pilots
+								rt.clear(true);
+							}
 							rt.get_state();
 							strcpy(&http.tx_buf[use_buf][strlen(http.tx_buf[use_buf])], HTTP_CONTENT_CSV);
 							strcat(&http.tx_buf[use_buf][strlen(http.tx_buf[use_buf])], "Clear ");

@@ -31,3 +31,4 @@ class oo_Session {
 #define SESSION_MODE_TRAIN		0
 #define SESSION_MODE_QUALI		1
 #define SESSION_MODE_RACE		2
+

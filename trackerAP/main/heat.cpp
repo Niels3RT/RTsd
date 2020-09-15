@@ -94,6 +94,16 @@ void oo_Heat::commit(void) {
 	// --- write current heat data to session heats array
 	current.state = rt.state;
 	session.heats[current.nr] = current;
+	// --- limit lapcount in quali consecutive lap mode
+	if ((session.mode == SESSION_MODE_QUALI) && (event.quali_mode == QUALI_CONSEC_LAPS)) {
+		// -- walk through channels
+		for(uint8_t i=0;i<4;i++) {
+			// - more laps flown than consecutive limit? Position time is already best n laps.
+			if (session.heats[current.nr].lapcount[i] > event.quali_laps) {
+				session.heats[current.nr].lapcount[i] = event.quali_laps;
+			}
+		}
+	}
 	printf("1 current.state '%x' rt.state '%x'\r\n", current.state, rt.state);
 	// --- save results
 	sprintf(ctmp, "%s/session%d/run%d/results.csv", event.name, session.nr, current.nr);
@@ -227,12 +237,41 @@ void oo_Heat::calc_position(void) {
 	for (uint8_t i=0;i<4;i++) {
 		current.pos_nr[i] = i;
 		// -- determine time in ranking mode
-		if(1) {
-			// -- calc heat time quali mode (from first pass)
-			current.heat_time[i] = rt.hits[i][current.lapcount[i]] - rt.hits[i][0];
-		} else {
-			// -- calc heat time race mode (from start)
-			current.heat_time[i] = rt.hits[i][current.lapcount[i]];
+		switch(session.mode) {
+			// - training
+			case SESSION_MODE_TRAIN:
+				// calc heat time quali mode (from first pass)
+				current.heat_time[i] = rt.hits[i][current.lapcount[i]] - rt.hits[i][0];
+				break;
+			// - quali
+			case SESSION_MODE_QUALI:
+				// calc heat time quali mode (from first pass)
+				switch(event.quali_mode) {
+					// use overtime for heat time
+					case QUALI_OVERTIME:
+						current.heat_time[i] = rt.hits[i][current.lapcount[i]] - rt.hits[i][0];
+						break;
+					// fastest consecutive laps
+					case QUALI_CONSEC_LAPS:
+						if (current.lapcount[i] <= event.quali_laps) {
+							current.heat_time[i] = rt.hits[i][current.lapcount[i]] - rt.hits[i][0];
+						} else {
+							// find fastest consecutive n laps
+							current.heat_time[i] = 0xffffffff;
+							for(uint8_t l=0;l<(current.lapcount[i]-event.quali_laps);l++) {
+								if (current.heat_time[i] > (rt.hits[i][l+event.quali_laps] - rt.hits[i][l])) {
+									current.heat_time[i] = rt.hits[i][l+event.quali_laps] - rt.hits[i][l];
+								}
+							}
+						}
+						break;
+				}
+				break;
+			// -race
+			case SESSION_MODE_RACE:
+				// calc heat time race mode (from start)
+				current.heat_time[i] = rt.hits[i][current.lapcount[i]];
+				break;
 		}
 	}
 	// --- walk through channels
