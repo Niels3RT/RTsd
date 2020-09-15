@@ -2,7 +2,7 @@
 # wifi_mode    'softAP' wifi in Access Point mode
 #              'sta'    wifi in client mode, i.e. connect to your AP
 #
-wifi_mode=sta;
+wifi_mode=softAP;
 wifi_ap_ip=192.168.4.1;
 wifi_ap_ssid=rtsd;
 wifi_ap_key=peace2020;
