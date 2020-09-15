@@ -16,12 +16,12 @@ Please be patient :)
 -WiFi, HTTP server and race housekeeping are done by a ESP32 (ESP32-WROVER-IB module)  
 -both communicate via an SPI interface with each other  
 -ui is in javascript, so smartphone, tablet, computer can be used to control racing  
--a result viewer (html/javascript) for smart tv etc. is included
+-a result viewer (html/javascript) for smart tv etc. is included  
 -all race/configuration data is saved to sd card, device dependend data (rx module calibration) to esp nv storage  
 -as long as the sd card is intact, all other devices can be changed during a race (think of water, fire)  
 -all rx5808 modules (i have seen..) are supported (rssi to 1.xV and 3.xV)  
 -rssi data is saved and reprocessed in realtime whenever results are requested  
--integrated power supply, just connect lipo  
+-integrated power supply, just connect lipo (i used 12V/3s for development, 2s/4s *should* work too but untested)  
 -simple, easy to use ui  
 
 Please be aware that the fpga firmware is only provided as binary and NOT under GPL-3.0 license, see /fpga/ directory for info.
