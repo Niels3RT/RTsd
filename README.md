@@ -56,7 +56,7 @@ Klick screenshots to watch on youtube:
 | DCDC step down converter<br>![FTDI](pics/DCDC_small.png?raw=true "FTDI") | 2x |
 | MCP3201 SOP-8, buy a few more on AliExpress, i have seen DOA ones | 5x |
 | Micro SD-Card socket, look at picture, there are different layouts<br>![FTDI](pics/sd_socket_small.png?raw=true "FTDI") | 1x |
-| Micro-SD Card 32mb/32GB should work | 1x |
+| Micro-SD Card 32mb/32GB should work (32GB might be enough for a couple of seasons) | 1x |
 | Pin header | 143x |
 | 1206 100n (1uF should do too) ceramic capacitor | 10x |
 | 1210 1,0uF/min 35V ceramic capacitor | 10x |
@@ -85,7 +85,7 @@ Right click on the Xilinx chip and add SPI/BPI flash.
 Choose provided MCS file, select SPI PROM and M25P80, leave data width at 1.  
 Left click on the Flash chip above the Xilinx one.  
 In the lower left half of the window, double click on program, leave all options as they are.  
-Done.  
+Done, one led should be blinking once per second and one led should slowly light up/get darker.  
 
 
 # Programming the ESP32
