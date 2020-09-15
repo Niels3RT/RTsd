@@ -69,12 +69,31 @@ Klick screenshots to watch on youtube:
 | some cardboard and self-adhesive copper tape for shielding | 1x |
 
 
+# Programming the Xilinx Spartan6 board
+
+This is by far the saddest part of the whole project. Writing the firmware itself is pretty straight forward and a matter of a few clicks. But obtaining the
+the tools needed from Xilinx and getting them to run on Windows 10 is not.  
+
+[here](https://www.youtube.com/watch?v=VMEIPCjqinA) is a nice youtube video on what to download and how to install. To get the download you have to register with Xilinx and
+download a couple of GB. In theory a WebPack license will suffice and you only need the Lab Tools installed for the Impact tool.  
+
+! More details will follow, for now just a short walkthrough on where to click when.
+
+In Impact start a new project, let it handle a project file automagically, configure devices using Boundary-Scan, don't assign configuration files right now.  
+Right click in the main window and initialize chain.  
+Right click on the Xilinx chip and add SPI/BPI flash.  
+Choose provided MCS file, select SPI PROM and M25P80, leave data width at 1.  
+Left click on the Flash chip above the Xilinx one.  
+In the lower left half of the window, double click on program, leave all options as they are.  
+Done.  
+
+
 # Programming the ESP32
 
-1. Install esptool.  
+1. Install Python and esptool.  
 Windows users see [here](https://cyberblogspot.com/how-to-install-esptool-on-windows-10/).  
 
-Write binaries to the ESP32. Just connect the ftdi to the header on the pcb, change com port to your needs and run command to start flashing.  
+Write binaries to the ESP32: Just connect the ftdi to the header on the pcb, change com port to your needs and run command to start flashing.  
 
 ```
 esptool -p com6 -b 460800 --before=default_reset --after=hard_reset write_flash --flash_mode dio --flash_freq 40m --flash_size 2MB 0x8000 partition-table.bin 0x1000 bootloader.bin 0x10000 trackerAP.bin
