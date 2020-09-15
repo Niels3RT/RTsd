@@ -66,3 +66,11 @@ Klick screenshots to watch on youtube:
 | 1206 led (choose your color, might be brighter or a little darker) | 1x |
 | 32x2 stackable long pin socket/header<br>![FTDI](pics/long_pin_socket_header_small.png?raw=true "FTDI") | 2x |
 | a few cm silicone cable AWG20(ish) and a power connector of your choice | 1x |
+| some cardboard and self-adhesive copper tape for shielding | 1x |
+
+
+# Programming the ESP32
+
+```
+esptool -p com6 -b 460800 --before=default_reset --after=hard_reset write_flash --flash_mode dio --flash_freq 40m --flash_size 2MB 0x8000 partition-table.bin 0x1000 bootloader.bin 0x10000 trackerAP.bin
+```
