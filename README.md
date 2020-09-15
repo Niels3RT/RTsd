@@ -72,7 +72,7 @@ Klick screenshots to watch on youtube:
 # Programming the ESP32
 
 1. Install esptool.  
-Windows users see [![here]](https://cyberblogspot.com/how-to-install-esptool-on-windows-10/).  
+Windows users see [here](https://cyberblogspot.com/how-to-install-esptool-on-windows-10/).  
 
 Write binaries to the ESP32. Just connect the ftdi to the header on the pcb, change com port to your needs and run command to start flashing.  
 
