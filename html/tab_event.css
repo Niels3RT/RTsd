@@ -88,12 +88,21 @@ div#canvas_pilots_all {
 
 .cls_event_res_table_table {
 	margin:				0px;
+	width:				98%;
 	border:				2px solid #003300;
 	border-collapse:	collapse;
 }
 
 .cls_event_table_tdr {
 	height:				20px;
+	margin:				0px;
+	border:				1px solid #003300;
+	border-collapse:	collapse;
+}
+
+.cls_event_list_table_tdr {
+	height:				20px;
+	width:				98%;
 	margin:				0px;
 	border:				1px solid #003300;
 	border-collapse:	collapse;
@@ -107,7 +116,6 @@ div#canvas_pilots_all {
 	color:				#00cc00;
 	text-align:			center;
 	text-decoration:	none;
-	display:			inline-block;
 }
 
 .cls_event_btn_small {
@@ -118,7 +126,6 @@ div#canvas_pilots_all {
 	color:				#00cc00;
 	text-align:			center;
 	text-decoration:	none;
-	display:			inline-block;
 }
 
 .cls_event_mod_part {

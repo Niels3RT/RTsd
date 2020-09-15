@@ -14,6 +14,7 @@ Please be patient :)
 -all channels are sampled simultaneously, at the same clock edges  
 -all sampling, timing, peak detection etc. are done in an FPGA (right now a Xilinx Spartan6 XC6SLX16)  
 -WiFi, HTTP server and race housekeeping are done by a ESP32 (ESP32-WROVER-IB module)  
+-WiFi works as Access Point or connects to existing network  
 -both communicate via an SPI interface with each other  
 -ui is in javascript, so smartphone, tablet, computer can be used to control racing  
 -a result viewer (html/javascript) for smart tv etc. is included  
@@ -101,3 +102,12 @@ Write binaries to the ESP32: Just connect the ftdi to the header on the pcb, cha
 ```
 esptool -p com6 -b 460800 --before=default_reset --after=hard_reset write_flash --flash_mode dio --flash_freq 40m --flash_size 2MB 0x8000 partition-table.bin 0x1000 bootloader.bin 0x10000 trackerAP.bin
 ```
+
+
+# Preparing the micro SD-Card
+
+Format card with a FAT derivative, copy the contents of /sd_card/ to the card. The "sd_card_root_here.txt" should be in the root of the filesystem.  
+
+Look at the .txt files in RTsd directory and adapt to your preferences.  
+
+Go racing :)
