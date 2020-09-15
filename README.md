@@ -95,6 +95,7 @@ Windows users see [here](https://cyberblogspot.com/how-to-install-esptool-on-win
 On Mac and Linux it *should* work the same way, install Python then esptool (pip?).
 
 Write binaries to the ESP32: Just connect the ftdi to the header on the pcb, change com port to your needs and run command to start flashing.  
+
 ![ESP32 FTDI connected](pics/esp_ftdi_small.png?raw=true "ESP32 FTDI connected")
 
 ```
