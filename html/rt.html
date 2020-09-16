@@ -164,35 +164,41 @@
 		
 		// ------   work some buttons on footer   ------
 		p_btn_start.onclick = function() {
-			if (state == 0) {	// state clear
-				p_btn_start.style.background = '#f4f466';
-				exfile = "cmd_start;";
-				comm_request = 2;
-				g_auto = true;
-				//det_level_auto = true;
+			if (chk_btn_active(p_btn_start)) {
+				if (state == 0) {	// state clear
+					p_btn_start.style.background = col_btn_busy;
+					exfile = "cmd_start;";
+					comm_request = 2;
+					g_auto = true;
+					//det_level_auto = true;
+				}
 			}
 		}
 		p_btn_clear.onclick = function() {
-			if (state == 2) {	// state stopped
-				p_btn_clear.style.background = '#f4f466';
-				translate_rssi(0, true);
-				g_auto = true;
-				if (use_event_mode == 0) {
-					exfile = "cmd_clear;";
-				} else {
-					exfile = "cmd_commit;";
+			if (chk_btn_active(p_btn_clear)) {
+				if (state == 2) {	// state stopped
+					p_btn_clear.style.background = col_btn_busy;
+					translate_rssi(0, true);
+					g_auto = true;
+					if (use_event_mode == 0) {
+						exfile = "cmd_clear;";
+					} else {
+						exfile = "cmd_commit;";
+					}
+					comm_request = 2;
+					// -- redraw rssi graph and lap table
+					printLaps();
+					draw_rssi();
 				}
-				comm_request = 2;
-				// -- redraw rssi graph and lap table
-				printLaps();
-				draw_rssi();
 			}
 		}
 		p_btn_stop.onclick = function() {
-			if (state == 1) {	// state running
-				p_btn_stop.style.background  = '#f4f466';
-				exfile = "cmd_stop;";
-				comm_request = 2;
+			if (chk_btn_active(p_btn_stop)) {
+				if (state == 1) {	// state running
+					p_btn_stop.style.background  = col_btn_busy;
+					exfile = "cmd_stop;";
+					comm_request = 2;
+				}
 			}
 		}
 		// --- set button colors to useful state
@@ -306,29 +312,29 @@
 		// --- paint the buttons
 		switch(state) {
 			case 0:		// clear, may start
-				p_btn_start.style.background = '#66f466';
-				p_btn_clear.style.background = '#f46666';
-				p_btn_stop.style.background  = '#f46666';
+				p_btn_start.style.background = col_btn_active;
+				p_btn_clear.style.background = col_btn_inactive;
+				p_btn_stop.style.background  = col_btn_inactive;
 				break;
 			case 1:		// running, allow only stop
-				p_btn_start.style.background = '#f46666';
-				p_btn_clear.style.background = '#f46666';
-				p_btn_stop.style.background  = '#66f466';
+				p_btn_start.style.background = col_btn_inactive;
+				p_btn_clear.style.background = col_btn_inactive;
+				p_btn_stop.style.background  = col_btn_active;
 				break;
 			case 2:		// stopped, show final result, allow only clear/commit
-				p_btn_start.style.background = '#f46666';
-				p_btn_clear.style.background = '#66f466';
-				p_btn_stop.style.background  = '#f46666';
+				p_btn_start.style.background = col_btn_inactive;
+				p_btn_clear.style.background = col_btn_active;
+				p_btn_stop.style.background  = col_btn_inactive;
 				break;
 			case 3:		// stopped, show final result, allow nothing
-				p_btn_start.style.background = '#f46666';
-				p_btn_clear.style.background = '#f46666';
-				p_btn_stop.style.background  = '#f46666';
+				p_btn_start.style.background = col_btn_inactive;
+				p_btn_clear.style.background = col_btn_inactive;
+				p_btn_stop.style.background  = col_btn_inactive;
 				break;
 			default:	// something stupid happened :P
-				p_btn_start.style.background = '#f46666';
-				p_btn_clear.style.background = '#f46666';
-				p_btn_stop.style.background  = '#f46666';
+				p_btn_start.style.background = col_btn_inactive;
+				p_btn_clear.style.background = col_btn_inactive;
+				p_btn_stop.style.background  = col_btn_inactive;
 				break;
 		}
 	}

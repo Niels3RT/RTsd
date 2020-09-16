@@ -138,6 +138,12 @@
 	var lt_chn = 0;
 	var lt_show_tmp = false;
 	
+	var col_btn_active = '#66f466';
+	var col_btn_active_rgb = 'rgb(102, 244, 102)';
+	var col_btn_inactive = '#f46666';
+	var col_btn_inactive_rgb = 'rgb(244, 102, 102)';
+	var col_btn_busy = '#f4f466';
+	
 	var event_table_pilots_all_size = 0;
 	var event_table_pilots_event_size = 0;
 	
@@ -170,3 +176,13 @@
 		}
 		return(stmp);
 	}
+
+	// ****** check if button is active, return true if active
+	function chk_btn_active(p_tmp) {
+		if (p_tmp.style.background  == col_btn_active_rgb) {
+			return(true);
+		} else {
+			return(false);
+		}
+	}
+	

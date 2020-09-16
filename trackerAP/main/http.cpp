@@ -896,7 +896,7 @@ static void httpn_server_task(void *pvParameters)
 									// - clear heat, but keep pilots
 									rt.clear(true);
 									// - start commit in new thread
-									rt.state = 3;
+									rt.state = 0;
 									rt.set_state();
 									ESP_ERROR_CHECK(esp_event_post_to(main_loop_handle, TRACKER_EVENTS, EVENT_RT_DO_COMMIT, NULL, 0, portMAX_DELAY));
 									is_good_cmd = false;

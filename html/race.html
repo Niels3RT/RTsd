@@ -211,6 +211,8 @@
 	var p_btn_sess_open       = document.getElementById("btn_sess_open");
 	var p_btn_sess_close      = document.getElementById("btn_sess_close");
 	var p_btn_sess_new        = document.getElementById("btn_sess_new");
+	var p_btn_sess_list_up    = document.getElementById("btn_sess_list_up");
+	var p_btn_sess_list_down  = document.getElementById("btn_sess_list_down");
 	
 	// -------------------------------------------------------------------------------------------------------------------------
 	// init everything
@@ -233,33 +235,39 @@
 		
 		// ------   work some buttons on footer   ------
 		p_btn_back.onclick = function() {
-			if ((state == 0) || (state == 3)) {	// states clear/commit done
-				p_btn_back.style.background = '#f4f466';
-				if (heat_nr_current > 0) heat_nr_current--;
-				batch_cmd = [21, 13];
-				batch_cnt = 0;
-				batch_cnt_top = 2;
+			if (chk_btn_active(p_btn_back)) {
+				if ((state == 0) || (state == 3)) {	// states clear/commit done
+					p_btn_back.style.background = col_btn_busy;
+					if (heat_nr_current > 0) heat_nr_current--;
+					batch_cmd = [21, 13];
+					batch_cnt = 0;
+					batch_cnt_top = 2;
+				}
 			}
 		}
 		p_btn_clr.onclick = function() {
-			if ((state == 2) || (state == 3)) {	// state stopped
-				p_btn_clr.style.background = '#f4f466';
-				translate_rssi(0, true);
-				g_auto = true;
-				exfile = "cmd_clear;";
-				comm_request = 2;
-				// -- redraw rssi graph and lap table
-				printLaps();
-				draw_rssi();
+			if (chk_btn_active(p_btn_clr)) {
+				if ((state == 2) || (state == 3)) {	// state stopped
+					p_btn_clr.style.background = col_btn_busy;
+					translate_rssi(0, true);
+					g_auto = true;
+					exfile = "cmd_clear;";
+					comm_request = 2;
+					// -- redraw rssi graph and lap table
+					printLaps();
+					draw_rssi();
+				}
 			}
 		}
 		p_btn_next.onclick = function() {
-			if ((state == 0) || (state == 3)) {	// states clear/commit done
-				p_btn_next.style.background  = '#f4f466';
-				heat_nr_current++;
-				batch_cmd = [21, 13];
-				batch_cnt = 0;
-				batch_cnt_top = 2;
+			if (chk_btn_active(p_btn_next)) {
+				if ((state == 0) || (state == 3)) {	// states clear/commit done
+					p_btn_next.style.background  = col_btn_busy;
+					heat_nr_current++;
+					batch_cmd = [21, 13];
+					batch_cnt = 0;
+					batch_cnt_top = 2;
+				}
 			}
 		}
 		
@@ -322,24 +330,24 @@
 			// --- paint the buttons
 			switch(state) {
 				case 0:		// clear, may switch heats
-					p_btn_back.style.background = '#66f466';
-					p_btn_clr.style.background  = '#f46666';
-					p_btn_next.style.background = '#66f466';
+					p_btn_back.style.background = col_btn_active;
+					p_btn_clr.style.background  = col_btn_inactive;
+					p_btn_next.style.background = col_btn_active;
 					break;
 				case 1:		// running, don't switch heats
-					p_btn_back.style.background = '#f46666';
-					p_btn_clr.style.background  = '#f46666';
-					p_btn_next.style.background = '#f46666';
+					p_btn_back.style.background = col_btn_inactive;
+					p_btn_clr.style.background  = col_btn_inactive;
+					p_btn_next.style.background = col_btn_inactive;
 					break;
 				case 2:		// stopped, but not committed, don't switch heats
-					p_btn_back.style.background = '#f46666';
-					p_btn_clr.style.background  = '#f46666';
-					p_btn_next.style.background = '#f46666';
+					p_btn_back.style.background = col_btn_inactive;
+					p_btn_clr.style.background  = col_btn_inactive;
+					p_btn_next.style.background = col_btn_inactive;
 					break;
 				case 3:		// stopped, committed, may switch heats
-					p_btn_back.style.background = '#66f466';
-					p_btn_clr.style.background  = '#66f466';
-					p_btn_next.style.background = '#66f466';
+					p_btn_back.style.background = col_btn_active;
+					p_btn_clr.style.background  = col_btn_active;
+					p_btn_next.style.background = col_btn_active;
 					break;
 				default:	// something stupid happened :P
 					p_btn_back.style.background = '#666666';

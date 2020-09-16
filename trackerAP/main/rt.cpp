@@ -19,7 +19,10 @@ void oo_RT::init(void) {
 	tune_rx_all();
 	
 	// --- read tracker state
-	get_state();
+	//get_state();
+	
+	// --- clear tracker state
+	clear(false);
 	
 	// --- clear minmax
 	clear_minmax();

@@ -5,36 +5,46 @@
 	// ****** init session tab
 	function init_tab_session() {
 		// --- buttons
-		document.getElementById("btn_sess_list_up").onclick = function() {
-			if (sessions_list_offset > 0) {
-				sessions_list_offset--;
+		p_btn_sess_list_up.onclick = function() {
+			if (chk_btn_active(p_btn_sess_list_up)) {
+				if (sessions_list_offset > 0) {
+					sessions_list_offset--;
+				}
+				draw_tab_sessions();
 			}
-			draw_tab_sessions();
 		}
-		document.getElementById("btn_sess_list_down").onclick = function() {
-			if (sessions_list_offset < (sessions_count - 4)) {
-				sessions_list_offset++;
+		p_btn_sess_list_down.onclick = function() {
+			if (chk_btn_active(p_btn_sess_list_down)) {
+				if (sessions_list_offset < (sessions_count - 4)) {
+					sessions_list_offset++;
+				}
+				draw_tab_sessions();
 			}
-			draw_tab_sessions();
 		}
 		p_btn_sess_open.style.color = '#000000';
 		p_btn_sess_open.onclick = function() {
-			heat_nr_current = 0;
-			heat_mod_cnt = 0;
-			//batch_cmd = [18, 19, 21, 13];
-			batch_cmd = [18, 19, 21];
-			batch_cnt = 0;
-			batch_cnt_top = 3;
+			if (chk_btn_active(p_btn_sess_open)) {
+				heat_nr_current = 0;
+				heat_mod_cnt = 0;
+				//batch_cmd = [18, 19, 21, 13];
+				batch_cmd = [18, 19, 21];
+				batch_cnt = 0;
+				batch_cnt_top = 3;
+			}
 		}
 		p_btn_sess_new.style.color = '#000000';
 		p_btn_sess_new.onclick = function() {
-			batch_cmd = [27, 23, 16];
-			batch_cnt = 0;
-			batch_cnt_top = 3;
+			if (chk_btn_active(p_btn_sess_new)) {
+				batch_cmd = [27, 23, 16];
+				batch_cnt = 0;
+				batch_cnt_top = 3;
+			}
 		}
 		p_btn_sess_close.style.color = '#000000';
 		p_btn_sess_close.onclick = function() {
-			comm_request = 24;
+			if (chk_btn_active(p_btn_sess_close)) {
+				comm_request = 24;
+			}
 		}
 		
 		// --- event list selector
@@ -93,23 +103,23 @@
 		// --- open/close buttons
 		if (session_is_open) {
 			if ((state != 0) && (state != 3)) {
-				p_btn_sess_open.style.background = '#f46666';
-				p_btn_sess_new.style.background = '#f46666';
-				p_btn_sess_close.style.background = '#f46666';
+				p_btn_sess_open.style.background = col_btn_inactive;
+				p_btn_sess_new.style.background = col_btn_inactive;
+				p_btn_sess_close.style.background = col_btn_inactive;
 			} else {
-				p_btn_sess_open.style.background = '#f46666';
-				p_btn_sess_new.style.background = '#f46666';
-				p_btn_sess_close.style.background = '#66f466';
+				p_btn_sess_open.style.background = col_btn_inactive;
+				p_btn_sess_new.style.background = col_btn_inactive;
+				p_btn_sess_close.style.background = col_btn_active;
 			}
 		} else {
 			if (event_is_open) {
-				p_btn_sess_open.style.background = '#66f466';
-				p_btn_sess_new.style.background = '#66f466';
-				p_btn_sess_close.style.background = '#f46666';
+				p_btn_sess_open.style.background = col_btn_active;
+				p_btn_sess_new.style.background = col_btn_active;
+				p_btn_sess_close.style.background = col_btn_inactive;
 			} else {
-				p_btn_sess_open.style.background = '#f46666';
-				p_btn_sess_new.style.background = '#f46666';
-				p_btn_sess_close.style.background = '#f46666';
+				p_btn_sess_open.style.background = col_btn_inactive;
+				p_btn_sess_new.style.background = col_btn_inactive;
+				p_btn_sess_close.style.background = col_btn_inactive;
 			}
 		}
 		
