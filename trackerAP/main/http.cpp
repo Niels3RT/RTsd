@@ -647,8 +647,17 @@ void oo_HTTP::parse_ex(char *tbuf) {
 	}
 	// --- send valid exceptions array to fpga
 	rt.pd_set_exceptions();
-	// --- increment mod counter
+	// --- increment exception mod counter
 	rt.ex_mod_cnt++;
+	// --- handle heat state
+	if (heat.is_open) {
+		printf("Exception, Heat is open!\r\n");
+		if (rt.state == 3) {
+			printf("Exception, rt.state is 3\r\n");
+			rt.state = 2;
+			rt.set_state();
+		}
+	}
 }
 
 // ****** http server task

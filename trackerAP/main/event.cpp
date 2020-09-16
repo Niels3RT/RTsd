@@ -138,9 +138,9 @@ void oo_Event::open(uint8_t nr) {
 									strncpy(sessions[sessions_cnt].name, sd.cfg_value, 40);
 								}
 							} while(sd.cfg_parm[0] != 0xff);
+							sd.cfg_file_close();
 						}
 						printf("\r\nSession '%d' '%s' mode '%d'\r\n", sessions[sessions_cnt].nr, sessions[sessions_cnt].name, sessions[sessions_cnt].mode);
-						sd.cfg_file_close();
 						sessions_cnt++;
 					}
 					sd.dir_get_entry();
@@ -350,14 +350,16 @@ void oo_Event::collect_results(void) {
 			// - open file
 			sprintf(ctmp, "%s/session%d/pilots.csv", event.name, s);
 			sd.data_file_open(ctmp, "r");
-			// - read by line
-			while (sd.data_file_getline_csv()) {
-				fastest_laps[(sd.csv_array[0]*4)+sd.csv_array[1]].pilot_nr = sd.csv_array[2];
-				quali_time[(sd.csv_array[0]*4)+sd.csv_array[1]].pilot_nr = sd.csv_array[2];
-				pcount++;
+			if (sd.data_file != NULL) {
+				// - read by line
+				while (sd.data_file_getline_csv()) {
+					fastest_laps[(sd.csv_array[0]*4)+sd.csv_array[1]].pilot_nr = sd.csv_array[2];
+					quali_time[(sd.csv_array[0]*4)+sd.csv_array[1]].pilot_nr = sd.csv_array[2];
+					pcount++;
+				}
+				// - close session pilots data file
+				sd.data_file_close();
 			}
-			// - close session pilots data file
-			sd.data_file_close();
 			// -- fetch results for pilots
 			// - open file
 			sprintf(ctmp, "%s/session%d/results.csv", event.name, s);

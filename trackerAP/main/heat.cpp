@@ -55,14 +55,20 @@ void oo_Heat::open(void) {
 			rtspi.transmit24(RT_REG2SDRAM, sd.csv_array[0], 0);		// set sdram address (rssi block nr)
 			//printf("%08x;%03x;%03x;%03x;%03x\r\n", sd.csv_array[0], sd.csv_array[1], sd.csv_array[2], sd.csv_array[3], sd.csv_array[4]);
 		}
+		// -- close data file
+		sd.data_file_close();
 	}
 	// -- set rt state to current heat state
 	rt.state = current.state;
 	rt.set_state();
 	// -- set rt count to max from rssi file
 	rt.set_count();
-	// -- close data file
-	sd.data_file_close();
+	
+	// --- load exceptions
+	load_exceptions();
+	
+	// --- write excceptions to rt
+	rt.pd_set_exceptions();
 	
 	// --- remove in progress flag
 	op_in_progress = 2;
@@ -108,7 +114,7 @@ void oo_Heat::commit(void) {
 	// --- save results
 	sprintf(ctmp, "%s/session%d/run%d/results.csv", event.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "w");
-	if (sd.cfg_file != NULL) {
+	if (sd.data_file != NULL) {
 		printf("csv file opened for writing '%s'\r\n", ctmp);
 		// -- trigger levels
 		sprintf(sd.data_line, "0;%04x;%04x;%04x;%04x;\r\n", rt.trg_level[0], rt.trg_level[1], rt.trg_level[2], rt.trg_level[3]);
@@ -143,7 +149,7 @@ void oo_Heat::commit(void) {
 	uint16_t rtmp3 = 0;
 	sprintf(ctmp, "%s/session%d/run%d/rssi.csv", event.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "w");
-	if (sd.cfg_file != NULL) {
+	if (sd.data_file != NULL) {
 		printf("csv file opened for writing '%s'\r\n", ctmp);
 		for (uint16_t i=0;i<rt.count;i++) {
 			// -- read line (4 words a 16bits) of rssi from sdram
@@ -180,6 +186,7 @@ void oo_Heat::commit(void) {
 	}
 	
 	// --- save exceptions
+	save_exceptions();
 	
 	// --- save session results
 	sprintf(ctmp, "%s/session%d/results.csv", event.name, session.nr);
@@ -212,6 +219,50 @@ void oo_Heat::commit(void) {
 	op_in_progress = 2;
 	
 	printf("Commit HeatNr '%d'\r\n", current.nr);
+}
+
+// ****** save exception
+void oo_Heat::save_exceptions(void) {
+	char ctmp[256];
+	// --- open exception data file for writing
+	sprintf(ctmp, "%s/session%d/run%d/except.csv", event.name, session.nr, current.nr);
+	sd.data_file_open(ctmp, "w");
+	if (sd.data_file != NULL) {
+		// -- walk through channels
+		for (uint8_t i=0;i<4;i++) {
+			// - walk through exceptions
+			for (uint8_t e=0;e<rt.excount[i];e++) {
+				sprintf(sd.data_line, "%x;%08x;\r\n", i, rt.exceptions[i][e]);
+				sd.data_file_writeline();
+			}
+		}
+		// -- close data file
+		sd.data_file_close();
+	}
+}
+
+// ****** load exception
+void oo_Heat::load_exceptions(void) {
+	char ctmp[256];
+	// --- open exception data file for writing
+	sprintf(ctmp, "%s/session%d/run%d/except.csv", event.name, session.nr, current.nr);
+	sd.data_file_open(ctmp, "r");
+	rt.excount[0] = 0;
+	rt.excount[1] = 0;
+	rt.excount[2] = 0;
+	rt.excount[3] = 0;
+	if (sd.data_file != NULL) {
+		// -- walk through lines in file
+		while(sd.data_file_getline_csv()) {
+			rt.exceptions[sd.csv_array[0]][rt.excount[sd.csv_array[0]]] = sd.csv_array[1];
+			printf("chn '%x' cnt '%x' exception '%08x'\r\n", sd.csv_array[0], rt.excount[sd.csv_array[0]], rt.exceptions[sd.csv_array[0]][rt.excount[sd.csv_array[0]]]);
+			rt.excount[sd.csv_array[0]]++;
+		}
+		// -- close data file
+		sd.data_file_close();
+	}
+	// --- increment exception mod counter
+	rt.ex_mod_cnt++;
 }
 
 // ****** calc laps from hits

@@ -24,6 +24,8 @@ class oo_Heat {
 		void open(void);
 		void clear(void);
 		void commit(void);
+		void save_exceptions(void);
+		void load_exceptions(void);
 		void calc_laps(void);
 		void calc_position(void);
 		void calc_fastest_laps(void);

@@ -144,17 +144,19 @@ void oo_Session::create_new(uint8_t sess_mode, uint8_t gen_mode) {
 	sprintf(ctmp, "%s/session%d/state.csv", event.name, event.sessions_cnt);
 	printf("%s\r\n", ctmp);
 	sd.data_file_open(ctmp, "w");
-	// -- write state lines
-	printf("Session create new hcount '%d'\r\n", hcount);
-	for(uint8_t i=0;i<hcount;i++) {
-		for(uint8_t c=0;c<4;c++) {
-			sprintf(sd.data_line, "%x;0;%x;0;\r\n", i, c);
-			printf("%s", sd.data_line);
-			sd.data_file_writeline();
+	if (sd.data_file != NULL) {
+		// -- write state lines
+		printf("Session create new hcount '%d'\r\n", hcount);
+		for(uint8_t i=0;i<hcount;i++) {
+			for(uint8_t c=0;c<4;c++) {
+				sprintf(sd.data_line, "%x;0;%x;0;\r\n", i, c);
+				printf("%s", sd.data_line);
+				sd.data_file_writeline();
+			}
 		}
+		// -- close file
+		sd.data_file_close();
 	}
-	// -- close file
-	sd.data_file_close();
 	
 	// --- create session results
 	// -- create file
