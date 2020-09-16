@@ -5,27 +5,17 @@ void oo_Event::init(void) {
 	// --- write to log
 	ESP_LOGI(TAG, "init event");
 	
-	// --- some vars to default
-	// -- event
-	nr = 1;
-	sprintf(name, "---");
-	// -- empty event
+	// --- empty event
 	event_empty.quali_mode = 0;
 	event_empty.quali_laps = 3;
 	event_empty.quali_otime = 120;
 	event_empty.race_mode = 0;
 	event_empty.race_laps = 3;
-	current = event_empty;
-	// -- empty result
+	// --- empty result
 	result_empty.pilot_nr = 0xffff;
 	result_empty.laps = 0;
 	result_empty.time = 0xffffffff;
-	cnt_sess_type[0] = 0;
-	cnt_sess_type[1] = 0;
-	cnt_sess_type[2] = 0;
-	clear_results();
-	// -- pilots
-	pilots_cnt = 0;
+	// --- default pilots
 	pilots_all_cnt = 4;
 	pilots_data[0].nr = 0;
 	strcpy(pilots_data[0].name, DEFAULT_PILOT_1);
@@ -35,13 +25,34 @@ void oo_Event::init(void) {
 	strcpy(pilots_data[2].name, DEFAULT_PILOT_3);
 	pilots_data[3].nr = 3;
 	strcpy(pilots_data[3].name, DEFAULT_PILOT_4);
+	// -- some vars
 	is_open = false;
 	mod_cnt = 0;
-	// -- sessions
-	sessions_cnt = 0;
+	
+	// --- clear event
+	clear();
 	
 	// --- read pilots from csv
 	read_pilots();
+}
+
+// ****** clear event
+void oo_Event::clear() {
+	// --- empty event
+	current = event_empty;
+	// --- session counts
+	cnt_sess_type[0] = 0;
+	cnt_sess_type[1] = 0;
+	cnt_sess_type[2] = 0;
+	// --- results
+	clear_results();
+	// --- pilot count
+	pilots_cnt = 0;
+	// --- session count
+	sessions_cnt = 0;
+	// --- event
+	nr = 1;
+	sprintf(name, "---");
 }
 
 // ****** open event
@@ -201,7 +212,9 @@ void oo_Event::open(uint8_t nr) {
 // ****** close event
 void oo_Event::close(void) {
 	is_open = false;
-	clear_results();
+	// --- clear event
+	clear();
+	// --- increment mod counters
 	mod_cnt++;
 	session.mod_cnt++;
 	heat.mod_cnt++;

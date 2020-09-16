@@ -5,17 +5,30 @@ void oo_Session::init(void) {
 	// --- write to log
 	ESP_LOGI(TAG, "init session");
 	
-	// --- some vars to default
-	// -- session
-	nr = 0;
+	// --- clear
+	clear();
+	
+	// --- session
 	mode = 0;
-	sprintf(name, "   ");
-	heat_cnt = 0;
 	for (uint8_t i=0;i<4;i++) {
 		st_heat_empty.pilots_nr[i] = 0xffff;
 	}
 	is_open = false;
 	mod_cnt = 0;
+}
+
+// ****** clear Session
+void oo_Session::clear(void) {
+	// --- session
+	sprintf(name, "   ");
+	heat_cnt = 0;
+	nr = 0;
+	// --- heats
+	for (uint8_t i=0;i<16;i++) {
+		heats[i] = st_heat_empty;
+	}
+	// --- handle mod counter
+	mod_cnt++;
 }
 
 // ****** open Session
@@ -239,13 +252,9 @@ void oo_Session::close(void) {
 	// --- close
 	is_open = false;
 	heat.is_open = false;
-	// --- handle mod counter
-	mod_cnt++;
 	// --- clear session
-	heat_cnt = 0;
-	for (uint8_t i=0;i<16;i++) {
-		heats[i] = st_heat_empty;
-	}
+	clear();
+	// --- clear heat
 	heat.clear();
 }
 

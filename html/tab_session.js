@@ -5,6 +5,7 @@
 	// ****** init session tab
 	function init_tab_session() {
 		// --- buttons
+		p_btn_sess_list_up.style.color = '#000000';
 		p_btn_sess_list_up.onclick = function() {
 			if (chk_btn_active(p_btn_sess_list_up)) {
 				if (sessions_list_offset > 0) {
@@ -13,6 +14,7 @@
 				draw_tab_sessions();
 			}
 		}
+		p_btn_sess_list_down.style.color = '#000000';
 		p_btn_sess_list_down.onclick = function() {
 			if (chk_btn_active(p_btn_sess_list_down)) {
 				if (sessions_list_offset < (sessions_count - 4)) {
@@ -106,20 +108,28 @@
 				p_btn_sess_open.style.background = col_btn_inactive;
 				p_btn_sess_new.style.background = col_btn_inactive;
 				p_btn_sess_close.style.background = col_btn_inactive;
+				p_btn_sess_list_up.style.background = col_btn_inactive;
+				p_btn_sess_list_down.style.background = col_btn_inactive;
 			} else {
 				p_btn_sess_open.style.background = col_btn_inactive;
 				p_btn_sess_new.style.background = col_btn_inactive;
 				p_btn_sess_close.style.background = col_btn_active;
+				p_btn_sess_list_up.style.background = col_btn_inactive;
+				p_btn_sess_list_down.style.background = col_btn_inactive;
 			}
 		} else {
 			if (event_is_open) {
 				p_btn_sess_open.style.background = col_btn_active;
 				p_btn_sess_new.style.background = col_btn_active;
 				p_btn_sess_close.style.background = col_btn_inactive;
+				p_btn_sess_list_up.style.background = col_btn_active;
+				p_btn_sess_list_down.style.background = col_btn_active;
 			} else {
 				p_btn_sess_open.style.background = col_btn_inactive;
 				p_btn_sess_new.style.background = col_btn_inactive;
 				p_btn_sess_close.style.background = col_btn_inactive;
+				p_btn_sess_list_up.style.background = col_btn_inactive;
+				p_btn_sess_list_down.style.background = col_btn_inactive;
 			}
 		}
 		

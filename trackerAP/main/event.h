@@ -29,6 +29,7 @@ class oo_Event {
 	// -- functions
 	public:
 		void init(void);
+		void clear();
 		void open(uint8_t nr);
 		void close(void);
 		void create_new(st_event * evtmp);

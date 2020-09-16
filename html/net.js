@@ -894,7 +894,11 @@
 									// --- fastest laps
 									if ((LFields.length == 4) && (parseInt(LFields[0], 16)) == 0) {
 										event_fastest_laps_pilotnr[event_fastest_laps_cnt] = parseInt(LFields[1], 16);
-										event_fastest_laps[event_fastest_laps_cnt] = parseInt(LFields[2], 16)/1000;
+										if (LFields[2] != "ffffffff") {
+											event_fastest_laps[event_fastest_laps_cnt] = parseInt(LFields[2], 16)/1000;
+										} else {
+											event_fastest_laps[event_fastest_laps_cnt] = parseInt(LFields[2], 16);
+										}
 										event_fastest_laps_cnt++;
 									}
 									// --- quali line

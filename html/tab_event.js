@@ -5,13 +5,15 @@
 	// ****** init event tab
 	function init_tab_event() {
 		// --- buttons
-		document.getElementById("btn_event_list_up").onclick = function() {
+		p_event_btn_list_up.style.color = '#000000';
+		p_event_btn_list_up.onclick = function() {
 			if (events_list_offset > 0) {
 				events_list_offset--;
 			}
 			draw_tab_event();
 		}
-		document.getElementById("btn_event_list_down").onclick = function() {
+		p_event_btn_list_down.style.color = '#000000';
+		p_event_btn_list_down.onclick = function() {
 			if (events_list_offset < (events_count - 4)) {
 				events_list_offset++;
 			}
@@ -179,12 +181,16 @@
 				p_event_btn_new.style.background = col_btn_inactive;
 				p_event_btn_close.style.background = col_btn_inactive;
 				p_event_btn_mod.style.background = col_btn_inactive;
+				p_event_btn_list_up.style.background = col_btn_active;
+				p_event_btn_list_down.style.background = col_btn_active;
 				allow_pedit = false;
 			} else {
 				p_event_btn_open.style.background = col_btn_inactive;
 				p_event_btn_new.style.background = col_btn_inactive;
 				p_event_btn_close.style.background = col_btn_active;
 				p_event_btn_mod.style.background = col_btn_active;
+				p_event_btn_list_up.style.background = col_btn_active;
+				p_event_btn_list_down.style.background = col_btn_active;
 				allow_pedit = true;
 			}
 		} else {
@@ -192,6 +198,8 @@
 			p_event_btn_new.style.background = col_btn_active;
 			p_event_btn_close.style.background = col_btn_inactive;
 			p_event_btn_mod.style.background = col_btn_inactive;
+			p_event_btn_list_up.style.background = col_btn_active;
+			p_event_btn_list_down.style.background = col_btn_active;
 			allow_pedit = false;
 		}
 		event_enable_pilot_edit();
@@ -242,28 +250,40 @@
 			case 0:
 				for (var p = 0; p < event_fastest_laps_cnt; p++) {
 					ctmp++;
-					// --- table column 0
+					// - table column 0
 					document.getElementById("id_event_res_table_t" + p + "-0").textContent = ctmp;
-					// --- table column 1
+					// - table column 1
 					document.getElementById("id_event_res_table_t" + p + "-1").textContent = pilots_names[event_fastest_laps_pilotnr[p]];
-					// --- table column 2
+					// - table column 2
 					document.getElementById("id_event_res_table_t" + p + "-2").textContent = "";
-					// --- table column 3
-					document.getElementById("id_event_res_table_t" + p + "-3").textContent = laptime2string(event_fastest_laps[p]);
+					// - table column 3
+					if (event_fastest_laps[p] != 0xffffffff) {
+						document.getElementById("id_event_res_table_t" + p + "-3").textContent = laptime2string(event_fastest_laps[p]);
+					} else {
+						document.getElementById("id_event_res_table_t" + p + "-3").textContent = "-:--.---";
+					}
 				}
 				break;
 			// -- quali results
 			case 1:
 				for (var p = 0; p < event_quali_cnt; p++) {
 					ctmp++;
-					// --- table column 0
+					// - table column 0
 					document.getElementById("id_event_res_table_t" + p + "-0").textContent = ctmp;
-					// --- table column 1
+					// - table column 1
 					document.getElementById("id_event_res_table_t" + p + "-1").textContent = pilots_names[event_quali_pilotnr[p]];
-					// --- table column 2
-					document.getElementById("id_event_res_table_t" + p + "-2").textContent = event_quali_laps[p];
-					// --- table column 3
-					document.getElementById("id_event_res_table_t" + p + "-3").textContent = laptime2string(event_quali_time[p]);
+					// - valid quali result?
+					if (event_quali_laps[p] != 0) {
+						// - table column 2
+						document.getElementById("id_event_res_table_t" + p + "-2").textContent = event_quali_laps[p];
+						// - table column 3
+						document.getElementById("id_event_res_table_t" + p + "-3").textContent = laptime2string(event_quali_time[p]);
+					} else {
+						// - table column 2
+						document.getElementById("id_event_res_table_t" + p + "-2").textContent = "-";
+						// - table column 3
+						document.getElementById("id_event_res_table_t" + p + "-3").textContent = "-:--.---";
+					}
 				}
 				break;
 		}

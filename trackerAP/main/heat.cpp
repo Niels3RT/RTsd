@@ -79,7 +79,6 @@ void oo_Heat::open(void) {
 		// -- close data file
 		sd.data_file_close();
 	} else {
-		printf("trigger lvl failed to open results.txt\r\n");
 		// -- set trigger levels to default and write to rt
 		rt.pd_set_tlevel(0, rt.det_auto_min);
 		rt.pd_set_tlevel(1, rt.det_auto_min);
@@ -96,9 +95,6 @@ void oo_Heat::open(void) {
 	load_exceptions();
 	
 	// --- start peak detect in rt
-	//printf("trigger lvl from results.txt '%03x' '%03x' '%03x' '%03x'\r\n", rt.trg_level[0], rt.trg_level[1], rt.trg_level[2], rt.trg_level[3]);
-	//rt.pd_get_tlevels();
-	//printf("trigger lvl from rt '%03x' '%03x' '%03x' '%03x'\r\n", rt.trg_level[0], rt.trg_level[1], rt.trg_level[2], rt.trg_level[3]);
 	rt.pd_start();
 	
 	// --- remove in progress flag
