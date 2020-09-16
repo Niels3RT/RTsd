@@ -277,6 +277,16 @@ void oo_HTTP::reply_tlevel(char *tbuf_rx, char *tbuf_tx) {
 	// --- write response
 	strcat(tbuf_tx, "level_set ");
 	http.reply_done(tbuf_tx + strlen(tbuf_tx));
+	
+	// --- handle heat state
+	if (heat.is_open) {
+		printf("Set trigger levels, Heat is open!\r\n");
+		if (rt.state == 3) {
+			printf("Set trigger levels, rt.state is 3\r\n");
+			rt.state = 2;
+			rt.set_state();
+		}
+	}
 }
 
 // ****** get min max for calibration
@@ -645,7 +655,7 @@ void oo_HTTP::parse_ex(char *tbuf) {
 		//if (utmp < 32) rt.exceptions[utmp][rt.excount[utmp]] = 0x00ffffff;
 		tbuf = strstr(tbuf, "\r\n") + 2;
 	}
-	// --- send valid exceptions array to fpga
+	// --- send exceptions array to fpga
 	rt.pd_set_exceptions();
 	// --- increment exception mod counter
 	rt.ex_mod_cnt++;

@@ -232,7 +232,7 @@ void oo_RT::pd_set_auto_min(void) {
 
 // ****** set peak detect fixed trigger level mode
 void oo_RT::pd_set_fixed_mode(uint8_t mode) {
-	// --- set mode bit0 chn0,...   , 0 means auto, 1 is fixed trigger level mode
+	// --- set mode bit0 chn0,...   , 0 means auto, 1 is fixed trigger level mode, per channel, 0x0f for all fixed
 	rtspi.transmit8(RT_PD_DET_FIXED, mode);
 	
 	printf("tm %02x %01x\r\n", RT_PD_DET_FIXED, mode);

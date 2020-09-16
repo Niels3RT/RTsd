@@ -58,14 +58,48 @@ void oo_Heat::open(void) {
 		// -- close data file
 		sd.data_file_close();
 	}
-	// -- set rt state to current heat state
+	// --- read trigger levels from results data file
+	sprintf(ctmp, "%s/session%d/run%d/results.csv", event.name, session.nr, current.nr);
+	sd.data_file_open(ctmp, "r");
+	if (sd.data_file != NULL) {
+		// -- walk through lines in file
+		while(sd.data_file_getline_csv()) {
+			//- find line with trigger levels
+			if (sd.csv_array[0] == 0) {
+				while(!rt.pd_isready());
+				// set trigger level mode to fixed
+				rt.pd_set_fixed_mode(0x0f);
+				// write trigger levels to rt
+				rt.pd_set_tlevel(0, sd.csv_array[1]);
+				rt.pd_set_tlevel(1, sd.csv_array[2]);
+				rt.pd_set_tlevel(2, sd.csv_array[3]);
+				rt.pd_set_tlevel(3, sd.csv_array[4]);
+			}
+		}
+		// -- close data file
+		sd.data_file_close();
+	} else {
+		printf("trigger lvl failed to open results.txt\r\n");
+		// -- set trigger levels to default and write to rt
+		rt.pd_set_tlevel(0, rt.det_auto_min);
+		rt.pd_set_tlevel(1, rt.det_auto_min);
+		rt.pd_set_tlevel(2, rt.det_auto_min);
+		rt.pd_set_tlevel(3, rt.det_auto_min);
+	}
+	// --- set rt state to current heat state
 	rt.state = current.state;
 	rt.set_state();
-	// -- set rt count to max from rssi file
+	// --- set rt count to max from rssi file
 	rt.set_count();
 	
 	// --- load exceptions
 	load_exceptions();
+	
+	// --- start peak detect in rt
+	//printf("trigger lvl from results.txt '%03x' '%03x' '%03x' '%03x'\r\n", rt.trg_level[0], rt.trg_level[1], rt.trg_level[2], rt.trg_level[3]);
+	//rt.pd_get_tlevels();
+	//printf("trigger lvl from rt '%03x' '%03x' '%03x' '%03x'\r\n", rt.trg_level[0], rt.trg_level[1], rt.trg_level[2], rt.trg_level[3]);
+	rt.pd_start();
 	
 	// --- remove in progress flag
 	op_in_progress = 2;
