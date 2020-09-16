@@ -424,6 +424,7 @@
 											LFields = Lines[i].split(';');
 											if (LFields.length == 2) {
 												ex_mod_cnt = parseInt(LFields[0], 16);
+												ex_mod_cnt_new = ex_mod_cnt;
 												//window.alert("ex mod cnt " + ex_mod_cnt);
 											}
 										}

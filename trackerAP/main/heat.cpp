@@ -67,9 +67,6 @@ void oo_Heat::open(void) {
 	// --- load exceptions
 	load_exceptions();
 	
-	// --- write excceptions to rt
-	rt.pd_set_exceptions();
-	
 	// --- remove in progress flag
 	op_in_progress = 2;
 }
@@ -261,6 +258,8 @@ void oo_Heat::load_exceptions(void) {
 		// -- close data file
 		sd.data_file_close();
 	}
+	// --- write excceptions to rt
+	rt.pd_set_exceptions();
 	// --- increment exception mod counter
 	rt.ex_mod_cnt++;
 }

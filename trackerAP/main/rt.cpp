@@ -14,6 +14,7 @@ void oo_RT::init(void) {
 		rssi_max[i] = 0;
 		hitcount[i] = 0;
 	}
+	ex_mod_cnt = 0;
 	
 	// --- tune rxes
 	tune_rx_all();
@@ -83,7 +84,7 @@ void oo_RT::clear(bool keep_pilots) {
 		rssi_max[i]  = 0;
 		hitcount[i]  = 0;
 	}
-	ex_mod_cnt = 0;
+	//ex_mod_cnt = 0;
 	// --- clear current heat
 	uint8_t nrtmp = heat.current.nr;
 	if (keep_pilots) {
