@@ -170,6 +170,9 @@
 		</div>
 		<div id="div_event_pilots">
 			<div id="canvas_pilots_event"></div>
+			<div id="div_event_edit_spaceholder">
+				
+			</div>
 			<div id="div_event_edit_btns">
 				<button id="btn_event_edit" class="cls_event_btn_small">e</button>
 				<button id="btn_event_toleft" class="cls_event_btn_small"><<</button>
@@ -189,6 +192,7 @@
 	batch_cnt_top = 6;
 	do_rssi = false;
 	
+	// --- status bar and tab select buttons
 	var p_div_header		  = document.getElementById('div_header');
 	var p_div_header_l		  = document.getElementById('div_header_l');
 	var p_div_header_m		  = document.getElementById('div_header_m');
@@ -203,9 +207,16 @@
 	var p_div_tab_btn_session = document.getElementById("div_tab_btn_session");
 	var p_div_tab_btn_event	  = document.getElementById("div_tab_btn_event");
 	
+	// --- bottom buttons
 	var p_btn_back            = document.getElementById("btn_back");
 	var p_btn_clr             = document.getElementById("btn_clr");
 	var p_btn_next            = document.getElementById("btn_next");
+	
+	// --- event
+	var p_div_event_open      = document.getElementById("div_event_open");
+	var p_div_event_new       = document.getElementById("div_event_new");
+	var p_div_event_mod       = document.getElementById("div_event_mod");
+	var p_div_event_main      = document.getElementById("div_event_main");
 	
 	var p_event_btn_open      = document.getElementById("btn_event_open");
 	var p_event_btn_close     = document.getElementById("btn_event_close");
@@ -214,12 +225,15 @@
 	var p_event_btn_list_up   = document.getElementById("btn_event_list_up");
 	var p_event_btn_list_down = document.getElementById("btn_event_list_down");
 	
+	var p_txt_event_new_name  = document.getElementById("txt_event_new_name");
+	
 	var p_event_btn_pedit_edit    = document.getElementById("btn_event_edit");
 	var p_event_btn_pedit_toleft  = document.getElementById("btn_event_toleft");
 	var p_event_btn_pedit_pup     = document.getElementById("btn_event_pup");
 	var p_event_btn_pedit_pdown   = document.getElementById("btn_event_pdown");
 	var p_event_btn_pedit_toright = document.getElementById("btn_event_toright");
 	
+	// --- session
 	var p_btn_sess_open       = document.getElementById("btn_sess_open");
 	var p_btn_sess_close      = document.getElementById("btn_sess_close");
 	var p_btn_sess_new        = document.getElementById("btn_sess_new");
@@ -295,8 +309,8 @@
 		// --- handle tabs
 		handle_tab();
 		
-		// --- handle layout
-		handle_size_main();
+		// --- handle window resize
+		window.addEventListener("resize", function() { handle_layout_main() }, false);
 	}
 	
 	// -------------------------------------------------------------------------------------------------------------------------
@@ -327,7 +341,7 @@
 	}
 	
 	// ****** handle layout when resizing
-	function handle_size_main() {
+	function handle_layout_main() {
 		// --- get window size
 		win_size_x = window.innerWidth;
 		win_size_y = window.innerHeight;
@@ -349,6 +363,12 @@
 		p_div_header_m.style.marginTop = (font_size_main * 0.15) + "px";
 		p_div_header_r.style.marginTop = (font_size_main * 0.15) + "px";
 		//window.alert("Window size '" + win_size_x + "' x '" + win_size_y + "'");
+		
+		// --- handle session tab layout
+		handle_layout_session();
+		
+		// --- handle event tab layout
+		handle_layout_event();
 	}
 	
 	// -------------------------------------------------------------------------------------------------------------------------
@@ -392,15 +412,11 @@
 	
 	// ****** some dummies...
 	function update_sys() {}
-	//function switch_state(state_target) {}
 	function translate_rssi() {}
 	function draw_rssi() {}
 	
 	// --- init page on loaad
 	window.onload=init;
-	
-	// --- handle window resize
-	window.onresize=handle_size_main;
 	-->
 </script>
 

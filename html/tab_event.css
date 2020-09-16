@@ -11,7 +11,7 @@ div#div_event_top {
 
 div#div_event_open {
 	float:				left;
-	width:				30%;
+	width:				40%;
 	border:				1px solid #003300;
 }
 
@@ -92,9 +92,16 @@ div#canvas_pilots_event {
 	border:				1px solid #003300;
 }
 
+div#div_event_edit_spaceholder {
+	float:				left;
+	width:				5%;
+	height:				600px;
+	border:				1px solid #003300;
+}
+
 div#div_event_edit_btns {
 	float:				left;
-	width:				10%;
+	width:				36px;
 	height:				600px;
 	border:				1px solid #003300;
 }
@@ -123,6 +130,7 @@ div#canvas_pilots_all {
 .cls_event_list_table_tdr {
 	height:				20px;
 	width:				98%;
+	text-align:			left;
 	margin:				0px;
 	border:				1px solid #003300;
 	border-collapse:	collapse;

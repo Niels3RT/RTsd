@@ -89,9 +89,8 @@
 			}
 		}
 		
-		// --- handle session tables
-		//window_resize();
-		//window.dispatchEvent(new Event('resize'));
+		// --- handle session tables layout
+		handle_layout_main();
 	}
 	
 	// ****** redraw tables n stuff on sessions tab
@@ -179,8 +178,62 @@
 		}
 	}
 
-	// ****** handle session window size stuff
-	function handle_size_session() {
+	// ****** handle session window layout stuff
+	function handle_layout_session() {
+		var divsizeX = document.getElementById('div_sess_results').offsetWidth;
+		var new_sizeX_table = (divsizeX / 4);
+		var max_sizeX_table = 500;
+		var min_sizeX_table = 250;
+		var table_col_cnt = Math.floor(divsizeX / 4);
+		var font_size = 1.8 + "vh";
 		
+		// --- keep the size real
+		if (new_sizeX_table > max_sizeX_table) new_sizeX_table = max_sizeX_table;
+		if (new_sizeX_table < min_sizeX_table) new_sizeX_table = min_sizeX_table;
+		
+		// --- make new size really fit
+		table_col_cnt = Math.floor(divsizeX / new_sizeX_table);
+		new_sizeX_table = divsizeX / table_col_cnt;
+		new_sizeX_table = new_sizeX_table - 8;
+		
+		// --- font size
+		font_size = (new_sizeX_table * 0.06) + "px";
+		cell_height = (new_sizeX_table * 0.09) + "px";
+		
+		// --- single table div width
+		var divs = document.getElementsByClassName("cls_sess_res_table_div");
+		for (var i = 0; i < divs.length; i++) {
+			divs[i].style.width = new_sizeX_table + "px";
+		}
+		// --- table top
+		var tab_col_top = document.getElementsByClassName("cls_sess_res_table_top_t");
+		for (i = 0; i < tab_col_top.length; i++) {
+			tab_col_top[i].style.width = new_sizeX_table + "px";
+			tab_col_top[i].style.height = cell_height;
+			tab_col_top[i].style.fontSize = font_size;
+			tab_col_top[i].style.textAlign = "left";
+		}
+		// --- table column 0
+		var tab_col_0 = document.getElementsByClassName("cls_sess_res_table_t0");
+		for (i = 0; i < tab_col_0.length; i++) {
+			tab_col_0[i].style.width = (new_sizeX_table * 0.60) + "px";
+			tab_col_0[i].style.height = cell_height;
+			tab_col_0[i].style.fontSize = font_size;
+			tab_col_0[i].style.textAlign = "left";
+		}
+		// --- table column 1
+		var tab_col_1 = document.getElementsByClassName("cls_sess_res_table_t1");
+		for (i = 0; i < tab_col_1.length; i++) {
+			tab_col_1[i].style.width = (new_sizeX_table * 0.1) + "px";
+			tab_col_1[i].style.fontSize = font_size;
+			tab_col_1[i].style.textAlign = "center";
+		}
+		// --- table column 2
+		var tab_col_2 = document.getElementsByClassName("cls_sess_res_table_t2");
+		for (i = 0; i < tab_col_2.length; i++) {
+			tab_col_2[i].style.width = (new_sizeX_table * 0.30) + "px";
+			tab_col_2[i].style.fontSize = font_size;
+			tab_col_2[i].style.textAlign = "right";
+		}
 	}
 	

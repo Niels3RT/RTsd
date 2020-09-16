@@ -452,3 +452,22 @@
 		}
 	}
 	
+	// ****** handle layout when resizing
+	function handle_layout_event() {
+		// --- event open div
+		p_div_event_open.style.fontSize = (font_size_main * 0.6) + "px";
+		
+		// --- event new div
+		p_div_event_new.style.fontSize = (font_size_main * 0.6) + "px";
+		p_txt_event_new_name.style.fontSize = (font_size_main * 0.6) + "px";
+		p_txt_event_new_name.style.marginTop = (font_size_main * 0.15) + "px";
+		//p_txt_event_new_name.style.width = (font_size_main * 6) + "px";
+		p_txt_event_new_name.style.width = "50%";
+		
+		// --- event mod div
+		p_div_event_mod.style.fontSize = (font_size_main * 0.6) + "px";
+		
+		// --- event main div
+		p_div_event_main.style.fontSize = (font_size_main * 0.6) + "px";
+	}
+	
