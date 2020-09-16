@@ -20,6 +20,26 @@ div#div_event_open {
 	margin-top:			8px;
 }
 
+#btn_event_close {
+	float:				right;
+	margin-top:			8px;
+}
+
+#div_event_list_updown  {
+	float:				left;
+	margin-left:		8px;
+}
+
+#btn_event_list_up {
+	float:				none;
+	margin-top:			12px;
+}
+
+#btn_event_list_down {
+	float:				none;
+	margin-top:			12px;
+}
+
 div#div_event_new {
 	float:				right;
 	width:				40%;

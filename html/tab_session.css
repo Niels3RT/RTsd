@@ -11,14 +11,33 @@ div#div_sess_top {
 
 div#div_sess_open {
 	float:				left;
-	width:				40%;
-	margin-right:		2vw;
-	margin-bottom:		1vh;
+	width:				30%;
+	border:				1px solid #003300;
 }
 
 #btn_sess_open {
 	float:				left;
 	margin-top:			8px;
+}
+
+#btn_sess_close {
+	float:				right;
+	margin-top:			8px;
+}
+
+#div_sess_list_updown  {
+	float:				left;
+	margin-left:		8px;
+}
+
+#btn_sess_list_up {
+	float:				none;
+	margin-top:			12px;
+}
+
+#btn_sess_list_down {
+	float:				none;
+	margin-top:			12px;
 }
 
 div#div_sess_new {
