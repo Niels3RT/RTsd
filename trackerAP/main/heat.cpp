@@ -133,8 +133,6 @@ void oo_Heat::commit(void) {
 		}
 		// -- close data file
 		sd.data_file_close();
-	} else {
-		printf("error opening csv file for writing '%s'\r\n", ctmp);
 	}
 	printf("2 current.state '%x'\r\n", current.state);
 	// --- save rssi

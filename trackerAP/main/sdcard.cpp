@@ -52,7 +52,7 @@ void oo_SD::cfg_file_open(char *tbuf, char const * rw) {
 
 	// --- ok?
 	if (cfg_file == NULL) {
-		ESP_LOGE(TAG, "Failed to open config file '%s'", path);
+		ESP_LOGE(TAG, "Failed to open config file '%s' '%c'", path, *rw);
 	}
 }
 
@@ -67,7 +67,7 @@ void oo_SD::data_file_open(const char *tbuf, char const * rw) {
 	
 	// --- ok?
 	if (data_file == NULL) {
-		ESP_LOGE(TAG, "Failed to open data file '%s'", path);
+		ESP_LOGE(TAG, "Failed to open data file '%s' '%c'", path, *rw);
 	}
 }
 

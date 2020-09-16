@@ -68,7 +68,7 @@ void oo_Session::open(uint8_t snr) {
 	sprintf(ctmp, "%s/session%d/results.csv", event.name, nr);
 	sd.data_file_open(ctmp, "r");
 	if (sd.data_file != NULL) {
-	printf("csv file opened for reading '%s'\r\n", ctmp);
+		printf("csv file opened for reading '%s'\r\n", ctmp);
 		while (sd.data_file_getline_csv()) {
 			session.heats[sd.csv_array[0]].nr = sd.csv_array[0];
 			session.heats[sd.csv_array[0]].lapcount[sd.csv_array[1]] = sd.csv_array[2];
@@ -81,8 +81,6 @@ void oo_Session::open(uint8_t snr) {
 																		session.heats[sd.csv_array[0]].fastest_laps_time[sd.csv_array[1]]);
 		}
 		sd.data_file_close();
-	} else {
-		printf("error opening csv file for reading '%s'\r\n", ctmp);
 	}
 		//for(uint8_t h=0;h<heat_cnt;h++) {
 		//	session.heats[h].nr = h;
@@ -110,31 +108,33 @@ void oo_Session::create_new(uint8_t sess_mode, uint8_t gen_mode) {
 	// -- create file
 	sprintf(ctmp, "/data/%s/session%d/session.txt", event.name, event.sessions_cnt);
 	sd.cfg_file_open(ctmp, "w");
-	// -- write config data
-	// - mode
-	sprintf(sd.data_line, "mode=%d;\r\n", sess_mode);
-	sd.cfg_file_writeline();
-	// - name
-	switch(sess_mode) {
-		// training
-		case 0:
-			sprintf(sd.data_line, "name=Training %d;\r\n", event.cnt_sess_type[0]+1);
-			event.cnt_sess_type[0]++;
-			break;
-		// quali
-		case 1:
-			sprintf(sd.data_line, "name=Qualifying %d;\r\n", event.cnt_sess_type[1]+1);
-			event.cnt_sess_type[1]++;
-			break;
-		// race
-		case 2:
-			sprintf(sd.data_line, "name=Race %d;\r\n", event.cnt_sess_type[2]+1);
-			event.cnt_sess_type[2]++;
-			break;
+	if (sd.cfg_file != NULL) {
+		// -- write config data
+		// - mode
+		sprintf(sd.data_line, "mode=%d;\r\n", sess_mode);
+		sd.cfg_file_writeline();
+		// - name
+		switch(sess_mode) {
+			// training
+			case 0:
+				sprintf(sd.data_line, "name=Training %d;\r\n", event.cnt_sess_type[0]+1);
+				event.cnt_sess_type[0]++;
+				break;
+			// quali
+			case 1:
+				sprintf(sd.data_line, "name=Qualifying %d;\r\n", event.cnt_sess_type[1]+1);
+				event.cnt_sess_type[1]++;
+				break;
+			// race
+			case 2:
+				sprintf(sd.data_line, "name=Race %d;\r\n", event.cnt_sess_type[2]+1);
+				event.cnt_sess_type[2]++;
+				break;
+		}
+		sd.cfg_file_writeline();
+		// -- close file
+		sd.cfg_file_close();
 	}
-	sd.cfg_file_writeline();
-	// -- close file
-	sd.cfg_file_close();
 	
 	// --- calc number of heats
 	uint8_t hcount = (event.pilots_cnt + 3) / 4;
@@ -161,26 +161,30 @@ void oo_Session::create_new(uint8_t sess_mode, uint8_t gen_mode) {
 	sprintf(ctmp, "%s/session%d/results.csv", event.name, event.sessions_cnt);
 	printf("%s\r\n", ctmp);
 	sd.data_file_open(ctmp, "w");
-	// -- write empty result lines
-	for(uint8_t i=0;i<hcount;i++) {
-		for(uint8_t c=0;c<4;c++) {
-			sprintf(sd.data_line, "%x;%x;0;00000000;00000000;\r\n", i, c);
-			printf("%s", sd.data_line);
-			sd.data_file_writeline();
+	if (sd.data_file != NULL) {
+		// -- write empty result lines
+		for(uint8_t i=0;i<hcount;i++) {
+			for(uint8_t c=0;c<4;c++) {
+				sprintf(sd.data_line, "%x;%x;0;00000000;00000000;\r\n", i, c);
+				printf("%s", sd.data_line);
+				sd.data_file_writeline();
+			}
 		}
+		// -- close file
+		sd.data_file_close();
 	}
-	// -- close file
-	sd.data_file_close();
 	
 	// --- generate pilot field
 	// -- create file
 	sprintf(ctmp, "%s/session%d/pilots.csv", event.name, event.sessions_cnt);
 	printf("%s\r\n", ctmp);
 	sd.data_file_open(ctmp, "w");
-	// -- generate pilot field
-	gen_field(gen_mode, hcount);
-	// -- close file
-	sd.data_file_close();
+	if (sd.data_file != NULL) {
+		// -- generate pilot field
+		gen_field(gen_mode, hcount);
+		// -- close file
+		sd.data_file_close();
+	}
 	
 	// --- touch runs directories
 	for(uint8_t i=0;i<hcount;i++) {
@@ -260,18 +264,19 @@ void oo_Session::read_session_pilots(void) {
 	// --- open session pilots file
 	sprintf(ctmp, "%s/session%d/pilots.csv", event.name, nr);
 	sd.data_file_open(ctmp, "r");
-	
-	// --- read by line
-	heat_cnt = 0;
-	while (sd.data_file_getline_csv()) {
-		//pilots[sd.csv_array[0]][sd.csv_array[1]] = (uint8_t)sd.csv_array[2];
-		heats[sd.csv_array[0]].pilots_nr[sd.csv_array[1]] = (uint16_t)sd.csv_array[2];
-		printf("%d;%d;%d\r\n", sd.csv_array[0], sd.csv_array[1], sd.csv_array[2]);
-		if (heat_cnt < sd.csv_array[0]) heat_cnt = (uint16_t)sd.csv_array[0];
+	if (sd.data_file != NULL) {
+		// --- read by line
+		heat_cnt = 0;
+		while (sd.data_file_getline_csv()) {
+			//pilots[sd.csv_array[0]][sd.csv_array[1]] = (uint8_t)sd.csv_array[2];
+			heats[sd.csv_array[0]].pilots_nr[sd.csv_array[1]] = (uint16_t)sd.csv_array[2];
+			printf("%d;%d;%d\r\n", sd.csv_array[0], sd.csv_array[1], sd.csv_array[2]);
+			if (heat_cnt < sd.csv_array[0]) heat_cnt = (uint16_t)sd.csv_array[0];
+		}
+		heat_cnt++;
+		printf("parsed heat count '%d'\r\n", heat_cnt);
+		
+		// --- close event pilots data file
+		sd.data_file_close();
 	}
-	heat_cnt++;
-	printf("parsed heat count '%d'\r\n", heat_cnt);
-	
-	// --- close event pilots data file
-	sd.data_file_close();
 }

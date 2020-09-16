@@ -220,24 +220,28 @@ void oo_Event::create_new(st_event * evtmp) {
 	sd.cfg_file_open(ctmp, "w");
 	
 	// --- write config data
-	sprintf(sd.data_line, "quali_mode=%d;\r\n", evtmp->quali_mode);
-	sd.cfg_file_writeline();
-	sprintf(sd.data_line, "quali_laps=%d;\r\n", evtmp->quali_laps);
-	sd.cfg_file_writeline();
-	sprintf(sd.data_line, "quali_otime=%d;\r\n", evtmp->quali_otime);
-	sd.cfg_file_writeline();
-	sprintf(sd.data_line, "race_mode=%d;\r\n", evtmp->race_mode);
-	sd.cfg_file_writeline();
-	sprintf(sd.data_line, "race_laps=%d;\r\n", evtmp->race_laps);
-	sd.cfg_file_writeline();
-	
-	// --- close config file
-	sd.cfg_file_close();
+	if (sd.cfg_file != NULL) {
+		sprintf(sd.data_line, "quali_mode=%d;\r\n", evtmp->quali_mode);
+		sd.cfg_file_writeline();
+		sprintf(sd.data_line, "quali_laps=%d;\r\n", evtmp->quali_laps);
+		sd.cfg_file_writeline();
+		sprintf(sd.data_line, "quali_otime=%d;\r\n", evtmp->quali_otime);
+		sd.cfg_file_writeline();
+		sprintf(sd.data_line, "race_mode=%d;\r\n", evtmp->race_mode);
+		sd.cfg_file_writeline();
+		sprintf(sd.data_line, "race_laps=%d;\r\n", evtmp->race_laps);
+		sd.cfg_file_writeline();
+		
+		// --- close config file
+		sd.cfg_file_close();
+	}
 	
 	// --- touch new events pilots.csv
 	sprintf(ctmp, "%s/pilots.csv", evtmp->name);
 	sd.data_file_open(ctmp, "w");
-	sd.data_file_close();
+	if (sd.data_file != NULL) {
+		sd.data_file_close();
+	}
 }
 
 // ****** read event pilots from event directory
@@ -248,15 +252,18 @@ void oo_Event::read_event_pilots(void) {
 	sprintf(ctmp, "%s/pilots.csv", name);
 	sd.data_file_open(ctmp, "r");
 	
-	// --- read by line
-	pilots_cnt = 0;
-	while (sd.data_file_getline_csv()) {
-		pilots[pilots_cnt] = (uint8_t)sd.csv_array[0];
-		pilots_cnt++;
+	// --- read event pilots from file
+	if (sd.data_file != NULL) {
+		// -- read by line
+		pilots_cnt = 0;
+		while (sd.data_file_getline_csv()) {
+			pilots[pilots_cnt] = (uint8_t)sd.csv_array[0];
+			pilots_cnt++;
+		}
+		
+		// -- close event pilots data file
+		sd.data_file_close();
 	}
-	
-	// --- close event pilots data file
-	sd.data_file_close();
 }
 
 // ****** write event pilots to event directory
@@ -267,14 +274,17 @@ void oo_Event::write_event_pilots(void) {
 	sprintf(ctmp, "%s/pilots.csv", name);
 	sd.data_file_open(ctmp, "w");
 	
-	// --- write by line
-	for (uint8_t i=0;i<pilots_cnt;i++) {
-		sprintf(sd.data_line, "%x;\r\n", pilots[i]);
-		sd.data_file_writeline();
+	// --- write event pilots to file
+	if (sd.data_file != NULL) {
+		// -- write by line
+		for (uint8_t i=0;i<pilots_cnt;i++) {
+			sprintf(sd.data_line, "%x;\r\n", pilots[i]);
+			sd.data_file_writeline();
+		}
+		
+		// -- close event pilots data file
+		sd.data_file_close();
 	}
-	
-	// --- close event pilots data file
-	sd.data_file_close();
 }
 
 // ****** read all pilots from sd card
@@ -287,36 +297,39 @@ void oo_Event::read_pilots(void) {
 	// --- open pilots data file
 	sd.data_file_open("pilots.csv", "r");
 	
-	// --- walk through lines in data file
-	while(sd.data_file_getline()) {
-		// -- is valid data line?
-		if (strlen(sd.data_line) > 3) {
-			// - find ';' for pos and len
-			pos = strchr(&sd.data_line[0], ';') + 1;
-			// - decode pilot number
-			uint8_t cnt = 0;
-			uint16_t nr = 0;
-			while ((sd.data_line[cnt] >= 0x30) && (sd.data_line[cnt] <= 0x39)) {
-				nr *= 10;
-				nr += sd.data_line[cnt] - 0x30;
-				cnt++;
+	// --- read pilots from file
+	if (sd.data_file != NULL) {
+		// -- walk through lines in data file
+		while(sd.data_file_getline()) {
+			// - is valid data line?
+			if (strlen(sd.data_line) > 3) {
+				// - find ';' for pos and len
+				pos = strchr(&sd.data_line[0], ';') + 1;
+				// - decode pilot number
+				uint8_t cnt = 0;
+				uint16_t nr = 0;
+				while ((sd.data_line[cnt] >= 0x30) && (sd.data_line[cnt] <= 0x39)) {
+					nr *= 10;
+					nr += sd.data_line[cnt] - 0x30;
+					cnt++;
+				}
+				pilots_data[pilots_all_cnt].nr = nr;
+				// - get pilot name
+				len = strchr(pos, ';') - pos;
+				if (len > 40) len = 40;
+				strncpy(pilots_data[pilots_all_cnt].name, pos, len);
+				pilots_data[pilots_all_cnt].name[len] = '\0';
+				
+				printf("nr '%d' len '%d' name '%s'\r\n", pilots_data[pilots_all_cnt].nr, len, pilots_data[pilots_all_cnt].name);
+				
+				// - increment pilot counter
+				pilots_all_cnt++;
 			}
-			pilots_data[pilots_all_cnt].nr = nr;
-			// - get pilot name
-			len = strchr(pos, ';') - pos;
-			if (len > 40) len = 40;
-			strncpy(pilots_data[pilots_all_cnt].name, pos, len);
-			pilots_data[pilots_all_cnt].name[len] = '\0';
-			
-			printf("nr '%d' len '%d' name '%s'\r\n", pilots_data[pilots_all_cnt].nr, len, pilots_data[pilots_all_cnt].name);
-			
-			// - increment pilot counter
-			pilots_all_cnt++;
 		}
+		
+		// -- close pilots data file
+		sd.data_file_close();
 	}
-	
-	// --- close pilots data file
-	sd.data_file_close();
 }
 
 // ****** collect results from runs
@@ -349,27 +362,29 @@ void oo_Event::collect_results(void) {
 			// - open file
 			sprintf(ctmp, "%s/session%d/results.csv", event.name, s);
 			sd.data_file_open(ctmp, "r");
-			// - read by line
-			while (sd.data_file_getline_csv()) {
-				uint8_t pcount_tmp = (sd.csv_array[0]*4)+sd.csv_array[1];
-				if (pcount_tmp < pcount) {
-					// - fastest laps
-					if (fastest_laps[pcount_tmp].time > sd.csv_array[4]) {
-						printf("lap is faster! '%d'\r\n", s);
-						fastest_laps[pcount_tmp].time = sd.csv_array[4];
-					}
-					fastest_laps[pcount_tmp].laps = 1;
-					// - quali laps + overtime
-					if ((quali_time[pcount_tmp].laps < sd.csv_array[2])																// more laps flown
-						|| ((quali_time[pcount_tmp].laps == sd.csv_array[2]) && (quali_time[pcount_tmp].time > sd.csv_array[3]))) {	// same lapcount, but faster time
-							printf("quali is better! '%d'\r\n", s);
-							quali_time[pcount_tmp].laps = sd.csv_array[2];
-							quali_time[pcount_tmp].time = sd.csv_array[3];
+			if (sd.data_file != NULL) {
+				// - read by line
+				while (sd.data_file_getline_csv()) {
+					uint8_t pcount_tmp = (sd.csv_array[0]*4)+sd.csv_array[1];
+					if (pcount_tmp < pcount) {
+						// - fastest laps
+						if (fastest_laps[pcount_tmp].time > sd.csv_array[4]) {
+							printf("lap is faster! '%d'\r\n", s);
+							fastest_laps[pcount_tmp].time = sd.csv_array[4];
+						}
+						fastest_laps[pcount_tmp].laps = 1;
+						// - quali laps + overtime
+						if ((quali_time[pcount_tmp].laps < sd.csv_array[2])																// more laps flown
+							|| ((quali_time[pcount_tmp].laps == sd.csv_array[2]) && (quali_time[pcount_tmp].time > sd.csv_array[3]))) {	// same lapcount, but faster time
+								printf("quali is better! '%d'\r\n", s);
+								quali_time[pcount_tmp].laps = sd.csv_array[2];
+								quali_time[pcount_tmp].time = sd.csv_array[3];
+						}
 					}
 				}
+				// - close session pilots data file
+				sd.data_file_close();
 			}
-			// - close session pilots data file
-			sd.data_file_close();
 		}
 	}
 	// --- sort fastest laps array
@@ -393,20 +408,22 @@ void oo_Event::collect_results(void) {
 	// - open file
 	sprintf(ctmp, "%s/results.csv", event.name);
 	sd.data_file_open(ctmp, "w");
-	// - write fastest laps
-	for (uint8_t i=0;i<pcount;i++) {
-		sprintf(sd.data_line, "0;%x;%08x;\r\n", fastest_laps[i].pilot_nr, fastest_laps[i].time);
-		sd.data_file_writeline();
-		printf("%s", sd.data_line);
+	if (sd.data_file != NULL) {
+		// - write fastest laps
+		for (uint8_t i=0;i<pcount;i++) {
+			sprintf(sd.data_line, "0;%x;%08x;\r\n", fastest_laps[i].pilot_nr, fastest_laps[i].time);
+			sd.data_file_writeline();
+			printf("%s", sd.data_line);
+		}
+		// - write quali results
+		for (uint8_t i=0;i<pcount;i++) {
+			sprintf(sd.data_line, "1;%x;%x;%08x;\r\n", quali_time[i].pilot_nr, quali_time[i].laps, quali_time[i].time);
+			sd.data_file_writeline();
+			printf("%s", sd.data_line);
+		}
+		// - close session pilots data file
+		sd.data_file_close();
 	}
-	// - write quali results
-	for (uint8_t i=0;i<pcount;i++) {
-		sprintf(sd.data_line, "1;%x;%x;%08x;\r\n", quali_time[i].pilot_nr, quali_time[i].laps, quali_time[i].time);
-		sd.data_file_writeline();
-		printf("%s", sd.data_line);
-	}
-	// - close session pilots data file
-	sd.data_file_close();
 	
 	printf("Yeah, collect session results finished!\r\n");
 	printf("----------------------------------------------------------------------\r\n");
