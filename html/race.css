@@ -1,8 +1,6 @@
 #div_tab_btn_heat {
 	float:				left;
 	width:				16vw;
-	min-height:			16px;
-	margin:				1vh;
 	margin-left:		0vw;
 	padding-left:		0vw;
 	margin-right:		0vw;
@@ -12,8 +10,6 @@
 #div_tab_btn_session {
 	float:				left;
 	width:				16vw;
-	min-height:			16px;
-	margin:				1vh;
 	margin-left:		0vw;
 	padding-left:		0vw;
 	margin-right:		0vw;
@@ -23,8 +19,6 @@
 #div_tab_btn_event {
 	float:				left;
 	width:				18vw;
-	min-height:			16px;
-	margin:				1vh;
 	margin-left:		0vw;
 	margin-right:		1vw;
 	text-align:			center;

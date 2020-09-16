@@ -147,6 +147,7 @@
 	var event_table_pilots_all_size = 0;
 	var event_table_pilots_event_size = 0;
 	
+	// --- rssi trace vars
 	var g_startx = 0;
 	var g_diffx = 0;
 	var g_starty = 0;
@@ -160,6 +161,11 @@
 	var g_auto = true;
 	var g_level = false;
 	var g_chn = 0;
+	
+	// --- layout
+	var win_size_x = 0;
+	var win_size_y = 0;
+	var font_size_main = 16;
 	
 	// ****** laptime to string
 	function laptime2string(ttime) {

@@ -189,6 +189,12 @@
 	batch_cnt_top = 6;
 	do_rssi = false;
 	
+	var p_div_header		  = document.getElementById('div_header');
+	var p_div_header_l		  = document.getElementById('div_header_l');
+	var p_div_header_m		  = document.getElementById('div_header_m');
+	var p_div_header_r		  = document.getElementById('div_header_r');
+	var p_div_headspace		  = document.getElementById('div_headspace');
+	
 	var p_div_tab_heat		  = document.getElementById('div_tab_heat');
 	var p_div_tab_session	  = document.getElementById('div_tab_session');
 	var p_div_tab_event		  = document.getElementById('div_tab_event');
@@ -289,8 +295,8 @@
 		// --- handle tabs
 		handle_tab();
 		
-		// --- handle window resize
-		window.addEventListener("resize", function() { window_resize() }, false);
+		// --- handle layout
+		handle_size_main();
 	}
 	
 	// -------------------------------------------------------------------------------------------------------------------------
@@ -320,9 +326,29 @@
 		}
 	}
 	
-	// ****** handle table sizes when resizing
-	function window_resize() {
-		session_resize();
+	// ****** handle layout when resizing
+	function handle_size_main() {
+		// --- get window size
+		win_size_x = window.innerWidth;
+		win_size_y = window.innerHeight;
+		
+		// --- calc standard font size
+		if (win_size_x > win_size_y) {
+			// -- landscape mode
+			font_size_main = win_size_y / 25;
+		} else {
+			// -- portrait mode
+			font_size_main = win_size_x / 25;
+		}
+		
+		// --- status bar
+		p_div_header.style.fontSize = font_size_main + "px";
+		p_div_header.style.height = (font_size_main * 1.4) + "px";
+		p_div_headspace.style.height = (font_size_main * 1.4) + "px";
+		p_div_header_l.style.marginTop = (font_size_main * 0.15) + "px";
+		p_div_header_m.style.marginTop = (font_size_main * 0.15) + "px";
+		p_div_header_r.style.marginTop = (font_size_main * 0.15) + "px";
+		//window.alert("Window size '" + win_size_x + "' x '" + win_size_y + "'");
 	}
 	
 	// -------------------------------------------------------------------------------------------------------------------------
@@ -372,6 +398,9 @@
 	
 	// --- init page on loaad
 	window.onload=init;
+	
+	// --- handle window resize
+	window.onresize=handle_size_main;
 	-->
 </script>
 

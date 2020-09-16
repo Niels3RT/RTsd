@@ -31,7 +31,6 @@ div#div_header_m {
 	float:				left;
 	width:				16vw;
 	margin-right:		1vw;
-	margin-top:			1vh;
 	text-align:			right;
 }
 
@@ -39,7 +38,6 @@ div#div_header_r {
 	float:				right;
 	width:				26vw;
 	margin-right:		2vw;
-	margin-top:			1vh;
 	text-align:			right;
 }
 
