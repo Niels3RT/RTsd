@@ -9,6 +9,8 @@
 		p_event_btn_list_up.onclick = function() {
 			if (events_list_offset > 0) {
 				events_list_offset--;
+				events_list_selected++;
+				event_table_event_select();
 			}
 			draw_tab_event();
 		}
@@ -16,6 +18,8 @@
 		p_event_btn_list_down.onclick = function() {
 			if (events_list_offset < (events_count - 4)) {
 				events_list_offset++;
+				events_list_selected--;
+				event_table_event_select();
 			}
 			draw_tab_event();
 		}
@@ -127,10 +131,10 @@
 		}
 		
 		// --- event list selector
-		document.getElementById("t_events0").onclick = function() { events_list_selected = 0; }
-		document.getElementById("t_events1").onclick = function() { events_list_selected = 1; }
-		document.getElementById("t_events2").onclick = function() { events_list_selected = 2; }
-		document.getElementById("t_events3").onclick = function() { events_list_selected = 3; }
+		document.getElementById("t_events0").onclick = function() { events_list_selected = 0; event_table_event_select(); }
+		document.getElementById("t_events1").onclick = function() { events_list_selected = 1; event_table_event_select(); }
+		document.getElementById("t_events2").onclick = function() { events_list_selected = 2; event_table_event_select(); }
+		document.getElementById("t_events3").onclick = function() { events_list_selected = 3; event_table_event_select(); }
 	
 		// --- add results table elements
 		var t_div = document.getElementById("div_event_results_table");
@@ -286,6 +290,18 @@
 					}
 				}
 				break;
+		}
+	}
+	
+	// ****** select event on event list
+	function event_table_event_select() {
+		//window.alert("Event Select '" + events_list_selected + "' event selected '" + (events_list_offset+events_list_selected) + "'");
+		for (var s = 0; s < 4; s++) {
+			if (s == events_list_selected) {
+				document.getElementById("t_events" + s).style.backgroundColor = '#666666';
+			} else {
+				document.getElementById("t_events" + s).style.backgroundColor = '#000000';
+			}
 		}
 	}
 	
