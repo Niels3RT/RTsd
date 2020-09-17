@@ -706,6 +706,7 @@
 						switch (commFile.status) {
 							// - cmd is ok
 							case 200:
+								translate_rssi(0, true);
 								comm_state = 0;
 								count_err = 0;
 								break;
