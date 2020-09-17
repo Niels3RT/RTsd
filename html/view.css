@@ -9,11 +9,11 @@ div#div_tab_view {
 	clear:				none;
 }
 
-div#div_tab_btn_rt {
+div#div_tab_btn_rtview {
 	float:				left;
 	width:				30vw;
-	min-height:			16px;
-	margin:				1vh;
+	/*min-height:			16px;*/
+	/*margin:				1vh;*/
 	margin-left:		2vw;
 	padding-left:		0vw;
 	margin-right:		0vw;

@@ -16,7 +16,7 @@
 
 <div id="div_header">		
 	<div id="div_header_l">
-		<div id="div_tab_btn_rt">RT view</div>
+		<div id="div_tab_btn_rtview">RT view</div>
 	</div>
 	<div id="div_header_m">						</div>
 	<div id="div_header_r">						</div>
@@ -65,10 +65,48 @@
 	batch_cnt_top = 5;
 	do_rssi = false;
 	
+	// --- status bar
+	var p_div_header		  = document.getElementById('div_header');
+	var p_div_header_l		  = document.getElementById('div_header_l');
+	var p_div_header_m		  = document.getElementById('div_header_m');
+	var p_div_header_r		  = document.getElementById('div_header_r');
+	var p_div_headspace		  = document.getElementById('div_headspace');
+	
 	// ****** init everything
 	function init() {
 		// ------   results table      ------
         init_tab_results();
+		
+		// --- handle window resize
+		window.addEventListener("resize", function() { handle_layout_main() }, false);
+		
+		// --- handle layout
+		handle_layout_main();
+	}
+	
+	// ****** handle layout when resizing
+	function handle_layout_main() {
+		// --- get window size
+		win_size_x = window.innerWidth;
+		win_size_y = window.innerHeight;
+		
+		// --- calc standard font size
+		if (win_size_x > win_size_y) {
+			// -- landscape mode
+			font_size_main = win_size_y / 25;
+		} else {
+			// -- portrait mode
+			font_size_main = win_size_x / 25;
+		}
+		
+		// --- status bar
+		p_div_header.style.fontSize = font_size_main + "px";
+		p_div_header.style.height = (font_size_main * 1.4) + "px";
+		p_div_headspace.style.height = (font_size_main * 1.4) + "px";
+		p_div_header_l.style.marginTop = (font_size_main * 0.15) + "px";
+		p_div_header_m.style.marginTop = (font_size_main * 0.15) + "px";
+		p_div_header_r.style.marginTop = (font_size_main * 0.15) + "px";
+		//window.alert("Window size '" + win_size_x + "' x '" + win_size_y + "'");
 	}
 	
 	// ****** some dummies...
