@@ -72,16 +72,19 @@
 	<div id="div_sess_top">
 		<div id="div_sess_open">
 			<table id="table_sess_available" cellspacing="0" cellpadding="0" border="none"  class="cls_sess_res_table_table">
-				<tr>	<td id="t_sessions0" class="cls_session_table_tdr"></td>	</tr>
-				<tr>	<td id="t_sessions1" class="cls_session_table_tdr"></td>	</tr>
-				<tr>	<td id="t_sessions2" class="cls_session_table_tdr"></td>	</tr>
-				<tr>	<td id="t_sessions3" class="cls_session_table_tdr"></td>	</tr>
+				<tr>	<td id="t_sessions0" class="cls_session_list_table_tdr"></td>	</tr>
+				<tr>	<td id="t_sessions1" class="cls_session_list_table_tdr"></td>	</tr>
+				<tr>	<td id="t_sessions2" class="cls_session_list_table_tdr"></td>	</tr>
+				<tr>	<td id="t_sessions3" class="cls_session_list_table_tdr"></td>	</tr>
 			</table>
-			<button id="btn_sess_open" class="cls_sess_btn">open</button>
-			<button id="btn_sess_close" class="cls_sess_btn">close</button>
 			<div id="div_sess_list_updown">
+				<div id="div_sess_list_updown_placeholder"></div>
 				<button id="btn_sess_list_up" class="cls_sess_btn_small">-</button>
 				<button id="btn_sess_list_down" class="cls_sess_btn_small">+</button>
+			</div>
+			<div id="div_sess_list_oc">
+				<button id="btn_sess_open" class="cls_sess_btn">open</button>
+				<button id="btn_sess_close" class="cls_sess_btn">close</button>
 			</div>
 		</div>
 		<div id="div_sess_new">
@@ -243,6 +246,8 @@
 	var p_event_btn_pedit_toright = document.getElementById("btn_event_toright");
 	
 	// --- session
+	var p_div_sess_open       = document.getElementById("div_sess_open");
+	
 	var p_btn_sess_open       = document.getElementById("btn_sess_open");
 	var p_btn_sess_close      = document.getElementById("btn_sess_close");
 	var p_btn_sess_new        = document.getElementById("btn_sess_new");

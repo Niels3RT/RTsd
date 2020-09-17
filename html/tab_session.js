@@ -10,6 +10,8 @@
 			if (chk_btn_active(p_btn_sess_list_up)) {
 				if (sessions_list_offset > 0) {
 					sessions_list_offset--;
+					sessions_list_selected++;
+					session_table_session_select();
 				}
 				draw_tab_sessions();
 			}
@@ -19,6 +21,8 @@
 			if (chk_btn_active(p_btn_sess_list_down)) {
 				if (sessions_list_offset < (sessions_count - 4)) {
 					sessions_list_offset++;
+					sessions_list_selected--;
+					session_table_session_select();
 				}
 				draw_tab_sessions();
 			}
@@ -49,11 +53,11 @@
 			}
 		}
 		
-		// --- event list selector
-		document.getElementById("t_sessions0").onclick = function() { sessions_list_selected = 0; }
-		document.getElementById("t_sessions1").onclick = function() { sessions_list_selected = 1; }
-		document.getElementById("t_sessions2").onclick = function() { sessions_list_selected = 2; }
-		document.getElementById("t_sessions3").onclick = function() { sessions_list_selected = 3; }
+		// --- session list selector
+		document.getElementById("t_sessions0").onclick = function() { sessions_list_selected = 0; session_table_session_select(); }
+		document.getElementById("t_sessions1").onclick = function() { sessions_list_selected = 1; session_table_session_select(); }
+		document.getElementById("t_sessions2").onclick = function() { sessions_list_selected = 2; session_table_session_select(); }
+		document.getElementById("t_sessions3").onclick = function() { sessions_list_selected = 3; session_table_session_select(); }
 	
 		// --- add session results table elements
 		for (var i = 0; i < 16; i++) {
@@ -177,6 +181,17 @@
 			}
 		}
 	}
+	
+	// ****** select session on session list
+	function session_table_session_select() {
+		for (var s = 0; s < 4; s++) {
+			if (s == sessions_list_selected) {
+				document.getElementById("t_sessions" + s).style.backgroundColor = '#666666';
+			} else {
+				document.getElementById("t_sessions" + s).style.backgroundColor = '#000000';
+			}
+		}
+	}
 
 	// ****** handle session window layout stuff
 	function handle_layout_session() {
@@ -235,5 +250,8 @@
 			tab_col_2[i].style.fontSize = font_size;
 			tab_col_2[i].style.textAlign = "right";
 		}
+		
+		// --- session open div
+		p_div_sess_open.style.fontSize = (font_size_main * 0.6) + "px";
 	}
 	

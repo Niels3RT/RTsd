@@ -12,7 +12,12 @@ div#div_sess_top {
 div#div_sess_open {
 	float:				left;
 	width:				40%;
-	border:				1px solid #003300;
+	/*border:				1px solid #003300;*/
+}
+
+#div_sess_list_oc  {
+	float:				left;
+	width:				98%;
 }
 
 #btn_sess_open {
@@ -27,16 +32,27 @@ div#div_sess_open {
 
 #div_sess_list_updown  {
 	float:				left;
+	width:				98%;
+}
+
+#div_sess_list_updown_placeholder  {
+	float:				left;
+	width:				40%;
+	height:				10px;
+}
+
+#div_sess_list_updown  {
+	float:				left;
 	margin-left:		8px;
 }
 
 #btn_sess_list_up {
-	float:				none;
+	float:				left;
 	margin-top:			12px;
 }
 
 #btn_sess_list_down {
-	float:				none;
+	float:				left;
 	margin-top:			12px;
 }
 
@@ -75,9 +91,10 @@ div#div_sess_results {
 	margin-bottom:		1vh;
 }
 
-.cls_session_table_tdr {
+.cls_session_list_table_tdr {
 	height:				20px;
-	min-width:			200px;
+	width:				98%;
+	text-align:			left;
 	margin:				0px;
 	border:				1px solid #003300;
 	border-collapse:	collapse;
@@ -134,6 +151,7 @@ div#div_sess_results {
 
 .cls_sess_res_table_table {
 	margin:				0px;
+	width:				98%;
 	border:				2px solid #003300;
 	border-collapse:	collapse;
 }
