@@ -459,13 +459,18 @@
 		
 		// --- event new div
 		p_div_event_new.style.fontSize = (font_size_main * 0.6) + "px";
+		
+		// --- event mod div
+		p_div_event_mod.style.fontSize = (font_size_main * 0.6) + "px";
 		p_txt_event_new_name.style.fontSize = (font_size_main * 0.6) + "px";
 		p_txt_event_new_name.style.marginTop = (font_size_main * 0.15) + "px";
 		//p_txt_event_new_name.style.width = (font_size_main * 6) + "px";
 		p_txt_event_new_name.style.width = "50%";
-		
-		// --- event mod div
-		p_div_event_mod.style.fontSize = (font_size_main * 0.6) + "px";
+		p_sel_event_mod_qmode.style.fontSize = (font_size_main * 0.5) + "px";
+		p_event_mod_nb_qlaps.style.fontSize = (font_size_main * 0.5) + "px";
+		p_event_mod_nb_qotime.style.fontSize = (font_size_main * 0.5) + "px";
+		p_sel_event_mod_rmode.style.fontSize = (font_size_main * 0.5) + "px";
+		p_event_mod_nb_rlaps.style.fontSize = (font_size_main * 0.5) + "px";
 		
 		// --- event main div
 		p_div_event_main.style.fontSize = (font_size_main * 0.6) + "px";

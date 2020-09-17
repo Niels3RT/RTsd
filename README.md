@@ -108,6 +108,8 @@ esptool -p com6 -b 460800 --before=default_reset --after=hard_reset write_flash 
 
 Format card with a FAT derivative, copy the contents of /sd_card/ to the card. The "sd_card_root_here.txt" should be in the root of the filesystem.  
 
+Copy the contents of /html/ to the card /RTsd/http  
+
 Look at the .txt files in RTsd directory and adapt to your preferences.  
 
 Go racing :)

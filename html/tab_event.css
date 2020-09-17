@@ -6,13 +6,18 @@ div#div_tab_event {
 
 div#div_event_top {
 	width:				100%;
-	border:				1px solid #003300;
+	/*border:				1px solid #003300;*/
 }
 
 div#div_event_open {
 	float:				left;
 	width:				40%;
-	border:				1px solid #003300;
+	/*border:				1px solid #003300;*/
+}
+
+#div_event_list_oc  {
+	float:				left;
+	width:				98%;
 }
 
 #btn_event_open {
@@ -27,29 +32,35 @@ div#div_event_open {
 
 #div_event_list_updown  {
 	float:				left;
-	margin-left:		8px;
+	width:				98%;
+}
+
+#div_event_list_updown_placeholder  {
+	float:				left;
+	width:				40%;
+	height:				10px;
 }
 
 #btn_event_list_up {
-	float:				none;
+	float:				left;
 	margin-top:			12px;
 }
 
 #btn_event_list_down {
-	float:				none;
+	float:				left;
 	margin-top:			12px;
 }
 
 div#div_event_new {
 	float:				right;
 	width:				40%;
-	border:				1px solid #003300;
+	/*border:				1px solid #003300;*/
 }
 
 div#div_event_mod {
 	float:				right;
 	width:				40%;
-	border:				1px solid #003300;
+	/*border:				1px solid #003300;*/
 }
 
 #btn_event_new {
@@ -62,55 +73,55 @@ div#div_event_main {
 	font-size:			2vh;
 	width:				100%;
 	margin-top:			1vh;
-	border:				1px solid #003300;
+	/*border:				1px solid #003300;*/
 }
 
 div#div_event_results {
 	float:				left;
 	width:				40%;
 	text-align:			left;
-	border:				1px solid #003300;
+	/*border:				1px solid #003300;*/
 }
 
 div#div_event_results_table {
 	float:				left;
 	width:				98%;
 	text-align:			left;
-	border:				1px solid #003300;
+	/*border:				1px solid #003300;*/
 }
 
 div#div_event_pilots {
 	float:				right;
 	width:				58%;
-	border:				1px solid #003300;
+	/*border:				1px solid #003300;*/
 }
 
 div#canvas_pilots_event {
 	float:				left;
 	width:				40%;
 	height:				600px;
-	border:				1px solid #003300;
+	/*border:				1px solid #003300;*/
 }
 
 div#div_event_edit_spaceholder {
 	float:				left;
 	width:				5%;
 	height:				600px;
-	border:				1px solid #003300;
+	/*border:				1px solid #003300;*/
 }
 
 div#div_event_edit_btns {
 	float:				left;
 	width:				36px;
 	height:				600px;
-	border:				1px solid #003300;
+	/*border:				1px solid #003300;*/
 }
 
 div#canvas_pilots_all {
 	float:				right;
 	width:				40%;
 	height:				600px;
-	border:				1px solid #003300;
+	/*border:				1px solid #003300;*/
 }
 
 .cls_event_res_table_table {

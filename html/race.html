@@ -107,17 +107,20 @@
 <div id="div_tab_event">
 	<div id="div_event_top">
 		<div id="div_event_open">
-			<table id="table_event_available" cellspacing="0" cellpadding="0" border="none"  class="cls_event_res_table_table">
+			<table id="table_event_available" cellspacing="0" cellpadding="0" border="none" class="cls_event_res_table_table">
 				<tr>	<td id="t_events0" class="cls_event_list_table_tdr"></td>	</tr>
 				<tr>	<td id="t_events1" class="cls_event_list_table_tdr"></td>	</tr>
 				<tr>	<td id="t_events2" class="cls_event_list_table_tdr"></td>	</tr>
 				<tr>	<td id="t_events3" class="cls_event_list_table_tdr"></td>	</tr>
 			</table>
-			<button id="btn_event_open" class="cls_event_btn">open</button>
-			<button id="btn_event_close" class="cls_event_btn">close</button>
 			<div id="div_event_list_updown">
+				<div id="div_event_list_updown_placeholder"></div>
 				<button id="btn_event_list_up" class="cls_event_btn_small">-</button>
 				<button id="btn_event_list_down" class="cls_event_btn_small">+</button>
+			</div>
+			<div id="div_event_list_oc">
+				<button id="btn_event_open" class="cls_event_btn">open</button>
+				<button id="btn_event_close" class="cls_event_btn">close</button>
 			</div>
 		</div>
 		<div id="div_event_new">
@@ -222,10 +225,16 @@
 	var p_event_btn_close     = document.getElementById("btn_event_close");
 	var p_event_btn_new       = document.getElementById("btn_event_new");
 	var p_event_btn_mod       = document.getElementById("btn_event_mod");
+	var p_div_event_list_updown       = document.getElementById("div_event_list_updown");
 	var p_event_btn_list_up   = document.getElementById("btn_event_list_up");
 	var p_event_btn_list_down = document.getElementById("btn_event_list_down");
 	
 	var p_txt_event_new_name  = document.getElementById("txt_event_new_name");
+	var p_sel_event_mod_qmode = document.getElementById("sel_event_mod_qmode");
+	var p_event_mod_nb_qlaps  = document.getElementById("event_mod_nb_qlaps");
+	var p_event_mod_nb_qotime = document.getElementById("event_mod_nb_qotime");
+	var p_sel_event_mod_rmode = document.getElementById("sel_event_mod_rmode");
+	var p_event_mod_nb_rlaps  = document.getElementById("event_mod_nb_rlaps");
 	
 	var p_event_btn_pedit_edit    = document.getElementById("btn_event_edit");
 	var p_event_btn_pedit_toleft  = document.getElementById("btn_event_toleft");
