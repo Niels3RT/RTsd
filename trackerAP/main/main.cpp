@@ -118,7 +118,7 @@ void app_main(void) {
 	ESP_ERROR_CHECK(esp_event_handler_instance_register_with(main_loop_handle, TRACKER_EVENTS, EVENT_RT_DO_OPEN, main_event_handler, main_loop_handle, NULL));
 	
 	// --- wait some for fpga to start up
-	vTaskDelay(3000 / portTICK_PERIOD_MS);
+	vTaskDelay(5000 / portTICK_PERIOD_MS);
 	
 	// --- init buffer
 	buf.init();
@@ -131,6 +131,31 @@ void app_main(void) {
 	
 	// --- init rt spi
 	rtspi.init();
+	
+	// --- test sd/ddr ram
+	// -- write pattern
+	//char trssi[8];
+	//for (uint8_t i=0;i<16;i++) {
+	//	trssi[0] = i;
+	//	trssi[1] = i+1;
+	//	trssi[2] = i+2;
+	//	trssi[3] = i+3;
+	//	trssi[4] = i+4;
+	//	trssi[5] = i+5;
+	//	trssi[6] = i+6;
+	//	trssi[7] = i+7;
+	//	rtspi.write64(&trssi[0]);							// write 64bit word to transfer register
+	//	rtspi.transmit24(RT_REG2SDRAM, i, 0);				// set sdram address (rssi block nr)
+	//	printf("W: '%02x' %02x %02x %02x %02x %02x %02x %02x %02x\r\n", i, trssi[0], trssi[1], trssi[2], trssi[3], trssi[4], trssi[5], trssi[6], trssi[7]);
+	//}
+	//	printf("-------------------------------------------------\r\n");
+	//// -- read pattern
+	//for (uint8_t i=0;i<16;i++) {
+	//	rtspi.transmit24(RT_SDRAM2REG, i, 0);				// set sdram address (rssi block nr)
+	//	rtspi.read64(&trssi[0]);							// fetch 64bit word from transfer register
+	//	printf("R: '%02x' '%01x' %02x %02x %02x %02x %02x %02x %02x %02x\r\n", i, i&0x01, trssi[0], trssi[1], trssi[2], trssi[3], trssi[4], trssi[5], trssi[6], trssi[7]);
+	//}
+	//while(1);
 	
 	// --- init rt
 	rt.init();

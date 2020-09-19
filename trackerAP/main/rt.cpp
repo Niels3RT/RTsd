@@ -212,6 +212,7 @@ void oo_RT::pd_get_tlevels() {
 	// --- walk through channels
 	for (uint8_t i=0;i<4;i++) {
 		trg_level[i] = rtspi.transmit16(RT_TRIGGER_BASE+i, 0);
+		//printf("trg_level '%d' ''%05d'\r\n", i, trg_level[i]);
 	}
 }
 
