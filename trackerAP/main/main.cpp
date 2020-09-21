@@ -62,9 +62,6 @@ void app_main(void) {
 	// --- wait some for fpga to start up
 	vTaskDelay(5000 / portTICK_PERIOD_MS);
 	
-	// --- init buffer
-	buf.init();
-	
 	// --- init sd card
 	sd.init();
 	

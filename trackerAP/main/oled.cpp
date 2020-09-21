@@ -30,52 +30,52 @@ void oo_oLed::writefb(void) {
 
 // ****** print hex, 8bit
 void oo_oLed::print_hex_8u(uint8_t px, uint8_t py, uint8_t value) {
-	uint8_t cmtp[2];
-	buf.i82buf(&cmtp[0], value);
-	print_char(px++, py, cmtp[0]);
-	print_char(px, py, cmtp[1]);
+	char ctmp[3];
+	sprintf(ctmp, "%02x", value);
+	print_char(px++, py, ctmp[0]);
+	print_char(px, py, ctmp[1]);
 }
 
 // ****** print dec, 8bit
 void oo_oLed::print_dec_8u(uint8_t px, uint8_t py, uint8_t value) {
-	uint8_t cmtp[3];
-	buf.i82buf_dec(&cmtp[0], value);
-	print_char(px++, py, cmtp[0]);
-	print_char(px++, py, cmtp[1]);
-	print_char(px, py, cmtp[2]);
+	char ctmp[4];
+	sprintf(ctmp, "%02d", value);
+	print_char(px++, py, ctmp[0]);
+	print_char(px++, py, ctmp[1]);
+	print_char(px, py, ctmp[2]);
 }
 
 // ****** print hex, 16bit
 void oo_oLed::print_hex_16u(uint8_t px, uint8_t py, uint16_t value) {
-	uint8_t cmtp[4];
-	buf.i162buf(&cmtp[0], value);
-	print_char(px++, py, cmtp[0]);
-	print_char(px++, py, cmtp[1]);
-	print_char(px++, py, cmtp[2]);
-	print_char(px, py, cmtp[3]);
+	char ctmp[5];
+	sprintf(ctmp, "%04x", value);
+	print_char(px++, py, ctmp[0]);
+	print_char(px++, py, ctmp[1]);
+	print_char(px++, py, ctmp[2]);
+	print_char(px, py, ctmp[3]);
 }
 
 // ****** print dec, 16bit
 void oo_oLed::print_dec_16u(uint8_t px, uint8_t py, uint16_t value) {
-	uint8_t cmtp[5];
-	buf.i162buf_dec(&cmtp[0], value);
-	print_char(px++, py, cmtp[0]);
-	print_char(px++, py, cmtp[1]);
-	print_char(px++, py, cmtp[2]);
-	print_char(px++, py, cmtp[3]);
-	print_char(px, py, cmtp[4]);
+	char ctmp[6];
+	sprintf(ctmp, "%05d", value);
+	print_char(px++, py, ctmp[0]);
+	print_char(px++, py, ctmp[1]);
+	print_char(px++, py, ctmp[2]);
+	print_char(px++, py, ctmp[3]);
+	print_char(px, py, ctmp[4]);
 }
 
 // ****** print hex, 32bit
 void oo_oLed::print_hex_32u(uint8_t px, uint8_t py, uint32_t value) {
-	uint8_t cmtp[7];
-	buf.i322buf(&cmtp[0], value);
-	print_char(px++, py, cmtp[0]);
-	print_char(px++, py, cmtp[1]);
-	print_char(px++, py, cmtp[2]);
-	print_char(px++, py, cmtp[3]);
-	print_char(px++, py, cmtp[4]);
-	print_char(px++, py, cmtp[5]);
-	print_char(px++, py, cmtp[6]);
-	print_char(px, py, cmtp[7]);
+	char ctmp[9];
+	sprintf(ctmp, "%08x", value);
+	print_char(px++, py, ctmp[0]);
+	print_char(px++, py, ctmp[1]);
+	print_char(px++, py, ctmp[2]);
+	print_char(px++, py, ctmp[3]);
+	print_char(px++, py, ctmp[4]);
+	print_char(px++, py, ctmp[5]);
+	print_char(px++, py, ctmp[6]);
+	print_char(px, py, ctmp[7]);
 }
