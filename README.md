@@ -44,7 +44,7 @@ Klick screenshots to watch on youtube:
 
 # Parts List
 
-Note: Only 1 FPGA board is needed, Spartan6 is cheaper but completely full, the Artix7 one costs more but has space future addons.
+Note: Only 1 FPGA board is needed, Spartan6 is cheaper but completely full, the Artix7 one costs more but has space for future addons.
 
 | part info | nr |
 |------|-------------|
