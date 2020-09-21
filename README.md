@@ -50,7 +50,7 @@ Note: Only 1 FPGA board is needed, Spartan6 is cheaper but completely full, the 
 |------|-------------|
 | QM Tech board Spartan6 XC6SLX16 SDRAM (MT48LC16M16A2), NOT DDR3! Around $20 on AliExpress<br>![QM SP6](pics/QM-Tech_SP6_XC6SLX16_small.png?raw=true "QM SP6") | 1x |
 | QM Tech board Artix7 XC7A35T DDR3, [Here](https://de.aliexpress.com/item/1000006630084.html) | 1x |
-| 0.96" OLED, 7pin spi, optional, only usable on Artix7 board<br>[oled](pics/oled_small.png?raw=true "oled") | 1x |
+| 0.96" OLED, 7pin spi, optional, only usable on Artix7 board<br>![oled](pics/oled_small.png?raw=true "oled") | 1x |
 | Xilinx USB plattorm cable (cheap chinese copy does the trick) | 1x |
 | rx5808 module, modified for SPI | 4x |
 | ESP32_WROVER-IB module | 1x |
