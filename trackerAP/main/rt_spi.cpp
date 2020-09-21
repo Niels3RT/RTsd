@@ -23,8 +23,8 @@ void oo_RT_spi::init(void) {
     io_conf.intr_type = (gpio_int_type_t)GPIO_PIN_INTR_DISABLE;		//disable interrupt
     io_conf.mode = GPIO_MODE_OUTPUT;				//set as output mode
     io_conf.pin_bit_mask = 1ULL<<PIN_NUM_DC;		//bit mask of the pins that you want to set,e.g.GPIO18/19
-    io_conf.pull_down_en = (gpio_pulldown_t)0;						//disable pull-down mode
-    io_conf.pull_up_en = (gpio_pullup_t)0;							//disable pull-up mode
+    io_conf.pull_down_en = (gpio_pulldown_t)0;		//disable pull-down mode
+    io_conf.pull_up_en = (gpio_pullup_t)0;			//disable pull-up mode
     gpio_config(&io_conf);							//configure GPIO with the given settings
 
 	esp_err_t ret;
@@ -37,13 +37,13 @@ void oo_RT_spi::init(void) {
         buscfg.max_transfer_sz=32;
 		
     spi_device_interface_config_t devcfg = { };
-        //.clock_speed_hz=10*1000*1000,           //Clock out at 10 MHz
-		devcfg.clock_speed_hz=1*1000*1000,           //Clock out at 1 MHz
-        devcfg.mode=0,                                //SPI mode 0
-        devcfg.spics_io_num=PIN_NUM_CS,               //CS pin
-        devcfg.queue_size=6,                          //We want to be able to queue 7 transactions at a time
-        devcfg.pre_cb=rt_spi_pre_transfer_callback,  //Specify pre-transfer callback to handle D/C line
-		devcfg.post_cb=rt_spi_post_transfer_callback,  //Specify post-transfer callback to handle rx data
+        //.clock_speed_hz=10*1000*1000,					//Clock out at 10 MHz
+		devcfg.clock_speed_hz=1*1000*1000,				//Clock out at 1 MHz
+        devcfg.mode=0,									//SPI mode 0
+        devcfg.spics_io_num=PIN_NUM_CS,					//CS pin
+        devcfg.queue_size=6,							//We want to be able to queue 7 transactions at a time
+        devcfg.pre_cb=rt_spi_pre_transfer_callback,		//Specify pre-transfer callback to handle D/C line
+		devcfg.post_cb=rt_spi_post_transfer_callback,	//Specify post-transfer callback to handle rx data
 
     // --- initialize the spi bus
     ret=spi_bus_initialize(HSPI_HOST, &buscfg, 1);
@@ -188,7 +188,7 @@ void oo_RT_spi::read64(char* in64) {
 	static spi_transaction_t trans;
 	memset(&trans, 0, sizeof(spi_transaction_t));
 	
-	// -- empty buffer to shift out
+	// --- empty buffer to shift out
 	char out64[8];
 	memset(&out64[0], 0, 8);
 	
@@ -206,8 +206,6 @@ void oo_RT_spi::read64(char* in64) {
 	// --- wait transaction to finish
 	spi_transaction_t *rtrans;
 	ret=spi_device_get_trans_result(handle_spi, &rtrans, portMAX_DELAY);
-	
-	//printf("%02x%02x%02x%02x%02x%02x%02x%02x\r\n", in64[0], in64[1], in64[2], in64[3], in64[4], in64[5], in64[6], in64[7]);
 }
 
 // ****** write 64bit to spi, into status register, dc = 0
@@ -259,8 +257,6 @@ void oo_RT_spi::read128(char* in128) {
 	// --- wait transaction to finish
 	spi_transaction_t *rtrans;
 	ret=spi_device_get_trans_result(handle_spi, &rtrans, portMAX_DELAY);
-	
-	//printf("%02x%02x%02x%02x%02x%02x%02x%02x\r\n", in64[0], in64[1], in64[2], in64[3], in64[4], in64[5], in64[6], in64[7]);
 }
 
 // ****** write 128bit to spi, into status register, dc = 0
@@ -312,8 +308,6 @@ void oo_RT_spi::readn(char* inn, uint8_t count) {
 	// --- wait transaction to finish
 	spi_transaction_t *rtrans;
 	ret=spi_device_get_trans_result(handle_spi, &rtrans, portMAX_DELAY);
-	
-	//printf("%02x%02x%02x%02x%02x%02x%02x%02x\r\n", in64[0], in64[1], in64[2], in64[3], in64[4], in64[5], in64[6], in64[7]);
 }
 
 // ****** This function is called (in irq context!) just before a transmission starts. It will
@@ -325,9 +319,6 @@ void rt_spi_pre_transfer_callback(spi_transaction_t *t) {
 
 // ****** This function is called (in irq context!) just after a transmission finishes.
 void rt_spi_post_transfer_callback(spi_transaction_t *t) {
-	//uint8_t tmp = 0;
-	//spi_rx_data_max++;
-	//spi_rx_data[spi_rx_data_max] = (uint8_t)t->rx_data[0];
 	uint8_t *tb = (uint8_t*)t->user;
 	if (tb != 0) {
 		rtspi.spi_rx_data_max++;
@@ -336,6 +327,4 @@ void rt_spi_post_transfer_callback(spi_transaction_t *t) {
 		rtspi.spi_tx_cmd++;
 		rtspi.spi_tx_cmd &= 0x0f;
 	}
-	//ESP_LOGI("SPI", "RX: ");
-	//ESP_LOGI(TAG, "RX: Test");
 }

@@ -52,7 +52,6 @@ void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
         ip_event_got_ip_t* event = (ip_event_got_ip_t*) event_data;
         ESP_LOGI(TAG, "got ip:" IPSTR, IP2STR(&event->ip_info.ip));
 		char stmp[20];
-		//sprintf(stmp, "%03d.%03d.%03d.%03d", (event->ip_info.ip.addr>>24) & 0xff, (event->ip_info.ip.addr>>16) & 0xff, (event->ip_info.ip.addr>>8) & 0xff, event->ip_info.ip.addr & 0xff);
 		sprintf(stmp, "%03d.%03d.%03d.%03d", event->ip_info.ip.addr & 0xff, (event->ip_info.ip.addr>>8) & 0xff, (event->ip_info.ip.addr>>16) & 0xff, (event->ip_info.ip.addr>>24) & 0xff);
 		oled.print_string(1, 7, &stmp[0]);
 		oled.writefb();

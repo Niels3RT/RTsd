@@ -95,17 +95,10 @@ void oo_Session::open(uint8_t snr) {
 		}
 		sd.data_file_close();
 	}
-		//for(uint8_t h=0;h<heat_cnt;h++) {
-		//	session.heats[h].nr = h;
-		//}
-	
-	// --- collect results from runs
-	//collect_results();
 	
 	// --- open heat 0, first heat
 	heat.current.nr = 0;
 	ESP_ERROR_CHECK(esp_event_post_to(main_loop_handle, TRACKER_EVENTS, EVENT_RT_DO_OPEN, NULL, 0, portMAX_DELAY));
-	//heat.open();
 }
 
 // ****** create new Session
@@ -267,10 +260,6 @@ void oo_Session::read_session_pilots(void) {
 	// --- clear pilots array
 	for(uint8_t i=0;i<16;i++) {
 		for(uint8_t c=0;c<rt.max_chn;c++) heats[i].pilots_nr[c] = 0xffff;
-		//heats[i].pilots_nr[0] = 0xffff;
-		//heats[i].pilots_nr[1] = 0xffff;
-		//heats[i].pilots_nr[2] = 0xffff;
-		//heats[i].pilots_nr[3] = 0xffff;
 	}
 	
 	// --- open session pilots file
@@ -280,7 +269,6 @@ void oo_Session::read_session_pilots(void) {
 		// --- read by line
 		heat_cnt = 0;
 		while (sd.data_file_getline_csv()) {
-			//pilots[sd.csv_array[0]][sd.csv_array[1]] = (uint8_t)sd.csv_array[2];
 			heats[sd.csv_array[0]].pilots_nr[sd.csv_array[1]] = (uint16_t)sd.csv_array[2];
 			printf("%d;%d;%d\r\n", sd.csv_array[0], sd.csv_array[1], sd.csv_array[2]);
 			if (heat_cnt < sd.csv_array[0]) heat_cnt = (uint16_t)sd.csv_array[0];

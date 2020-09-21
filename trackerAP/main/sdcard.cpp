@@ -44,7 +44,6 @@ void oo_SD::init(void) {
 void oo_SD::cfg_file_open(char *tbuf, char const * rw) {
 	// --- build filename
 	char path[256];
-	//sprintf(path, "/sdcard/RTsd/cfg_%s.txt", tbuf);
 	sprintf(path, "/sdcard/RTsd%s", tbuf);
 
 	// --- dump wifi config file
@@ -76,6 +75,7 @@ void oo_SD::cfg_file_getparm() {
 	char line[256];
 	uint8_t len = 0;
 	
+	// --- get configuration parameter from file
 	if (fgets(line, sizeof(line), cfg_file) != NULL) {
 		// -- is comment line?
 		bool is_comment = false;
@@ -98,7 +98,6 @@ void oo_SD::cfg_file_getparm() {
 			// -- parameter value
 			len = strchr(ptmp, ';') - ptmp;
 			if (len > 40) len = 40;
-			//cfg_value[0] = '\0';
 			strncpy(cfg_value, ptmp, len);
 			cfg_value[len] = '\0';
 		} else {
@@ -139,7 +138,6 @@ bool oo_SD::data_file_getline_csv() {
 		bool go = true;
 		bool gof = true;
 		ptop = ptmp + strlen(data_line);
-		//printf("'%s'\r\n", data_line);
 		// -- walk through ';'
 		do {
 			// - parse and remember value
@@ -164,7 +162,6 @@ bool oo_SD::data_file_getline_csv() {
 				}
 			} while(gof);
 			csv_array[cnt] = etmp;
-			//printf("_%c_", *ptmp);
 			// - advance pointer?
 			if ((*ptmp == 0x3b) && (cnt < 7) && (ptmp < ptop)) {
 				cnt++;
@@ -173,19 +170,14 @@ bool oo_SD::data_file_getline_csv() {
 				go = false;
 			}
 		} while(go);
-		//printf("\r\n");
-		//printf("csv line count '%d'\r\n", cnt);
 		return(true);
 	} else {
-		//printf("\r\n");
 		return(false);
 	}
 }
 
 // ****** write line of data file
 void oo_SD::data_file_writeline(void) {
-	// --- print for debugging
-	//printf("%s", data_line);
 	// --- write to file
 	fputs(data_line, data_file);
 	
@@ -194,8 +186,6 @@ void oo_SD::data_file_writeline(void) {
 
 // ****** write line of config file
 void oo_SD::cfg_file_writeline(void) {
-	// --- print for debugging
-	printf("%s", data_line);
 	// --- write to file
 	fputs(data_line, cfg_file);
 	
@@ -204,11 +194,13 @@ void oo_SD::cfg_file_writeline(void) {
 
 // ****** close config file
 void oo_SD::cfg_file_close() {
+	// --- close file
 	fclose(cfg_file);
 }
 
 // ****** close data file
 void oo_SD::data_file_close() {
+	// --- close file
 	fclose(data_file);
 }
 
@@ -226,7 +218,6 @@ bool oo_SD::dir_open(const char *tbuf) {
 		printf("Unable to read directory '/sdcard%s'\r\n", tbuf);
 		return(false);
 	} else {
-		//printf("Directory '/sdcard%s' is opened!\r\n", tbuf);
 		return(true);
 	}
 }

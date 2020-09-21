@@ -31,64 +31,6 @@ void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 	if (event_id == EVENT_RT_DO_OPEN) {
 		heat.open();
 	}
-
-	// --- print task list
-	//printf( "Task Name\tStatus\tPrio\tHWM\tTask\tAffinity\n");
-	//char stats_buffer[1024];
-	//vTaskList(stats_buffer);
-	//printf("%s\n", stats_buffer);
-	// --- read status from rt
-	//oled.print_dec_16u(11, 0, timer.tick & 0xffff);
-	//oled.print_hex_16u(12, 1, timer.tick & 0xffff);
-	//oled.print_dec_8u(13, 2, timer.tick & 0xff);
-	//oled.writefb();
-	
-	// -- read line (4 words a 16bits) of rssi from sdram
-	//char trssi[8];
-	//rtspi.transmit24(RT_SDRAM2REG, 7394, 0);		// set sdram address (rssi block nr)
-	//rtspi.read64(&trssi[0]);						// fetch 64bit word from transfer register
-	//uint8_t * utmp = (uint8_t*)&trssi[7];
-	//printf("%02x\r\n", *utmp);
-	
-	//rt.tune_rx(0, 5732);
-	//rt.tune_rx(1, 5769);
-	//rt.tune_rx(2, 5806);
-	//rt.tune_rx(3, 5843);
-	
-		// --- set normalise parmameters
-	// -- base
-	//rtspi.transmit24(RT_NORM_BASE+0, 11832, 1);
-	//rtspi.transmit24(RT_NORM_BASE+1, 12503, 1);
-	//rtspi.transmit24(RT_NORM_BASE+2, 32763, 1);
-	//rtspi.transmit24(RT_NORM_BASE+3, 22661, 1);
-	//// -- quotient
-	//float ftmp = 4.00F;
-	//rtspi.transmit32(0, *(uint32_t*)&ftmp, 1);	// write float into transfer register
-	//rtspi.transmit_cmd(RT_QUOT_BASE+0);			// copy transfer register to output
-	//ftmp = 3.58F;
-	//rtspi.transmit32(0, *(uint32_t*)&ftmp, 1);	// write float into transfer register
-	//rtspi.transmit_cmd(RT_QUOT_BASE+1);			// copy transfer register to output
-	//ftmp = 0.01F;
-	//rtspi.transmit32(0, *(uint32_t*)&ftmp, 1);	// write float into transfer register
-	//rtspi.transmit_cmd(RT_QUOT_BASE+2);			// copy transfer register to output
-	//ftmp = 7.02F;
-	//rtspi.transmit32(0, *(uint32_t*)&ftmp, 1);	// write float into transfer register
-	//rtspi.transmit_cmd(RT_QUOT_BASE+3);			// copy transfer register to output
-	
-	//float ftmp = 3.94F;
-	//rtspi.transmit32(0, *(uint32_t*)&ftmp, 1);
-	
-	//rt.fetch_minmax();
-	//for (uint8_t i=0;i<4;i++) {
-	//	printf("min %05d  max %05d  delta %05d  quot %2f\r\n", rt.rssi_min[i], rt.rssi_max[i], rt.rssi_max[i] - rt.rssi_min[i], ((float)(rt.rssi_max[i] - rt.rssi_min[i]))/4096);
-	//}
-	
-	//float ftmp = 3.94F;
-	//printf("ftmp %08x", *(uint32_t*)&ftmp);
-	
-	//rt.get_state();
-	// --- write to log
-	//ESP_LOGI(TAG, "main event! :) %02x - %04x", uitmp, rtspi.spi_rx_data[rtspi.spi_rx_data_max]);
 }
 
 // ****** main
@@ -132,31 +74,6 @@ void app_main(void) {
 	// --- init rt spi
 	rtspi.init();
 	
-	// --- test sd/ddr ram
-	// -- write pattern
-	//char trssi[8];
-	//for (uint8_t i=0;i<16;i++) {
-	//	trssi[0] = i;
-	//	trssi[1] = i+1;
-	//	trssi[2] = i+2;
-	//	trssi[3] = i+3;
-	//	trssi[4] = i+4;
-	//	trssi[5] = i+5;
-	//	trssi[6] = i+6;
-	//	trssi[7] = i+7;
-	//	rtspi.write64(&trssi[0]);							// write 64bit word to transfer register
-	//	rtspi.transmit24(RT_REG2SDRAM, i, 0);				// set sdram address (rssi block nr)
-	//	printf("W: '%02x' %02x %02x %02x %02x %02x %02x %02x %02x\r\n", i, trssi[0], trssi[1], trssi[2], trssi[3], trssi[4], trssi[5], trssi[6], trssi[7]);
-	//}
-	//	printf("-------------------------------------------------\r\n");
-	//// -- read pattern
-	//for (uint8_t i=0;i<16;i++) {
-	//	rtspi.transmit24(RT_SDRAM2REG, i, 0);				// set sdram address (rssi block nr)
-	//	rtspi.read64(&trssi[0]);							// fetch 64bit word from transfer register
-	//	printf("R: '%02x' '%01x' %02x %02x %02x %02x %02x %02x %02x %02x\r\n", i, i&0x01, trssi[0], trssi[1], trssi[2], trssi[3], trssi[4], trssi[5], trssi[6], trssi[7]);
-	//}
-	//while(1);
-	
 	// --- init rt
 	rt.init();
 	
@@ -177,9 +94,4 @@ void app_main(void) {
 	
 	// --- init http
 	http.init();
-	
-	// --- init runtime stats
-	//sync_stats_task = xSemaphoreCreateBinary();
-	//xTaskCreatePinnedToCore(stats_task, "stats", 4096, NULL, STATS_TASK_PRIO, NULL, tskNO_AFFINITY);
- //   xSemaphoreGive(sync_stats_task);
 }

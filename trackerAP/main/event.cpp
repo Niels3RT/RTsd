@@ -81,7 +81,6 @@ void oo_Event::open(uint8_t nr) {
 			if (sd.entry->d_type == DT_DIR) {
 				if (cnt == nr) {
 					strncpy(name, sd.entry->d_name, 39);
-					//printf("Path to event '%s'\r\n", name);
 				}
 				cnt++;
 			}
@@ -99,7 +98,6 @@ void oo_Event::open(uint8_t nr) {
 				sd.cfg_file_getparm();
 				// -- don't work on comments or eof
 				if ((sd.cfg_parm[0] != '#') && (sd.cfg_parm[0] != 0xff)){
-					//printf("%s : %s\r\n", sd.cfg_parm, sd.cfg_value);
 					// -- quali mode
 					if (strcmp(sd.cfg_parm, CFG_QUALI_MODE) == 0) {
 						quali_mode = (uint8_t)buf.buf2uintX_t_dec(&sd.cfg_value[0]);
@@ -137,7 +135,6 @@ void oo_Event::open(uint8_t nr) {
 				sd.dir_get_entry();
 				while(sd.entry) {
 					if ((sd.entry->d_type == DT_DIR) && (sessions_cnt < 32)) {
-						//strncpy(sessions[sessions_cnt].name, sd.entry->d_name, 39);
 						// -- nr
 						sessions[sessions_cnt].nr = sessions_cnt;
 						// -- session info from config file
@@ -150,7 +147,6 @@ void oo_Event::open(uint8_t nr) {
 								// -- mode training
 								if (strcmp(sd.cfg_parm, CFG_SESSION_MODE) == 0) {
 									sessions[sessions_cnt].mode = (uint8_t)buf.buf2uintX_t_dec(&sd.cfg_value[0]);
-									//printf("session mode from txt '%d'\r\n", sessions[sessions_cnt].mode);
 									cnt_sess_type[sessions[sessions_cnt].mode]++;
 									printf("'%s' - '%d'\r\n", ctmp, cnt_sess_type[sessions[sessions_cnt].mode]);
 								}
@@ -314,7 +310,6 @@ void oo_Event::write_event_pilots(void) {
 void oo_Event::read_pilots(void) {
 	char * pos = &sd.data_line[0];
 	uint8_t len = 0;
-	//char tname[40];
 	pilots_all_cnt = 0;
 
 	// --- open pilots data file
@@ -359,8 +354,7 @@ void oo_Event::read_pilots(void) {
 void oo_Event::collect_results(void) {
 	char ctmp[256];
 	uint8_t pcount = 0;
-	printf("----------------------------------------------------------------------\r\n");
-	printf("Yeah, collect session results!\r\n");
+	
 	// --- clear event results
 	clear_results();
 	// --- walk through sessions
@@ -449,9 +443,6 @@ void oo_Event::collect_results(void) {
 		// - close session pilots data file
 		sd.data_file_close();
 	}
-	
-	printf("Yeah, collect session results finished!\r\n");
-	printf("----------------------------------------------------------------------\r\n");
 }
 
 // ****** sort fastest laps array

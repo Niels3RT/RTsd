@@ -5,7 +5,6 @@ class oo_HTTP {
 		char rx_buf[4][4096];
 		char tx_buf[4][4096];
 		uint16_t rxpos[4];
-		//char buf_out[1024];
 	private:
 	
 	// -- functions
@@ -37,8 +36,6 @@ class oo_HTTP {
 		void reply_open_heat(char *tbuf_rx, char *tbuf_tx);
 		bool reply_file(char *tbuf_rx, int tcs, int buf_nr);
 		void parse_ex(char *tbuf);
-		//static void do_retransmit(const int sock);
-		//static void httpn_server_task(void *pvParameters);
 	private:
 		
 };
@@ -50,8 +47,6 @@ class oo_HTTP {
 #define HTTP_RX_BUFSIZE			4096
 #define HTTP_TX_BUFSIZE			4096
 
-//#define HEADER "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nConnection: Keep-Alive\r\nContent-Type: text/csv\r\n\r\nDone;0\r\n1664;1664;171D;1664;000B;004F;0514;0005;\r\n"
-//#define HTTP_HEADER 			"HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nConnection: Keep-Alive\r\nContent-Type: text/csv\r\n\r\n"
 #define HTTP_HEADER 			"HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nConnection: Keep-Alive\r\n"
 #define HTTP_CONTENT_CSV		"Content-Type: text/csv\r\n\r\n"
 #define HTTP_CONTENT_CSS		"Content-Type: text/css\r\n\r\n"

@@ -145,7 +145,6 @@ void oo_HTTP::reply_results(char *tbuf) {
 	// --- print hits
 	for (uint8_t k=0;k<rt.max_chn;k++) {
 		for (uint8_t i=0;i<rt.hitcount[k];i++) {
-			//printf("%d;%02x;%08d\r\n", k, i, rt.hits[k][i]);
 			tbuf += strlen(tbuf);
 			sprintf(tbuf, "h;%d;%02x;%08x;\r\n", k, i, rt.hits[k][i]);
 		}
@@ -154,22 +153,14 @@ void oo_HTTP::reply_results(char *tbuf) {
 	// --- print fastest laps in heat, order by fastest
 	for (uint8_t i=0;i<rt.max_chn;i++) {
 		tbuf += strlen(tbuf);
-		//sprintf(tbuf, "f;%d;%02x;%08x;\r\n", i, heat.fastest_laps_lapnr[i], heat.fastest_laps_time[i]);
-		//sprintf(tbuf, "f;%d;%02x;%02x;%08x\r\n", i, heat.pos_fastest_lap[i], heat.fastest_laps_lapnr[heat.pos_fastest_lap[i]], heat.fastest_laps_time[heat.pos_fastest_lap[i]]);
 		sprintf(tbuf, "f;%d;%02x;%02x;\r\n", i, heat.current.pos_fastest_lap[i], heat.current.fastest_laps_lapnr[heat.current.pos_fastest_lap[i]]);
-		//printf("%d;%02x;%08d\r\n", k, i, rt.hits[k][i]);
 	}
 	
 	// --- print position in heat
 	for (uint8_t i=0;i<rt.max_chn;i++) {
 		tbuf += strlen(tbuf);
-		//sprintf(tbuf, "f;%d;%02x;%08x;\r\n", i, heat.fastest_laps_lapnr[i], heat.fastest_laps_time[i]);
 		sprintf(tbuf, "p;%d;%02x;%02x;%08x;\r\n", i, heat.current.pos_nr[i], heat.current.lapcount[heat.current.pos_nr[i]], heat.current.heat_time[heat.current.pos_nr[i]]);
-		//printf("%d;%02x;%08d\r\n", k, i, rt.hits[k][i]);
 	}
-	
-	// ********** DEBUG
-	//rt.pd_read(0);
 }
 
 // ****** reply race info
@@ -235,8 +226,6 @@ void oo_HTTP::reply_rssi(char *tbuf_rx, char *tbuf_tx) {
 	// --- fetch start timestamp and count
 	uint32_t tmp_start = buf.buf2uint32_t((uint8_t*)(tbuf_rx+14));
 	uint16_t tmp_count = buf.buf2uint16_t((uint8_t*)(tbuf_rx+23));
-	//uint32_t uitmp = buf.buf2uint32_t((uint8_t*)"00001234");
-	//printf("rssi start at %08x count %04x\r\n", tmp_start, tmp_count);
 	
 	// --- write response
 	char trssi[16];
@@ -246,7 +235,6 @@ void oo_HTTP::reply_rssi(char *tbuf_rx, char *tbuf_tx) {
 		// -- print timestamp
 		tbuf_tx += strlen(tbuf_tx);
 		sprintf(tbuf_tx, "%06x;", tmp_start+i);
-		// -- read line (4 words a 16bits) of rssi from sdram
 		rtspi.transmit24(RT_SDRAM2REG, tmp_start+i, 0);		// set sdram address (rssi block nr)
 		switch(rt.max_chn) {
 			case 4:
@@ -256,20 +244,16 @@ void oo_HTTP::reply_rssi(char *tbuf_rx, char *tbuf_tx) {
 				rtspi.read128(&trssi[0]);							// fetch 128bit word from transfer register
 				break;
 		}
-		//rtspi.read64(&trssi[0]);							// fetch 64bit word from transfer register
 		// -- print line to output buffer
 		pos = 0;
 		tmp = 0;
-		//printf("rssi adr '%06x' ", tmp_start+i);
 		for (uint8_t k=0;k<rt.max_chn;k++) {
 			tbuf_tx += strlen(tbuf_tx);
 			tmp = ((trssi[pos]<<8) + trssi[pos+1]) & 0xfff;
 			sprintf(tbuf_tx, "%03x;", tmp);
-			//printf(" '%03x'", tmp);
 			pos += 2;
 		}
 		strcat(tbuf_tx, "\r\n");
-		//printf("\r\n");
 	}
 }
 
@@ -342,7 +326,6 @@ void oo_HTTP::reply_get_ex(char *tbuf_tx) {
 	}
 	
 	// --- write response
-	//http.reply_done(tbuf_tx + strlen(tbuf_tx));
 	sprintf(tbuf_tx, "%x;%x\r\n", rt.ex_mod_cnt, rt.state);
 }
 
@@ -363,8 +346,6 @@ void oo_HTTP::reply_get_events(char *tbuf_tx) {
 		}
 		// -- close directory
 		sd.dir_close();
-		// -- write response
-		//http.reply_done(tbuf_tx + strlen(tbuf_tx));
 	}
 }
 
@@ -378,7 +359,6 @@ void oo_HTTP::reply_open_event(char *tbuf_rx, char *tbuf_tx) {
 		etmp += *ptmp - 0x30;
 		ptmp++;
 	}
-	//printf("EventNr '%d'", etmp);
 	
 	// --- open event
 	event.open(etmp);
@@ -404,11 +384,9 @@ void oo_HTTP::reply_set_event_pilots(char *tbuf_rx, char *tbuf_tx) {
 	char * ptmp = tbuf_rx;
 	while((*ptmp >= 0x30) && (*ptmp <= 0x39)) {
 		event.pilots[event.pilots_cnt] = buf.buf2uintX_t_dec(ptmp);
-		//printf("%d\r\n", event.pilots[event.pilots_cnt]);
 		event.pilots_cnt++;
 		ptmp = strchr(ptmp, ';') + 1;
 	}
-	//printf("Pilots count '%d'\r\n", event.pilots_cnt);
 	// --- write event pilots to data file
 	event.write_event_pilots();
 }
@@ -544,7 +522,6 @@ void oo_HTTP::reply_new_session(char *tbuf_rx, char *tbuf_tx) {
 	ptmp = strchr(ptmp, ';') + 1;
 	uint8_t gen_mode = (uint8_t)buf.buf2uintX_t_dec(ptmp);
 	
-	
 	// --- create new session
 	session.create_new(sess_mode, gen_mode);
 
@@ -562,10 +539,8 @@ void oo_HTTP::reply_open_heat(char *tbuf_rx, char *tbuf_tx) {
 		etmp += *ptmp - 0x30;
 		ptmp++;
 	}
-	//printf("HeatNr '%d'\r\n", etmp);
 	
 	// --- open heat
-	//heat.open(etmp);
 	heat.current.nr = etmp;
 	ESP_ERROR_CHECK(esp_event_post_to(main_loop_handle, TRACKER_EVENTS, EVENT_RT_DO_OPEN, NULL, 0, portMAX_DELAY));
 
@@ -586,7 +561,6 @@ bool oo_HTTP::reply_file(char *tbuf_rx, int tcs, int buf_nr) {
 	bzero(filename, sizeof(filename));
 	sprintf(&filename[0], "%s", HTTP_SD_PATH);
 	strncpy(&filename[strlen(&filename[0])], tbuf_rx, len);
-	//printf("filename '%s' len %d\r\n", filename, len);
 	
 	// --- decide on content type
 	if (strstr(tbuf_rx, ".html"))
@@ -599,8 +573,6 @@ bool oo_HTTP::reply_file(char *tbuf_rx, int tcs, int buf_nr) {
 		strcpy(&http.tx_buf[buf_nr][strlen(http.tx_buf[buf_nr])], HTTP_CONTENT_PNG);
 	if (strstr(tbuf_rx, ".jpg"))
 		strcpy(&http.tx_buf[buf_nr][strlen(http.tx_buf[buf_nr])], HTTP_CONTENT_JPG);
-	// -- default
-	//	strcpy(&http.tx_buf[buf_nr][strlen(http.tx_buf[buf_nr])], HTTP_CONTENT_CSV);
 	
 	// --- open file
 	tmpfile = fopen(filename, "r");
@@ -614,14 +586,12 @@ bool oo_HTTP::reply_file(char *tbuf_rx, int tcs, int buf_nr) {
 		int cnt_err = 0;
 		do {
 			rsize = (int)fread(&tx_buf[buf_nr][0]+send_size, 1, sizeof(tx_buf[buf_nr])-send_size, tmpfile);
-			//ESP_LOGI(TAG, "file '%s' found, start sending %d bytes", filename, rsize);
 			send_size += rsize;
 			rsize = send_size;
 			sbuf = &tx_buf[buf_nr][0];
 			cnt_err = 0;
 			do {
 				sent_size = send(tcs, sbuf, send_size, 0);
-				//printf("send_size %d sent_size %d\r\n", send_size, sent_size);
 				if (sent_size > 0) {
 					send_size -= sent_size;
 					sbuf += sent_size;
@@ -657,14 +627,12 @@ void oo_HTTP::parse_ex(char *tbuf) {
 	// --- walk through lines and read into array
 	uint8_t utmp = *tbuf - 0x30;
 	uint32_t ptmp = 0;
-	//while((utmp < 4) && (strlen(tbuf) > 10)) {
 	while((utmp < rt.max_chn) && (strlen(tbuf) > 10)) {
 		utmp = *tbuf - 0x30;
 		ptmp = buf.buf2uint32_t((uint8_t*)(tbuf+2));
 		printf("%x - %08x\r\n", utmp, ptmp);
 		rt.exceptions[utmp][rt.excount[utmp]] = ptmp;
 		rt.excount[utmp]++;
-		//if (utmp < 32) rt.exceptions[utmp][rt.excount[utmp]] = 0x00ffffff;
 		tbuf = strstr(tbuf, "\r\n") + 2;
 	}
 	// --- send exceptions array to fpga
@@ -721,8 +689,6 @@ static void httpn_server_task(void *pvParameters)
         while(1){
 			use_buf = (use_buf+1) & 0x03;
             cs=accept(s,(struct sockaddr *)&remote_addr, &socklen);
-            //ESP_LOGI(TAG,"New connection request,Request data:");
-			//ESP_LOGI(TAG,"New connection request");
 			// --- set non blocking
             fcntl(cs,F_SETFL,O_NONBLOCK);
 			vTaskDelay(10 / portTICK_PERIOD_MS);
@@ -733,7 +699,6 @@ static void httpn_server_task(void *pvParameters)
 				if (r > 0) {
 					for(int i = 0; i < r; i++) {
 						if (http.rxpos[use_buf] < (HTTP_RX_BUFSIZE-1)) {
-							//putchar(recv_buf[i]);
 							http.rx_buf[use_buf][http.rxpos[use_buf]] = recv_buf[i];
 							http.rxpos[use_buf]++;
 						}
@@ -749,12 +714,9 @@ static void httpn_server_task(void *pvParameters)
 				int tmp_len = (int)(strchr(http.rx_buf[use_buf], '\n') - &http.rx_buf[use_buf][0] - 1);
 				strncpy(&tmp_header[0], &http.rx_buf[use_buf][0], tmp_len);
 				tmp_header[tmp_len] = '\0';
-				//ESP_LOGI(TAG, "%s", tmp_header);
 				
 				// --- prepare response header, 200 ok
 				strcpy(http.tx_buf[use_buf], HTTP_HEADER);
-				
-				//strcpy(&http.tx_buf[use_buf][strlen(http.tx_buf[use_buf])], HTTP_CONTENT_CSV);
 				
 				// --- decode http request
 				bool is_good_cmd = false;
@@ -1062,7 +1024,6 @@ static void httpn_server_task(void *pvParameters)
 					} else {
 						ESP_LOGI(TAG, "%s", tmp_header);
 					}
-					//printf("%s", http.tx_buf);
 				
 					// -- write response
 					int sent_size = 0;

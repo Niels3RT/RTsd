@@ -11,7 +11,6 @@ void oo_CFG::init(void) {
 			sd.cfg_file_getparm();
 			// -- don't work on comments or eof
 			if ((sd.cfg_parm[0] != '#') && (sd.cfg_parm[0] != 0xff)){
-				//printf("%s : %s\r\n", sd.cfg_parm, sd.cfg_value);
 				// -- wifi mode
 				if (strcmp(sd.cfg_parm, CFG_WIFI_MODE) == 0) {
 					// -- ap?
@@ -47,10 +46,6 @@ void oo_CFG::init(void) {
 	}
 	
 	// --- rx frequencies
-	//rt.chn_freq[0] = 5732;
-	//rt.chn_freq[1] = 5769;
-	//rt.chn_freq[2] = 5806;
-	//rt.chn_freq[3] = 5843;
 	rt.chn_freq[0] = 5658;
 	rt.chn_freq[1] = 5695;
 	rt.chn_freq[2] = 5732;

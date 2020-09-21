@@ -10,10 +10,6 @@ void oo_Heat::init(void) {
 	current.nr = 1;
 	sprintf(current.name, "0/0");
 	for (uint8_t i=0;i<rt.max_chn;i++) current.pilots_nr[i] = i;
-	//current.pilots_nr[0] = 0;
-	//current.pilots_nr[1] = 1;
-	//current.pilots_nr[2] = 2;
-	//current.pilots_nr[3] = 3;
 	is_open = false;
 	mod_cnt = 0;
 	op_in_progress = 0;
@@ -54,7 +50,6 @@ void oo_Heat::open(void) {
 			trssi[7] = sd.csv_array[4] & 0xff;
 			rtspi.write64(&trssi[0]);								// write 64bit word to transfer register
 			rtspi.transmit24(RT_REG2SDRAM, sd.csv_array[0], 0);		// set sdram address (rssi block nr)
-			//printf("%08x;%03x;%03x;%03x;%03x\r\n", sd.csv_array[0], sd.csv_array[1], sd.csv_array[2], sd.csv_array[3], sd.csv_array[4]);
 		}
 		// -- close data file
 		sd.data_file_close();
@@ -72,10 +67,6 @@ void oo_Heat::open(void) {
 				rt.pd_set_fixed_mode(0x0f);
 				// write trigger levels to rt
 				for (uint8_t i=0;i<rt.max_chn;i++) rt.pd_set_tlevel(i, sd.csv_array[i+1]);
-				//rt.pd_set_tlevel(0, sd.csv_array[1]);
-				//rt.pd_set_tlevel(1, sd.csv_array[2]);
-				//rt.pd_set_tlevel(2, sd.csv_array[3]);
-				//rt.pd_set_tlevel(3, sd.csv_array[4]);
 			}
 		}
 		// -- close data file
@@ -83,10 +74,6 @@ void oo_Heat::open(void) {
 	} else {
 		// -- set trigger levels to default and write to rt
 		for (uint8_t i=0;i<rt.max_chn;i++) rt.pd_set_tlevel(i, rt.det_auto_min);
-		//rt.pd_set_tlevel(0, rt.det_auto_min);
-		//rt.pd_set_tlevel(1, rt.det_auto_min);
-		//rt.pd_set_tlevel(2, rt.det_auto_min);
-		//rt.pd_set_tlevel(3, rt.det_auto_min);
 	}
 	// --- set rt state to current heat state
 	rt.state = current.state;
@@ -108,14 +95,6 @@ void oo_Heat::open(void) {
 void oo_Heat::clear(void) {
 	// --- clear current heat
 	rt.clear(false);
-	//current = session.st_heat_empty;
-	//// --- clear laps array
-	//for (uint16_t i=0;i<256;i++) {
-	//	laps[0][i] = 0;
-	//	laps[1][i] = 0;
-	//	laps[2][i] = 0;
-	//	laps[3][i] = 0;
-	//}
 	// --- handle mod counter
 	mod_cnt++;
 }
@@ -175,10 +154,6 @@ void oo_Heat::commit(void) {
 	char trssi[16];
 	uint16_t rtmp[8];
 	for (uint8_t i=0;i<rt.max_chn;i++) rtmp[i] = 0;
-	//uint16_t rtmp0 = 0, rtmp1 = 0, rtmp2 = 0, rtmp3 = 0, rtmp4 = 0, rtmp5 = 0, rtmp6 = 0, rtmp7 = 0;
-	//uint16_t rtmp1 = 0;
-	//uint16_t rtmp2 = 0;
-	//uint16_t rtmp3 = 0;
 	sprintf(ctmp, "%s/session%d/run%d/rssi.csv", event.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
@@ -189,10 +164,6 @@ void oo_Heat::commit(void) {
 			rtspi.read64(&trssi[0]);						// fetch 64bit word from transfer register
 			// -- write line of rssi to file
 			for (uint8_t i=0;i<rt.max_chn;i++) rtmp[i] = ((trssi[i]<<8) + trssi[i+1]) & 0xfff;
-			//rtmp0 = ((trssi[0]<<8) + trssi[1]) & 0xfff;
-			//rtmp1 = ((trssi[2]<<8) + trssi[3]) & 0xfff;
-			//rtmp2 = ((trssi[4]<<8) + trssi[5]) & 0xfff;
-			//rtmp3 = ((trssi[6]<<8) + trssi[7]) & 0xfff;
 			if (rt.max_chn == 4) {
 				sprintf(sd.data_line, "%06x;%03x;%03x;%03x;%03x;\r\n", i, rtmp[0], rtmp[1], rtmp[2], rtmp[3]);
 			}
@@ -234,10 +205,7 @@ void oo_Heat::commit(void) {
 		for (uint8_t h=0;h<session.heat_cnt;h++) {
 			for (uint8_t c=0;c<rt.max_chn;c++) {
 				sprintf(sd.data_line, "%x;%x;%x;%08x;%08x;\r\n", session.heats[h].nr,
-											//session.heats[h].state,
 											c,
-											//session.heats[h].pilots_nr[c],
-											//session.heats[h].pilots_state[c],
 											session.heats[h].lapcount[c],
 											session.heats[h].heat_time[c],
 											session.heats[h].fastest_laps_time[c]);
@@ -314,7 +282,6 @@ void oo_Heat::calc_laps(void) {
 		for (uint8_t k=1;k<rt.hitcount[i];k++) {
 			laps[i][k-1] = rt.hits[i][k] - rt.hits[i][k-1];
 			current.lapcount[i]++;
-			//printf("chn %d lap %d '%d'\r\n", i, k-1, laps[i][k-1]);
 		}
 	}
 }
@@ -380,9 +347,6 @@ void oo_Heat::calc_position(void) {
 			}
 		}
 	}
-	//for (uint8_t i=0;i<4;i++) {
-	//	printf("position %d  chn '%d' laps '%d' time '%d'\r\n", i+1, position[i], lapcount[position[i]], rt.hits[position[i]][lapcount[position[i]]]);
-	//}
 }
 
 // ****** calc fastest laps from laps
@@ -400,14 +364,9 @@ void oo_Heat::calc_fastest_laps(void) {
 				current.fastest_laps_lapnr[i] = k;
 			}
 		}
-		//printf("chn %d fastestlap '%d'\r\n", i, fastest_laps[i]);
 	}
 	// --- determine position in running heat by fastest laps
 	for (uint8_t i=0;i<rt.max_chn;i++) current.pos_fastest_lap[i] = i;
-	//current.pos_fastest_lap[0] = 0;
-	//current.pos_fastest_lap[1] = 1;
-	//current.pos_fastest_lap[2] = 2;
-	//current.pos_fastest_lap[3] = 3;
 	for (uint8_t i=0;i<rt.max_chn;i++) {
 		for (uint8_t k=0;k<rt.max_chn-1;k++) {
 			if (current.fastest_laps_time[current.pos_fastest_lap[k]] > current.fastest_laps_time[current.pos_fastest_lap[k+1]]) {

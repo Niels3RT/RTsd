@@ -21,8 +21,6 @@ class oo_RT_spi {
 		void read128(char* in128);
 		void write128(char* out128);
 		void readn(char* inn, uint8_t count);
-		//void rt_spi_pre_transfer_callback(spi_transaction_t *t);
-		//void rt_spi_post_transfer_callback(spi_transaction_t *t);
 	private:
 };
 
