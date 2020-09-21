@@ -141,8 +141,12 @@
 								count_err = 0;
 								// - split file into lines into ; seperated parts
 								var Lines = commFile.responseText.split(/\r\n|\n/);
+								// - max channels
 								var LFields = Lines[1].split(';');
-								for (var i = 0; i < 4; i++) {
+								max_chn = parseInt(LFields[0], 16);
+								// - channel frequencies
+								var LFields = Lines[2].split(';');
+								for (var i = 0; i < max_chn; i++) {
 									cfg_frq[i] = parseInt(LFields[i], 16);
 									// - find channel for frequency
 									for (var k = 0; k < 8; k++) {
@@ -152,10 +156,11 @@
 									}
 								}
 								// - detect parameters and rssi filter
-								cfg_dead	= parseInt(LFields[4], 16);
-								cfg_percent = parseInt(LFields[5], 16);
-								cfg_min		= parseInt(LFields[6], 16);
-								cfg_filter	= parseInt(LFields[7], 16);
+								var LFields = Lines[3].split(';');
+								cfg_dead	= parseInt(LFields[0], 16);
+								cfg_percent = parseInt(LFields[1], 16);
+								cfg_min		= parseInt(LFields[2], 16);
+								cfg_filter	= parseInt(LFields[3], 16);
 								// - update values in system tab
 								update_sys();
 								break;
@@ -220,7 +225,7 @@
 										for (var i = 1; i < Lines.length; i++) {
 											LFields = Lines[i].split(';');
 											var ts = parseInt(LFields[0], 16);
-											for (var k = 0; k < 4; k++) {
+											for (var k = 0; k < max_chn; k++) {
 												rssi[k][ts] = parseInt(LFields[k+1], 16);
 											}
 										}
@@ -240,10 +245,24 @@
 			}
 			// --- set detection levels
 			if (comm_request == 6) {
-				commFile.open("GET", path + "level_set;" + var24byte(det_level[0]) + ";"
-														+ var24byte(det_level[1]) + ";"
-														+ var24byte(det_level[2]) + ";"
-														+ var24byte(det_level[3]) + ";", true);
+				switch(max_chn) {
+					case 4:
+						commFile.open("GET", path + "level_set;" + var24byte(det_level[0]) + ";"
+																+ var24byte(det_level[1]) + ";"
+																+ var24byte(det_level[2]) + ";"
+																+ var24byte(det_level[3]) + ";", true);
+						break;
+					case 8:
+						commFile.open("GET", path + "level_set;" + var24byte(det_level[0]) + ";"
+																+ var24byte(det_level[1]) + ";"
+																+ var24byte(det_level[2]) + ";"
+																+ var24byte(det_level[3]) + ";"
+																+ var24byte(det_level[4]) + ";"
+																+ var24byte(det_level[5]) + ";"
+																+ var24byte(det_level[6]) + ";"
+																+ var24byte(det_level[7]) + ";", true);
+						break;
+				}
 				commFile.onreadystatechange = function () {
 					// -- request completed?
 					if(commFile.readyState == 4) {
@@ -262,12 +281,12 @@
 					}
 				}
 			}
-			// --- write exeptions
+			// --- write exceptions
 			if (comm_request == 7) {
 				commFile.open("POST", path + "ex_set;", true);
 				// -- walk through channels
 				buf_post = "";
-				for (var i = 0; i < 4; i++) {
+				for (var i = 0; i < max_chn; i++) {
 					for (var k = 0; k < ex_count[i]; k++) {
 						buf_post += i + ";" + var28byte(exceptions[i][k]) + "\r\n";
 					}
@@ -406,16 +425,15 @@
 								count_err = 0;
 								var Lines = commFile.responseText.split(/\r\n|\n/);
 								var chtmp = 0;
-								ex_count[0] = 0;
-								ex_count[1] = 0;
-								ex_count[2] = 0;
-								ex_count[3] = 0;
+								for (var i = 0; i < max_chn; i++) {
+									ex_count[i] = 0;
+								}
 								//if (Lines.length > 1) {
 									for (var i = 0; i < Lines.length; i++) {
 										if (Lines[i].length > 8) {
 											LFields = Lines[i].split(';');
 											var chtmp = parseInt(LFields[0], 16);
-											if (chtmp < 4) {
+											if (chtmp < max_chn) {
 												exceptions[chtmp][ex_count[chtmp]] = parseInt(LFields[1], 16);
 												ex_count[chtmp]++;
 											}
@@ -989,15 +1007,17 @@
 		// --- detection levels
 		//if ((!g_drag) && (g_auto)) {		// prevent reset while dragging to change level
 		if (!g_drag) {			// prevent reset while dragging to change level
-			for (var i = 0; i < 4; i++) {
+			for (var i = 0; i < max_chn; i++) {
 				det_level[i] = parseInt(LFields[i+2], 16);
 				det_level_mod[i] = det_level[i];
 			}
 		}
 		// --- exception mod counter
-		ex_mod_cnt_new = parseInt(LFields[6], 16);
+		//ex_mod_cnt_new = parseInt(LFields[6], 16);
+		ex_mod_cnt_new = parseInt(LFields[max_chn+2], 16);
 		// --- use event mode on controls?
-		var evm_tmp = parseInt(LFields[7], 16);
+		//var evm_tmp = parseInt(LFields[7], 16);
+		var evm_tmp = parseInt(LFields[max_chn+3], 16);
 		if (evm_tmp & 0x04) {
 			heat_is_open = true;
 		} else {
@@ -1019,7 +1039,8 @@
 		}
 		use_event_mode = evm_tmp;
 		// --- event mod counter
-		event_mod_cnt_new = parseInt(LFields[8], 16);
+		//event_mod_cnt_new = parseInt(LFields[8], 16);
+		event_mod_cnt_new = parseInt(LFields[max_chn+4], 16);
 		if (event_mod_cnt != event_mod_cnt_new) {
 			event_mod_cnt = event_mod_cnt_new;
 			batch_cmd[batch_cnt_top] = 20;
@@ -1028,7 +1049,8 @@
 			batch_cnt_top++;
 		}
 		// --- session mod counter
-		session_mod_cnt_new = parseInt(LFields[9], 16);
+		//session_mod_cnt_new = parseInt(LFields[9], 16);
+		session_mod_cnt_new = parseInt(LFields[max_chn+5], 16);
 		if (session_mod_cnt != session_mod_cnt_new) {
 			session_mod_cnt = session_mod_cnt_new;
 			batch_cmd[batch_cnt_top] = 17;
@@ -1040,7 +1062,8 @@
 			
 		}
 		// --- heat mod counter
-		heat_mod_cnt_new = parseInt(LFields[10], 16);
+		//heat_mod_cnt_new = parseInt(LFields[10], 16);
+		heat_mod_cnt_new = parseInt(LFields[max_chn+6], 16);
 		if (heat_mod_cnt != heat_mod_cnt_new) {
 			heat_mod_cnt = heat_mod_cnt_new;
 			count = 0;
@@ -1050,7 +1073,7 @@
 			batch_cnt_top++;
 		}
 		// --- clear laptimes arrays
-		for (var i = 0; i < 4; i++) {
+		for (var i = 0; i < max_chn; i++) {
 			lap_count[i] = 0;
 			hit_count[i] = 0;
 			laps[i][0] = "---";
@@ -1071,7 +1094,7 @@
 				// -- hits
 				if (LFields[0] == "h") {
 					chnfield = parseInt(LFields[1], 16);
-					if (chnfield < 4) {
+					if (chnfield < max_chn) {
 						// - check channel
 						if (chntmp != chnfield) {
 							chntmp = chnfield;
@@ -1114,9 +1137,9 @@
 				}
 			}
 		} else {
-			lap_count = [0, 0, 0, 0];
-			ex_count = [0, 0, 0, 0];
-			for (var i = 0; i < 4; i++) {
+			lap_count = [0, 0, 0, 0, 0, 0, 0, 0];
+			ex_count = [0, 0, 0, 0, 0, 0, 0, 0];
+			for (var i = 0; i < max_chn; i++) {
 				laps[i][0] = 0;
 				lap_last_max[i] = 0;
 				lap_count[i] = 0;

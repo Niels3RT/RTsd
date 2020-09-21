@@ -51,6 +51,11 @@ void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
     } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
         ip_event_got_ip_t* event = (ip_event_got_ip_t*) event_data;
         ESP_LOGI(TAG, "got ip:" IPSTR, IP2STR(&event->ip_info.ip));
+		char stmp[20];
+		//sprintf(stmp, "%03d.%03d.%03d.%03d", (event->ip_info.ip.addr>>24) & 0xff, (event->ip_info.ip.addr>>16) & 0xff, (event->ip_info.ip.addr>>8) & 0xff, event->ip_info.ip.addr & 0xff);
+		sprintf(stmp, "%03d.%03d.%03d.%03d", event->ip_info.ip.addr & 0xff, (event->ip_info.ip.addr>>8) & 0xff, (event->ip_info.ip.addr>>16) & 0xff, (event->ip_info.ip.addr>>24) & 0xff);
+		oled.print_string(1, 7, &stmp[0]);
+		oled.writefb();
         s_retry_num = 0;
         xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
     }

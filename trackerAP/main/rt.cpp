@@ -5,10 +5,13 @@ void oo_RT::init(void) {
 	// --- write to log
 	ESP_LOGI(TAG, "init rt");
 	
+	// --- fetch rt type/model
+	get_type();
+	
 	// --- some vars
 	state = 0;
 	count = 0;
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<max_chn;i++) {
 		trg_level[i] = 0;
 		rssi_min[i] = 0;
 		rssi_max[i] = 0;
@@ -34,10 +37,9 @@ void oo_RT::init(void) {
 	write_cal_data();
 	
 	// --- set trigger levels
-	rt.pd_set_tlevel(0, 0x800);
-	rt.pd_set_tlevel(1, 0x800);
-	rt.pd_set_tlevel(2, 0x800);
-	rt.pd_set_tlevel(3, 0x800);
+	for (uint8_t i=0;i<max_chn;i++) {
+		rt.pd_set_tlevel(i, 0x800);
+	}
 
 	// --- set auto trigger level factor
 	pd_set_auto_quotient();
@@ -66,6 +68,16 @@ void oo_RT::set_state(void) {
 	//printf("rt set state %01x\r\n", state);
 }
 
+// ****** get racetimer type/model
+void oo_RT::get_type(void) {
+	// --- read state from spi
+	uint32_t uitmp = rtspi.transmit24(RT_TYPE, 0, 1);
+	type = uitmp & 0xf;
+	max_chn = (uitmp >> 4) & 0x0f;
+	
+	printf("rt get type '%08x' type '%01x' chn '%01x'\r\n", uitmp, type, max_chn);
+}
+
 // ****** start run
 void oo_RT::start(void) {
 	// --- set state and write to spi
@@ -78,7 +90,7 @@ void oo_RT::clear(bool keep_pilots) {
 	// --- set state and write to spi
 	state = 0;
 	set_state();
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<max_chn;i++) {
 		trg_level[i] = det_auto_min;
 		rssi_min[i]  = 0;
 		rssi_max[i]  = 0;
@@ -88,22 +100,28 @@ void oo_RT::clear(bool keep_pilots) {
 	// --- clear current heat
 	uint8_t nrtmp = heat.current.nr;
 	if (keep_pilots) {
-		uint8_t p_save[4];
-		p_save[0] = heat.current.pilots_nr[0];
-		p_save[1] = heat.current.pilots_nr[1];
-		p_save[2] = heat.current.pilots_nr[2];
-		p_save[3] = heat.current.pilots_nr[3];
+		uint8_t p_save;
 		heat.current = session.st_heat_empty;
-		heat.current.pilots_nr[0] = p_save[0];
-		heat.current.pilots_nr[1] = p_save[1];
-		heat.current.pilots_nr[2] = p_save[2];
-		heat.current.pilots_nr[3] = p_save[3];
+		for (uint8_t i=0;i<max_chn;i++) {
+			p_save = heat.current.pilots_nr[i];
+			heat.current.pilots_nr[i] = p_save;
+		}
+		//p_save[0] = heat.current.pilots_nr[0];
+		//p_save[1] = heat.current.pilots_nr[1];
+		//p_save[2] = heat.current.pilots_nr[2];
+		//p_save[3] = heat.current.pilots_nr[3];
+		//heat.current = session.st_heat_empty;
+		//heat.current.pilots_nr[0] = p_save[0];
+		//heat.current.pilots_nr[1] = p_save[1];
+		//heat.current.pilots_nr[2] = p_save[2];
+		//heat.current.pilots_nr[3] = p_save[3];
 	} else {
 		heat.current = session.st_heat_empty;
-		heat.current.pilots_nr[0] = 0;
-		heat.current.pilots_nr[1] = 1;
-		heat.current.pilots_nr[2] = 2;
-		heat.current.pilots_nr[3] = 3;
+		for (uint8_t i=0;i<max_chn;i++) heat.current.pilots_nr[i] = i;
+		//heat.current.pilots_nr[0] = 0;
+		//heat.current.pilots_nr[1] = 1;
+		//heat.current.pilots_nr[2] = 2;
+		//heat.current.pilots_nr[3] = 3;
 	}
 	heat.current.nr = nrtmp;
 	// --- reset counter in tracker
@@ -128,32 +146,34 @@ void oo_RT::set_count(void) {
 
 // ****** tune all rxes from freq array
 void oo_RT::tune_rx_all() {
-	tune_rx(0, chn_freq[0]);
-	tune_rx(1, chn_freq[1]);
-	tune_rx(2, chn_freq[2]);
-	tune_rx(3, chn_freq[3]);
+	for (uint8_t i=0;i<max_chn;i++) tune_rx(i, chn_freq[i]);
+	//tune_rx(0, chn_freq[0]);
+	//tune_rx(1, chn_freq[1]);
+	//tune_rx(2, chn_freq[2]);
+	//tune_rx(3, chn_freq[3]);
 }
 
 // ****** tune rxes via spi
 void oo_RT::tune_rx(uint8_t target_rx, uint16_t freq) {
-	switch(target_rx) {
-		// -- rx 0
-		case 0:
-			rtspi.transmit16(RT_TUNE_RX0, freq);
-			break;
-		// -- rx 1
-		case 1:
-			rtspi.transmit16(RT_TUNE_RX1, freq);
-			break;
-		// -- rx 2
-		case 2:
-			rtspi.transmit16(RT_TUNE_RX2, freq);
-			break;
-		// -- rx 3
-		case 3:
-			rtspi.transmit16(RT_TUNE_RX3, freq);
-			break;
-	}
+	rtspi.transmit16(RT_TUNE_BASE+target_rx, freq);
+	//switch(target_rx) {
+	//	// -- rx 0
+	//	case 0:
+	//		rtspi.transmit16(RT_TUNE_RX0, freq);
+	//		break;
+	//	// -- rx 1
+	//	case 1:
+	//		rtspi.transmit16(RT_TUNE_RX1, freq);
+	//		break;
+	//	// -- rx 2
+	//	case 2:
+	//		rtspi.transmit16(RT_TUNE_RX2, freq);
+	//		break;
+	//	// -- rx 3
+	//	case 3:
+	//		rtspi.transmit16(RT_TUNE_RX3, freq);
+	//		break;
+	//}
 }
 
 // ****** clear min max mimum rssi for channels
@@ -165,7 +185,7 @@ void oo_RT::clear_minmax(void) {
 // ****** fetch min max mimum rssi for channels
 void oo_RT::fetch_minmax(void) {
 	// --- read min max per channel
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<max_chn;i++) {
 		rssi_min[i] = rtspi.transmit16(RT_MIN_BASE+i, 0);
 		rssi_max[i] = rtspi.transmit16(RT_MAX_BASE+i, 0);
 	}
@@ -173,8 +193,8 @@ void oo_RT::fetch_minmax(void) {
 
 // ****** write calibration data to tracker via spi
 void oo_RT::write_cal_data(void) {
-	// --- read min max per channel
-	for (uint8_t i=0;i<4;i++) {
+	// --- write cal data per channel
+	for (uint8_t i=0;i<max_chn;i++) {
 		rtspi.transmit24(RT_NORM_BASE+i, rssi_base[i], 1);
 		rtspi.transmit32(0, *(uint32_t*)&rssi_quot[i], 1);	// write float into transfer register
 		rtspi.transmit_cmd(RT_QUOT_BASE+i);					// copy transfer register to output
@@ -186,23 +206,23 @@ void oo_RT::pd_set_tlevel(uint8_t chn, uint16_t level) {
 	// --- remember in array
 	trg_level[chn] = level;
 	// --- determine channel
-	uint8_t adr = 0;
-	switch(chn) {
-		case 0:
-			adr = RT_TRG_LEVEL0;
-			break;
-		case 1:
-			adr = RT_TRG_LEVEL1;
-			break;
-		case 2:
-			adr = RT_TRG_LEVEL2;
-			break;
-		case 3:
-			adr = RT_TRG_LEVEL3;
-			break;
-	}
+	//uint8_t adr = 0;
+	//switch(chn) {
+	//	case 0:
+	//		adr = RT_TRG_LEVEL0;
+	//		break;
+	//	case 1:
+	//		adr = RT_TRG_LEVEL1;
+	//		break;
+	//	case 2:
+	//		adr = RT_TRG_LEVEL2;
+	//		break;
+	//	case 3:
+	//		adr = RT_TRG_LEVEL3;
+	//		break;
+	//}
 	// --- set trigger level
-	rtspi.transmit16(adr, level);
+	rtspi.transmit16(RT_TRG_LEVEL_BASE+chn, level);
 	
 	//printf("tl %02x %04x\r\n", adr, trg_level[chn]);
 }
@@ -210,7 +230,7 @@ void oo_RT::pd_set_tlevel(uint8_t chn, uint16_t level) {
 // ****** get peak detect trigger level
 void oo_RT::pd_get_tlevels() {
 	// --- walk through channels
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<max_chn;i++) {
 		trg_level[i] = rtspi.transmit16(RT_TRIGGER_BASE+i, 0);
 		//printf("trg_level '%d' ''%05d'\r\n", i, trg_level[i]);
 	}
@@ -251,11 +271,12 @@ void oo_RT::pd_set_exceptions(void) {
 	// --- clear exception bram counters
 	rtspi.transmit_cmd(RT_PD_EX_CLEAR);						// clear max registers
 	// --- walk through exceptions
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<max_chn;i++) {
 		// -- write valid exceptions
 		for (uint8_t k=0;k<excount[i];k++) {
 			rtspi.transmit32(0, exceptions[i][k], 1);		// write float into transfer register
 			rtspi.transmit_cmd(RT_PD_EXC_BASE+i);			// copy transfer register to ex bram
+			printf("exc '%06x'  adr '%02x'\r\n", exceptions[i][k], RT_PD_EXC_BASE+i);
 		}
 		// -- write limiter
 		if (excount[i] < 32) {
@@ -279,7 +300,7 @@ void oo_RT::pd_clear(void) {
 	// --- set peak detect fixed level mode to auto for all channels
 	pd_set_fixed_mode(0x00);
 	// -- clear exceptions
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<max_chn;i++) {
 		excount[i] = 0;
 		for (uint8_t k=0;k<32;k++) {
 			exceptions[i][k] = 0x00ffffff;
@@ -313,7 +334,7 @@ void oo_RT::pd_fetch(void) {
 	}
 	
 	// --- walk through channels
-	for (uint8_t k=0;k<4;k++) {
+	for (uint8_t k=0;k<max_chn;k++) {
 		hitcount[k] = 0;
 		adr = k * 0x100;
 		// -- walk through hits

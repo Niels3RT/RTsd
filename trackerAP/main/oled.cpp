@@ -15,6 +15,13 @@ void oo_oLed::print_char(uint8_t x, uint8_t y, uint8_t value) {
 	rtspi.transmit16(RT_PRINT_CHAR, (postmp<<8)+value);
 }
 
+// ****** print string
+void oo_oLed::print_string(uint8_t px, uint8_t py, char *t_buf) {
+	while(*t_buf != '\0') {
+		print_char(px++, py, *(t_buf++));
+	}
+}
+
 // ****** write framebuffer to bw oled
 void oo_oLed::writefb(void) {
 	// --- write fb

@@ -21,18 +21,19 @@
 		document.getElementById("div_rssi_top").style.width = sizex + "px";
 		//g_width = sizex - 8;
 		g_width = sizex - 2;
-		document.getElementById("div_rssi_graph").style.width = g_width + "px";
+		p_div_rssi.style.width = g_width + "px";
+		p_div_rssi.style.height = (134*max_chn + 80) + "px";
 		// -- handle canvas
 		let canvas = document.getElementById("canvas_rssi");
 		//canvas.height = 134;
-		canvas.height = 134*4 + 80;
+		canvas.height = 134*max_chn + 80;
 		w_tmp = tstamp_rssi;
 		if (g_width > tstamp_rssi) w_tmp = g_width;
 		canvas.width = w_tmp;
 		g_len = tstamp_rssi;
 		ybase = 0;
 		if (canvas && canvas.getContext) {
-			for (var i = 0; i < 4; i++) {
+			for (var i = 0; i < max_chn; i++) {
 				var ctx = canvas.getContext('2d');
 				// -- mark exceptions
 				for (var k = 0; k < ex_count[i]; k++) {

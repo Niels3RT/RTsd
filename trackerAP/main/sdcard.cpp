@@ -132,7 +132,7 @@ bool oo_SD::data_file_getline_csv() {
 	uint8_t cnt = 0;
 	uint32_t etmp = 0;
 	// --- clear transfer array
-	for (uint8_t i=0;i<8;i++) csv_array[i] = 0;
+	for (uint8_t i=0;i<16;i++) csv_array[i] = 0;
 	// --- read line of data file
 	if(data_file_getline()) {
 		// -- parse csv line

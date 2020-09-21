@@ -10,6 +10,7 @@ class oo_oLed {
 	public:
 		void init(void);
 		void print_char(uint8_t x, uint8_t y, uint8_t value);
+		void print_string(uint8_t px, uint8_t py, char *tbuf);
 		void writefb(void);
 		void print_hex_8u(uint8_t px, uint8_t py, uint8_t value);
 		void print_dec_8u(uint8_t px, uint8_t py, uint8_t value);

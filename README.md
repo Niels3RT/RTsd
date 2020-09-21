@@ -54,7 +54,7 @@ Klick screenshots to watch on youtube:
 | 2,4GHz WiFi antenna, see pigtail connector | 1x | 
 | USB FTDI-Adapter for programming the ESP32 (pictured with pins removed and prepared to fit pin header on pcb)<br>![FTDI](pics/FTDI_small.png?raw=true "FTDI") | 1x |
 | 2x7 pin socket (1x7 will do too) | 1x |
-| DCDC step down converter<br>![FTDI](pics/DCDC_small.png?raw=true "FTDI") | 2x |
+| DCDC step down converter<br>![DCDC](pics/DCDC_small.png?raw=true "DCDC") | 2x |
 | MCP3201 SOP-8, buy a few more on AliExpress, i have seen DOA ones | 5x |
 | Micro SD-Card socket, look at picture, there are different layouts<br>![FTDI](pics/sd_socket_small.png?raw=true "FTDI") | 1x |
 | Micro-SD Card 32mb/32GB should work (32GB might be enough for a couple of seasons) | 1x |

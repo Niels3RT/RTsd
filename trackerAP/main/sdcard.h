@@ -5,7 +5,7 @@ class oo_SD {
 		char cfg_parm[40];
 		char cfg_value[40];
 		char data_line[256];
-		uint32_t csv_array[8];
+		uint32_t csv_array[16];
 		FILE* cfg_file;
 		FILE* data_file;
 		DIR *folder;

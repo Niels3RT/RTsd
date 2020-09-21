@@ -54,6 +54,10 @@ class oo_Event {
 #define DEFAULT_PILOT_2		"Pilot 2"
 #define DEFAULT_PILOT_3		"Pilot 3"
 #define DEFAULT_PILOT_4		"Pilot 4"
+#define DEFAULT_PILOT_5		"Pilot 5"
+#define DEFAULT_PILOT_6		"Pilot 6"
+#define DEFAULT_PILOT_7		"Pilot 7"
+#define DEFAULT_PILOT_8		"Pilot 8"
 
 #define QUALI_OVERTIME		0
 #define QUALI_CONSEC_LAPS	1

@@ -9,10 +9,11 @@ void oo_Heat::init(void) {
 	// -- heat
 	current.nr = 1;
 	sprintf(current.name, "0/0");
-	current.pilots_nr[0] = 0;
-	current.pilots_nr[1] = 1;
-	current.pilots_nr[2] = 2;
-	current.pilots_nr[3] = 3;
+	for (uint8_t i=0;i<rt.max_chn;i++) current.pilots_nr[i] = i;
+	//current.pilots_nr[0] = 0;
+	//current.pilots_nr[1] = 1;
+	//current.pilots_nr[2] = 2;
+	//current.pilots_nr[3] = 3;
 	is_open = false;
 	mod_cnt = 0;
 	op_in_progress = 0;
@@ -70,20 +71,22 @@ void oo_Heat::open(void) {
 				// set trigger level mode to fixed
 				rt.pd_set_fixed_mode(0x0f);
 				// write trigger levels to rt
-				rt.pd_set_tlevel(0, sd.csv_array[1]);
-				rt.pd_set_tlevel(1, sd.csv_array[2]);
-				rt.pd_set_tlevel(2, sd.csv_array[3]);
-				rt.pd_set_tlevel(3, sd.csv_array[4]);
+				for (uint8_t i=0;i<rt.max_chn;i++) rt.pd_set_tlevel(i, sd.csv_array[i+1]);
+				//rt.pd_set_tlevel(0, sd.csv_array[1]);
+				//rt.pd_set_tlevel(1, sd.csv_array[2]);
+				//rt.pd_set_tlevel(2, sd.csv_array[3]);
+				//rt.pd_set_tlevel(3, sd.csv_array[4]);
 			}
 		}
 		// -- close data file
 		sd.data_file_close();
 	} else {
 		// -- set trigger levels to default and write to rt
-		rt.pd_set_tlevel(0, rt.det_auto_min);
-		rt.pd_set_tlevel(1, rt.det_auto_min);
-		rt.pd_set_tlevel(2, rt.det_auto_min);
-		rt.pd_set_tlevel(3, rt.det_auto_min);
+		for (uint8_t i=0;i<rt.max_chn;i++) rt.pd_set_tlevel(i, rt.det_auto_min);
+		//rt.pd_set_tlevel(0, rt.det_auto_min);
+		//rt.pd_set_tlevel(1, rt.det_auto_min);
+		//rt.pd_set_tlevel(2, rt.det_auto_min);
+		//rt.pd_set_tlevel(3, rt.det_auto_min);
 	}
 	// --- set rt state to current heat state
 	rt.state = current.state;
@@ -130,7 +133,7 @@ void oo_Heat::commit(void) {
 	// --- limit lapcount in quali consecutive lap mode
 	if ((session.mode == SESSION_MODE_QUALI) && (event.quali_mode == QUALI_CONSEC_LAPS)) {
 		// -- walk through channels
-		for(uint8_t i=0;i<4;i++) {
+		for(uint8_t i=0;i<rt.max_chn;i++) {
 			// - more laps flown than consecutive limit? Position time is already best n laps.
 			if (session.heats[current.nr].lapcount[i] > event.quali_laps) {
 				session.heats[current.nr].lapcount[i] = event.quali_laps;
@@ -147,7 +150,7 @@ void oo_Heat::commit(void) {
 		sprintf(sd.data_line, "0;%04x;%04x;%04x;%04x;\r\n", rt.trg_level[0], rt.trg_level[1], rt.trg_level[2], rt.trg_level[3]);
 		sd.data_file_writeline();
 		// -- walk through channels
-		for (uint8_t c=0;c<4;c++) {
+		for (uint8_t c=0;c<rt.max_chn;c++) {
 			// - hits
 			for (uint8_t i=0;i<current.lapcount[c];i++) {
 				sprintf(sd.data_line, "1;%x;%02x;%08x;\r\n", c, i, laps[c][i]);
@@ -155,12 +158,12 @@ void oo_Heat::commit(void) {
 			}
 		}
 		// -- fastest laps, order by fastest
-		for (uint8_t i=0;i<4;i++) {
+		for (uint8_t i=0;i<rt.max_chn;i++) {
 			sprintf(sd.data_line, "2;%x;%02x;%08x;\r\n", i, heat.current.pos_fastest_lap[i], laps[i][heat.current.fastest_laps_lapnr[heat.current.pos_fastest_lap[i]]]);
 			sd.data_file_writeline();
 		}
 		// -- position in heat
-		for (uint8_t i=0;i<4;i++) {
+		for (uint8_t i=0;i<rt.max_chn;i++) {
 			sprintf(sd.data_line, "3;%x;%02x;%02x;%08x;\r\n", i, heat.current.pos_nr[i], heat.current.lapcount[heat.current.pos_nr[i]], heat.current.heat_time[heat.current.pos_nr[i]]);
 			sd.data_file_writeline();
 		}
@@ -169,11 +172,13 @@ void oo_Heat::commit(void) {
 	}
 	printf("2 current.state '%x'\r\n", current.state);
 	// --- save rssi
-	char trssi[8];
-	uint16_t rtmp0 = 0;
-	uint16_t rtmp1 = 0;
-	uint16_t rtmp2 = 0;
-	uint16_t rtmp3 = 0;
+	char trssi[16];
+	uint16_t rtmp[8];
+	for (uint8_t i=0;i<rt.max_chn;i++) rtmp[i] = 0;
+	//uint16_t rtmp0 = 0, rtmp1 = 0, rtmp2 = 0, rtmp3 = 0, rtmp4 = 0, rtmp5 = 0, rtmp6 = 0, rtmp7 = 0;
+	//uint16_t rtmp1 = 0;
+	//uint16_t rtmp2 = 0;
+	//uint16_t rtmp3 = 0;
 	sprintf(ctmp, "%s/session%d/run%d/rssi.csv", event.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
@@ -183,11 +188,17 @@ void oo_Heat::commit(void) {
 			rtspi.transmit24(RT_SDRAM2REG, i, 0);			// set sdram address (rssi block nr)
 			rtspi.read64(&trssi[0]);						// fetch 64bit word from transfer register
 			// -- write line of rssi to file
-			rtmp0 = ((trssi[0]<<8) + trssi[1]) & 0xfff;
-			rtmp1 = ((trssi[2]<<8) + trssi[3]) & 0xfff;
-			rtmp2 = ((trssi[4]<<8) + trssi[5]) & 0xfff;
-			rtmp3 = ((trssi[6]<<8) + trssi[7]) & 0xfff;
-			sprintf(sd.data_line, "%06x;%03x;%03x;%03x;%03x;\r\n", i, rtmp0, rtmp1, rtmp2, rtmp3);
+			for (uint8_t i=0;i<rt.max_chn;i++) rtmp[i] = ((trssi[i]<<8) + trssi[i+1]) & 0xfff;
+			//rtmp0 = ((trssi[0]<<8) + trssi[1]) & 0xfff;
+			//rtmp1 = ((trssi[2]<<8) + trssi[3]) & 0xfff;
+			//rtmp2 = ((trssi[4]<<8) + trssi[5]) & 0xfff;
+			//rtmp3 = ((trssi[6]<<8) + trssi[7]) & 0xfff;
+			if (rt.max_chn == 4) {
+				sprintf(sd.data_line, "%06x;%03x;%03x;%03x;%03x;\r\n", i, rtmp[0], rtmp[1], rtmp[2], rtmp[3]);
+			}
+			if (rt.max_chn == 8) {
+				sprintf(sd.data_line, "%06x;%03x;%03x;%03x;%03x;%03x;%03x;%03x;%03x;\r\n", i, rtmp[0], rtmp[1], rtmp[2], rtmp[3], rtmp[4], rtmp[5], rtmp[6], rtmp[7]);
+			}
 			sd.data_file_writeline();
 		}
 		// -- close data file
@@ -202,7 +213,7 @@ void oo_Heat::commit(void) {
 	if (sd.data_file != NULL) {
 		printf("csv file opened for writing '%s'\r\n", ctmp);
 		for (uint8_t i=0;i<session.heat_cnt;i++) {
-			for (uint8_t c=0;c<4;c++) {
+			for (uint8_t c=0;c<rt.max_chn;c++) {
 				sprintf(sd.data_line, "%x;%x;%x;%x;\r\n", i, session.heats[i].state, c, session.heats[i].pilots_state[c]);
 				sd.data_file_writeline();
 			}
@@ -221,7 +232,7 @@ void oo_Heat::commit(void) {
 	if (sd.data_file != NULL) {
 		printf("csv file opened for writing '%s'\r\n", ctmp);
 		for (uint8_t h=0;h<session.heat_cnt;h++) {
-			for (uint8_t c=0;c<4;c++) {
+			for (uint8_t c=0;c<rt.max_chn;c++) {
 				sprintf(sd.data_line, "%x;%x;%x;%08x;%08x;\r\n", session.heats[h].nr,
 											//session.heats[h].state,
 											c,
@@ -256,7 +267,7 @@ void oo_Heat::save_exceptions(void) {
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
 		// -- walk through channels
-		for (uint8_t i=0;i<4;i++) {
+		for (uint8_t i=0;i<rt.max_chn;i++) {
 			// - walk through exceptions
 			for (uint8_t e=0;e<rt.excount[i];e++) {
 				sprintf(sd.data_line, "%x;%08x;\r\n", i, rt.exceptions[i][e]);
@@ -297,7 +308,7 @@ void oo_Heat::load_exceptions(void) {
 // ****** calc laps from hits
 void oo_Heat::calc_laps(void) {
 	// --- walk through channels
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<rt.max_chn;i++) {
 		current.lapcount[i] = 0;
 		// -- walk through hits
 		for (uint8_t k=1;k<rt.hitcount[i];k++) {
@@ -312,7 +323,7 @@ void oo_Heat::calc_laps(void) {
 void oo_Heat::calc_position(void) {
 	uint8_t utmp = 0;
 	// --- some starting point
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<rt.max_chn;i++) {
 		current.pos_nr[i] = i;
 		// -- determine time in ranking mode
 		switch(session.mode) {
@@ -353,8 +364,8 @@ void oo_Heat::calc_position(void) {
 		}
 	}
 	// --- walk through channels
-	for (uint8_t i=0;i<4;i++) {
-		for (uint8_t k=0;k<3;k++) {
+	for (uint8_t i=0;i<rt.max_chn;i++) {
+		for (uint8_t k=0;k<rt.max_chn-1;k++) {
 			// - compare purely by lap count
 			if (current.lapcount[current.pos_nr[k]] < current.lapcount[current.pos_nr[k+1]]) {
 				utmp = current.pos_nr[k];
@@ -378,7 +389,7 @@ void oo_Heat::calc_position(void) {
 void oo_Heat::calc_fastest_laps(void) {
 	uint8_t utmp = 0;
 	// --- walk through channels
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<rt.max_chn;i++) {
 		// -- set to somewhat sane defaults
 		current.fastest_laps_time[i] = 0xffffffff;
 		current.fastest_laps_lapnr[i] = 0xff;
@@ -392,12 +403,13 @@ void oo_Heat::calc_fastest_laps(void) {
 		//printf("chn %d fastestlap '%d'\r\n", i, fastest_laps[i]);
 	}
 	// --- determine position in running heat by fastest laps
-	current.pos_fastest_lap[0] = 0;
-	current.pos_fastest_lap[1] = 1;
-	current.pos_fastest_lap[2] = 2;
-	current.pos_fastest_lap[3] = 3;
-	for (uint8_t i=0;i<4;i++) {
-		for (uint8_t k=0;k<3;k++) {
+	for (uint8_t i=0;i<rt.max_chn;i++) current.pos_fastest_lap[i] = i;
+	//current.pos_fastest_lap[0] = 0;
+	//current.pos_fastest_lap[1] = 1;
+	//current.pos_fastest_lap[2] = 2;
+	//current.pos_fastest_lap[3] = 3;
+	for (uint8_t i=0;i<rt.max_chn;i++) {
+		for (uint8_t k=0;k<rt.max_chn-1;k++) {
 			if (current.fastest_laps_time[current.pos_fastest_lap[k]] > current.fastest_laps_time[current.pos_fastest_lap[k+1]]) {
 				utmp = current.pos_fastest_lap[k];
 				current.pos_fastest_lap[k] = current.pos_fastest_lap[k+1];

@@ -14,14 +14,14 @@ struct st_heat {
 	uint8_t nr;
 	char name[40];
 	uint8_t state;
-	uint16_t pilots_nr[4];
-	uint8_t pilots_state[4];
-	uint8_t lapcount[4];
-	uint32_t fastest_laps_time[4];
-	uint8_t fastest_laps_lapnr[4];
-	uint8_t pos_nr[4];
-	uint8_t pos_fastest_lap[4];
-	uint32_t heat_time[4];
+	uint16_t pilots_nr[8];
+	uint8_t pilots_state[8];
+	uint8_t lapcount[8];
+	uint32_t fastest_laps_time[8];
+	uint8_t fastest_laps_lapnr[8];
+	uint8_t pos_nr[8];
+	uint8_t pos_fastest_lap[8];
+	uint32_t heat_time[8];
 };
 
 // --- session

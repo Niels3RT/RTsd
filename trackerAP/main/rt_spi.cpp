@@ -235,6 +235,59 @@ void oo_RT_spi::write64(char* out64) {
 	ret=spi_device_get_trans_result(handle_spi, &rtrans, portMAX_DELAY);
 }
 
+// ****** read 128bit from spi
+void oo_RT_spi::read128(char* in128) {
+	esp_err_t ret;
+	static spi_transaction_t trans;
+	memset(&trans, 0, sizeof(spi_transaction_t));
+	
+	// -- empty buffer to shift out
+	char out128[16];
+	memset(&out128[0], 0, 16);
+	
+	// --- config transaction
+	trans.length = 128;
+	trans.user = (void*)0;
+	trans.rx_buffer = in128;
+	trans.tx_buffer = &out128[0];
+	trans.flags = 0x00;
+	
+	// --- queue transmission
+	ret=spi_device_queue_trans(handle_spi, &trans, portMAX_DELAY);
+	assert(ret==ESP_OK);
+	
+	// --- wait transaction to finish
+	spi_transaction_t *rtrans;
+	ret=spi_device_get_trans_result(handle_spi, &rtrans, portMAX_DELAY);
+	
+	//printf("%02x%02x%02x%02x%02x%02x%02x%02x\r\n", in64[0], in64[1], in64[2], in64[3], in64[4], in64[5], in64[6], in64[7]);
+}
+
+// ****** write 128bit to spi, into status register, dc = 0
+void oo_RT_spi::write128(char* out128) {
+	esp_err_t ret;
+	static spi_transaction_t trans;
+	memset(&trans, 0, sizeof(spi_transaction_t));
+	
+	// -- empty buffer to shift out
+	char in128[16];
+	
+	// --- config transaction
+	trans.length = 128;
+	trans.user = (void*)0;
+	trans.rx_buffer = &in128[0];
+	trans.tx_buffer = out128;
+	trans.flags = 0x00;
+	
+	// --- queue transmission
+	ret=spi_device_queue_trans(handle_spi, &trans, portMAX_DELAY);
+	assert(ret==ESP_OK);
+	
+	// --- wait transaction to finish
+	spi_transaction_t *rtrans;
+	ret=spi_device_get_trans_result(handle_spi, &rtrans, portMAX_DELAY);
+}
+
 // ****** read n bit from spi
 void oo_RT_spi::readn(char* inn, uint8_t count) {
 	esp_err_t ret;

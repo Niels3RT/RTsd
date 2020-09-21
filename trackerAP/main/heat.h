@@ -5,7 +5,7 @@ class oo_Heat {
 		//uint8_t nr;
 		//char name[40];
 		//uint8_t pilots[4];
-		uint32_t laps[4][256];
+		uint32_t laps[8][256];
 		st_heat current;
 		//uint8_t lapcount[4];
 		//uint32_t fastest_laps_time[4];

@@ -10,7 +10,7 @@ void oo_Session::init(void) {
 	
 	// --- session
 	mode = 0;
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<rt.max_chn;i++) {
 		st_heat_empty.pilots_nr[i] = 0xffff;
 	}
 	is_open = false;
@@ -161,7 +161,7 @@ void oo_Session::create_new(uint8_t sess_mode, uint8_t gen_mode) {
 		// -- write state lines
 		printf("Session create new hcount '%d'\r\n", hcount);
 		for(uint8_t i=0;i<hcount;i++) {
-			for(uint8_t c=0;c<4;c++) {
+			for(uint8_t c=0;c<rt.max_chn;c++) {
 				sprintf(sd.data_line, "%x;0;%x;0;\r\n", i, c);
 				printf("%s", sd.data_line);
 				sd.data_file_writeline();
@@ -179,7 +179,7 @@ void oo_Session::create_new(uint8_t sess_mode, uint8_t gen_mode) {
 	if (sd.data_file != NULL) {
 		// -- write empty result lines
 		for(uint8_t i=0;i<hcount;i++) {
-			for(uint8_t c=0;c<4;c++) {
+			for(uint8_t c=0;c<rt.max_chn;c++) {
 				sprintf(sd.data_line, "%x;%x;0;00000000;00000000;\r\n", i, c);
 				printf("%s", sd.data_line);
 				sd.data_file_writeline();
@@ -220,8 +220,8 @@ void oo_Session::gen_field(uint8_t gen_mode, uint8_t hcount) {
 	// --- write pilot lines, all pilots in event
 	if (gen_mode == 0) {
 		for(uint8_t i=0;i<hcount;i++) {
-			for(uint8_t c=0;c<4;c++) {
-				pitmp = (i*4)+c;
+			for(uint8_t c=0;c<rt.max_chn;c++) {
+				pitmp = (i*rt.max_chn)+c;
 				if (pitmp < event.pilots_cnt) {
 					sprintf(sd.data_line, "%x;%x;%x;\r\n", i, c, event.pilots[pitmp]);
 					printf("%s", sd.data_line);
@@ -235,8 +235,8 @@ void oo_Session::gen_field(uint8_t gen_mode, uint8_t hcount) {
 	if (gen_mode == 1) {
 		// -- pilots with quali time
 		for(uint8_t i=0;i<hcount;i++) {
-			for(uint8_t c=0;c<4;c++) {
-				pitmp = (i*4)+c;
+			for(uint8_t c=0;c<rt.max_chn;c++) {
+				pitmp = (i*rt.max_chn)+c;
 				if (pitmp < event.pilots_cnt) {
 					sprintf(sd.data_line, "%x;%x;%x;\r\n", i, c, event.quali_time[pitmp].pilot_nr);
 					printf("%s", sd.data_line);
@@ -266,10 +266,11 @@ void oo_Session::read_session_pilots(void) {
 	
 	// --- clear pilots array
 	for(uint8_t i=0;i<16;i++) {
-		heats[i].pilots_nr[0] = 0xffff;
-		heats[i].pilots_nr[1] = 0xffff;
-		heats[i].pilots_nr[2] = 0xffff;
-		heats[i].pilots_nr[3] = 0xffff;
+		for(uint8_t c=0;c<rt.max_chn;c++) heats[i].pilots_nr[c] = 0xffff;
+		//heats[i].pilots_nr[0] = 0xffff;
+		//heats[i].pilots_nr[1] = 0xffff;
+		//heats[i].pilots_nr[2] = 0xffff;
+		//heats[i].pilots_nr[3] = 0xffff;
 	}
 	
 	// --- open session pilots file

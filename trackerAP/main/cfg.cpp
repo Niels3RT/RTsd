@@ -47,10 +47,18 @@ void oo_CFG::init(void) {
 	}
 	
 	// --- rx frequencies
-	rt.chn_freq[0] = 5732;
-	rt.chn_freq[1] = 5769;
-	rt.chn_freq[2] = 5806;
-	rt.chn_freq[3] = 5843;
+	//rt.chn_freq[0] = 5732;
+	//rt.chn_freq[1] = 5769;
+	//rt.chn_freq[2] = 5806;
+	//rt.chn_freq[3] = 5843;
+	rt.chn_freq[0] = 5658;
+	rt.chn_freq[1] = 5695;
+	rt.chn_freq[2] = 5732;
+	rt.chn_freq[3] = 5769;
+	rt.chn_freq[4] = 5806;
+	rt.chn_freq[5] = 5843;
+	rt.chn_freq[6] = 5880;
+	rt.chn_freq[7] = 5917;
 	
 	// --- deadtime
 	rt.deadtime = 8;
@@ -87,6 +95,26 @@ void oo_CFG::init(void) {
 					rt.chn_freq[3] = buf.buf2uint16_t_dec((uint8_t*)sd.cfg_value);
 					printf("%s : %d\r\n", CFG_FREQ_RX3, rt.chn_freq[3]);
 				}
+				// -- rx4 frequency
+				if (strcmp(sd.cfg_parm, CFG_FREQ_RX4) == 0) {
+					rt.chn_freq[4] = buf.buf2uint16_t_dec((uint8_t*)sd.cfg_value);
+					printf("%s : %d\r\n", CFG_FREQ_RX4, rt.chn_freq[4]);
+				}
+				// -- rx5 frequency
+				if (strcmp(sd.cfg_parm, CFG_FREQ_RX5) == 0) {
+					rt.chn_freq[5] = buf.buf2uint16_t_dec((uint8_t*)sd.cfg_value);
+					printf("%s : %d\r\n", CFG_FREQ_RX5, rt.chn_freq[5]);
+				}
+				// -- rx6 frequency
+				if (strcmp(sd.cfg_parm, CFG_FREQ_RX6) == 0) {
+					rt.chn_freq[6] = buf.buf2uint16_t_dec((uint8_t*)sd.cfg_value);
+					printf("%s : %d\r\n", CFG_FREQ_RX6, rt.chn_freq[6]);
+				}
+				// -- rx7 frequency
+				if (strcmp(sd.cfg_parm, CFG_FREQ_RX7) == 0) {
+					rt.chn_freq[7] = buf.buf2uint16_t_dec((uint8_t*)sd.cfg_value);
+					printf("%s : %d\r\n", CFG_FREQ_RX7, rt.chn_freq[7]);
+				}
 			}
 		} while(sd.cfg_parm[0] != 0xff);
 		sd.cfg_file_close();
@@ -99,7 +127,7 @@ void oo_CFG::init(void) {
 void oo_CFG::nvs_get_cal() {
 	nvs_handle_t h_nvs;
 	// --- use some sane defaults if something goes wrong
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<rt.max_chn;i++) {
 		rt.rssi_base[i] = 0;
 		rt.rssi_quot[i] = 0.5f;
 	}
@@ -109,7 +137,7 @@ void oo_CFG::nvs_get_cal() {
 	int32_t itmp = 0;
     if (nvs_open("storage", NVS_READONLY, &h_nvs) == ESP_OK) {
 		// -- read
-		for (uint8_t i=0;i<4;i++) {
+		for (uint8_t i=0;i<rt.max_chn;i++) {
 			// - get base
 			sprintf(ctmp, "rssi_base_%d", i);
 			if (nvs_get_i32(h_nvs, ctmp, &itmp) == ESP_OK)
@@ -136,7 +164,7 @@ void oo_CFG::nvs_set_cal() {
 	char ctmp[32];
 	if (nvs_open("storage", NVS_READWRITE, &h_nvs) == ESP_OK) {
 		// -- write config data
-		for (uint8_t i=0;i<4;i++) {
+		for (uint8_t i=0;i<rt.max_chn;i++) {
 			// - set base
 			sprintf(ctmp, "rssi_base_%d", i);
 			nvs_set_i32(h_nvs, ctmp, rt.rssi_base[i]);

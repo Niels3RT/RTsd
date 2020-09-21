@@ -16,7 +16,7 @@ void oo_Event::init(void) {
 	result_empty.laps = 0;
 	result_empty.time = 0xffffffff;
 	// --- default pilots
-	pilots_all_cnt = 4;
+	pilots_all_cnt = rt.max_chn;
 	pilots_data[0].nr = 0;
 	strcpy(pilots_data[0].name, DEFAULT_PILOT_1);
 	pilots_data[1].nr = 1;
@@ -25,6 +25,16 @@ void oo_Event::init(void) {
 	strcpy(pilots_data[2].name, DEFAULT_PILOT_3);
 	pilots_data[3].nr = 3;
 	strcpy(pilots_data[3].name, DEFAULT_PILOT_4);
+	if (rt.max_chn == 8) {
+		pilots_data[4].nr = 4;
+		strcpy(pilots_data[4].name, DEFAULT_PILOT_5);
+		pilots_data[5].nr = 5;
+		strcpy(pilots_data[5].name, DEFAULT_PILOT_6);
+		pilots_data[6].nr = 6;
+		strcpy(pilots_data[6].name, DEFAULT_PILOT_7);
+		pilots_data[7].nr = 7;
+		strcpy(pilots_data[7].name, DEFAULT_PILOT_8);
+	}
 	// -- some vars
 	is_open = false;
 	mod_cnt = 0;

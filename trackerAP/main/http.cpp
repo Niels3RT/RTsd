@@ -29,8 +29,16 @@ void oo_HTTP::reply_done(char *tbuf) {
 
 // ****** get config
 void oo_HTTP::reply_get_cfg(char *tbuf) {
+	// --- max channels
+	sprintf(tbuf, "%04x;\r\n", rt.max_chn);
+	tbuf += strlen(tbuf);
 	// --- rx frequencies
-	sprintf(tbuf, "%04x;%04x;%04x;%04x;", rt.chn_freq[0], rt.chn_freq[1], rt.chn_freq[2], rt.chn_freq[3]);
+	if (rt.max_chn == 4) {
+		sprintf(tbuf, "%04x;%04x;%04x;%04x;\r\n", rt.chn_freq[0], rt.chn_freq[1], rt.chn_freq[2], rt.chn_freq[3]);
+	}
+	if (rt.max_chn == 8) {
+		sprintf(tbuf, "%04x;%04x;%04x;%04x;%04x;%04x;%04x;%04x;\r\n", rt.chn_freq[0], rt.chn_freq[1], rt.chn_freq[2], rt.chn_freq[3], rt.chn_freq[4], rt.chn_freq[5], rt.chn_freq[6], rt.chn_freq[7]);
+	}
 	tbuf += strlen(tbuf);
 	// --- deadtime
 	sprintf(tbuf, "%04x;", rt.deadtime);
@@ -49,7 +57,7 @@ void oo_HTTP::reply_get_cfg(char *tbuf) {
 void oo_HTTP::reply_set_cfg(char *tbuf_header, char *tbuf_tx) {
 	// --- fetch rx frequencies
 	uint8_t pos = 13;
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<rt.max_chn;i++) {
 		rt.chn_freq[i] = buf.buf2uint16_t((uint8_t*)tbuf_header + pos);
 		printf("freq %d: %d\r\n", i, rt.chn_freq[i]);
 		pos += 5;
@@ -101,7 +109,7 @@ void oo_HTTP::reply_results(char *tbuf) {
 	
 	// --- detection levels
 	rt.pd_get_tlevels();
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<rt.max_chn;i++) {
 		tbuf += strlen(tbuf);
 		sprintf(tbuf, "%03x;", rt.trg_level[i]);
 	}
@@ -135,7 +143,7 @@ void oo_HTTP::reply_results(char *tbuf) {
 	sprintf(tbuf, "\r\n");
 	
 	// --- print hits
-	for (uint8_t k=0;k<4;k++) {
+	for (uint8_t k=0;k<rt.max_chn;k++) {
 		for (uint8_t i=0;i<rt.hitcount[k];i++) {
 			//printf("%d;%02x;%08d\r\n", k, i, rt.hits[k][i]);
 			tbuf += strlen(tbuf);
@@ -144,7 +152,7 @@ void oo_HTTP::reply_results(char *tbuf) {
 	}
 	
 	// --- print fastest laps in heat, order by fastest
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<rt.max_chn;i++) {
 		tbuf += strlen(tbuf);
 		//sprintf(tbuf, "f;%d;%02x;%08x;\r\n", i, heat.fastest_laps_lapnr[i], heat.fastest_laps_time[i]);
 		//sprintf(tbuf, "f;%d;%02x;%02x;%08x\r\n", i, heat.pos_fastest_lap[i], heat.fastest_laps_lapnr[heat.pos_fastest_lap[i]], heat.fastest_laps_time[heat.pos_fastest_lap[i]]);
@@ -153,7 +161,7 @@ void oo_HTTP::reply_results(char *tbuf) {
 	}
 	
 	// --- print position in heat
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<rt.max_chn;i++) {
 		tbuf += strlen(tbuf);
 		//sprintf(tbuf, "f;%d;%02x;%08x;\r\n", i, heat.fastest_laps_lapnr[i], heat.fastest_laps_time[i]);
 		sprintf(tbuf, "p;%d;%02x;%02x;%08x;\r\n", i, heat.current.pos_nr[i], heat.current.lapcount[heat.current.pos_nr[i]], heat.current.heat_time[heat.current.pos_nr[i]]);
@@ -201,7 +209,7 @@ void oo_HTTP::reply_raceinfo(char *tbuf) {
 void oo_HTTP::reply_sessioninfo(char *tbuf) {
 	// --- walk through sessions
 	for (uint8_t h=0;h<session.heat_cnt;h++) {
-		for (uint8_t c=0;c<4;c++) {
+		for (uint8_t c=0;c<rt.max_chn;c++) {
 			tbuf += strlen(tbuf);
 			sprintf(tbuf, "%x;%x;%x;%08x;%08x;\r\n", session.heats[h].nr,
 										c,
@@ -231,7 +239,7 @@ void oo_HTTP::reply_rssi(char *tbuf_rx, char *tbuf_tx) {
 	//printf("rssi start at %08x count %04x\r\n", tmp_start, tmp_count);
 	
 	// --- write response
-	char trssi[8];
+	char trssi[16];
 	uint8_t pos = 0;
 	uint16_t tmp = 0;
 	for (uint16_t i=0;i<tmp_count;i++) {
@@ -240,18 +248,24 @@ void oo_HTTP::reply_rssi(char *tbuf_rx, char *tbuf_tx) {
 		sprintf(tbuf_tx, "%06x;", tmp_start+i);
 		// -- read line (4 words a 16bits) of rssi from sdram
 		rtspi.transmit24(RT_SDRAM2REG, tmp_start+i, 0);		// set sdram address (rssi block nr)
-		rtspi.read64(&trssi[0]);							// fetch 64bit word from transfer register
+		switch(rt.max_chn) {
+			case 4:
+				rtspi.read64(&trssi[0]);							// fetch 64bit word from transfer register
+				break;
+			case 8:
+				rtspi.read128(&trssi[0]);							// fetch 128bit word from transfer register
+				break;
+		}
+		//rtspi.read64(&trssi[0]);							// fetch 64bit word from transfer register
 		// -- print line to output buffer
 		pos = 0;
 		tmp = 0;
-		for (uint8_t k=0;k<4;k++) {
+		//printf("rssi adr '%06x' ", tmp_start+i);
+		for (uint8_t k=0;k<rt.max_chn;k++) {
 			tbuf_tx += strlen(tbuf_tx);
-			//tmp = ((trssi[pos]<<8) + trssi[pos+1]) >> 2;
-			//tmp = ((trssi[pos]<<8) + trssi[pos+1]) >> 4;
-			//tmp = ((trssi[pos]<<8) + trssi[pos+1]) & 0xfff;
 			tmp = ((trssi[pos]<<8) + trssi[pos+1]) & 0xfff;
 			sprintf(tbuf_tx, "%03x;", tmp);
-			//printf("%03x;", tmp);
+			//printf(" '%03x'", tmp);
 			pos += 2;
 		}
 		strcat(tbuf_tx, "\r\n");
@@ -263,7 +277,7 @@ void oo_HTTP::reply_rssi(char *tbuf_rx, char *tbuf_tx) {
 void oo_HTTP::reply_tlevel(char *tbuf_rx, char *tbuf_tx) {
 	// --- fetch and set trigger levels
 	uint8_t pos = 15;
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<rt.max_chn;i++) {
 		rt.pd_set_tlevel(i, buf.buf2uint16_t((uint8_t*)(tbuf_rx+pos)));
 		pos += 5;
 	}
@@ -296,18 +310,18 @@ void oo_HTTP::reply_get_minmax(char *tbuf_tx) {
 	// --- fetch and send data, renew if in calibration mode
 	if (rt.do_calib) {
 		// -- recalc calibration data
-		for (uint8_t i=0;i<4;i++) {
+		for (uint8_t i=0;i<rt.max_chn;i++) {
 			rt.rssi_quot[i] = ((float)(rt.rssi_max[i] - rt.rssi_min[i])) / 4096;
 			if (rt.rssi_quot[i] < 0.5f) rt.rssi_quot[i] = 0.5f;
 			rt.rssi_base[i] = rt.rssi_min[i];
 			
-			printf("min %05d  max %05d  delta %05d  quot %2f\r\n", rt.rssi_min[i], rt.rssi_max[i], rt.rssi_max[i] - rt.rssi_min[i], rt.rssi_quot[i]);
+			printf("min %04x  max %04x  delta %05d  quot %2f\r\n", rt.rssi_min[i], rt.rssi_max[i], rt.rssi_max[i] - rt.rssi_min[i], rt.rssi_quot[i]);
 		}
 		// -- update fpga if calibration is running
 		rt.write_cal_data();
 	}
 	// --- print min max to tx buffer
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<rt.max_chn;i++) {
 		sprintf(tbuf_tx, "%x;%05x;%05x\r\n", i, rt.rssi_min[i], rt.rssi_max[i]);
 		tbuf_tx += strlen(tbuf_tx);
 	}
@@ -318,7 +332,7 @@ void oo_HTTP::reply_get_minmax(char *tbuf_tx) {
 // ****** get exceptions
 void oo_HTTP::reply_get_ex(char *tbuf_tx) {
 	// --- send data
-	for (uint8_t i=0;i<4;i++) {
+	for (uint8_t i=0;i<rt.max_chn;i++) {
 		for (uint8_t k=0;k<rt.excount[i];k++) {
 			sprintf(tbuf_tx, "%x;%08x;\r\n", i, rt.exceptions[i][k]);
 			tbuf_tx += strlen(tbuf_tx);
@@ -501,7 +515,7 @@ void oo_HTTP::reply_open_session(char *tbuf_rx, char *tbuf_tx) {
 void oo_HTTP::reply_get_session_pilots(char *tbuf_tx) {
 	// --- walk through heats
 	for (uint8_t i=0;i<session.heat_cnt;i++) {
-		for (uint8_t k=0;k<4;k++) {
+		for (uint8_t k=0;k<rt.max_chn;k++) {
 			// -- print pilot, if is real
 			if (session.heats[i].pilots_nr[k] != 0xffff) {
 				sprintf(tbuf_tx, "%x;%x;%x;\r\n", i, k, session.heats[i].pilots_nr[k]);
@@ -639,14 +653,12 @@ bool oo_HTTP::reply_file(char *tbuf_rx, int tcs, int buf_nr) {
 // ****** parse exceptions
 void oo_HTTP::parse_ex(char *tbuf) {
 	// --- clear exceptions array
-	rt.excount[0] = 0;
-	rt.excount[1] = 0;
-	rt.excount[2] = 0;
-	rt.excount[3] = 0;
+	for (uint8_t i=0;i<rt.max_chn;i++) rt.excount[i] = 0;
 	// --- walk through lines and read into array
 	uint8_t utmp = *tbuf - 0x30;
 	uint32_t ptmp = 0;
-	while((utmp < 4) && (strlen(tbuf) > 10)) {
+	//while((utmp < 4) && (strlen(tbuf) > 10)) {
+	while((utmp < rt.max_chn) && (strlen(tbuf) > 10)) {
 		utmp = *tbuf - 0x30;
 		ptmp = buf.buf2uint32_t((uint8_t*)(tbuf+2));
 		printf("%x - %08x\r\n", utmp, ptmp);
