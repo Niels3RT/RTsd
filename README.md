@@ -117,3 +117,12 @@ Copy the contents of /html/ to the card /RTsd/http
 Look at the .txt files in RTsd directory and adapt to your preferences.  
 
 Go racing :)
+
+
+# RTclient
+
+RTclient is a small ESP32_WROVER-IB based pcb. Its purpose is to (cheaply) connect to the system by WiFi and provide racedata to anything you might want to use.
+Think of displays, input devices, barcode scanner,...  
+The first pcbs are badly flawed, gerber files for usable ones will be published later.
+
+![RTclient](pics/rtclient_small.png?raw=true "[RTclient]")
