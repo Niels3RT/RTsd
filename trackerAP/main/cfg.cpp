@@ -2,9 +2,9 @@
 
 // ****** init config
 void oo_CFG::init(void) {
-	char cfgname[] = "                ";
+	char cfgname[] = "                         ";
 	// --- read wifi config file
-	sprintf(cfgname, "/cfg_wifi.txt");
+	sprintf(cfgname, "/RTsd/cfg_wifi.txt");
 	sd.cfg_file_open(cfgname, "r");
 	if (sd.cfg_file != NULL) {
 		do {
@@ -62,7 +62,7 @@ void oo_CFG::init(void) {
 	rt.det_quot_perc = 74;
 	
 	// --- read rt config file
-	sprintf(cfgname, "/cfg_rt.txt");
+	sprintf(cfgname, "/RTsd/cfg_rt.txt");
 	sd.cfg_file_open(cfgname, "r");
 	if (sd.cfg_file != NULL) {
 		do {

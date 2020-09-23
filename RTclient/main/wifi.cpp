@@ -7,20 +7,13 @@ static EventGroupHandle_t s_wifi_event_group;
 void oo_WiFi::init(void) {
 	// --- write to log
 	ESP_LOGI(TAG, "init WiFi");
-	switch(ap_mode) {
-		case 0:
-			// -- init soft AP
-			init_softap();
-			break;
-		case 1:
-			// -- init station
-			init_wifista();
-			break;
-		default:
-			// -- init soft AP
-			init_softap();
-			break;
-	}
+	
+	// --- init ssid, pass
+	strcpy(sta_ssid, ESP_WIFI_STA_SSID);
+	strcpy(sta_key, ESP_WIFI_STA_PASS);
+	
+	// --- init station
+	init_wifista();
 }
 
 // ****** wifi event handler
@@ -51,10 +44,10 @@ void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
     } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
         ip_event_got_ip_t* event = (ip_event_got_ip_t*) event_data;
         ESP_LOGI(TAG, "got ip:" IPSTR, IP2STR(&event->ip_info.ip));
-		char stmp[20];
-		sprintf(stmp, "%03d.%03d.%03d.%03d", event->ip_info.ip.addr & 0xff, (event->ip_info.ip.addr>>8) & 0xff, (event->ip_info.ip.addr>>16) & 0xff, (event->ip_info.ip.addr>>24) & 0xff);
-		oled.print_string(1, 7, &stmp[0]);
-		oled.writefb();
+		//char stmp[20];
+		//sprintf(stmp, "%03d.%03d.%03d.%03d", event->ip_info.ip.addr & 0xff, (event->ip_info.ip.addr>>8) & 0xff, (event->ip_info.ip.addr>>16) & 0xff, (event->ip_info.ip.addr>>24) & 0xff);
+		//oled.print_string(1, 7, &stmp[0]);
+		//oled.writefb();
         s_retry_num = 0;
         xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
     }
@@ -89,7 +82,7 @@ void oo_WiFi::init_wifista(void) {
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA) );
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );
     ESP_ERROR_CHECK(esp_wifi_start() );
-	tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA ,"RTsd");
+	tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA ,"RTclient");
 
     ESP_LOGI(TAG, "wifi_init_sta finished.");
 
@@ -112,62 +105,4 @@ void oo_WiFi::init_wifista(void) {
     ESP_ERROR_CHECK(esp_event_handler_instance_unregister(IP_EVENT, IP_EVENT_STA_GOT_IP, instance_got_ip));
     ESP_ERROR_CHECK(esp_event_handler_instance_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID, instance_any_id));
     vEventGroupDelete(s_wifi_event_group);
-}
-
-// ****** init soft AP
-void oo_WiFi::init_softap(void) {
-	// --- init netif
-    ESP_ERROR_CHECK(esp_netif_init());
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
-    esp_netif_create_default_wifi_ap();
-
-	// --- init wifi config
-    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-    ESP_ERROR_CHECK(esp_wifi_init(&cfg));
-
-	// --- register wifi handler
-    ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL, NULL));
-
-	// --- config and start wifi
-    wifi_config_t wifi_config = { };
-	strcpy((char*)wifi_config.ap.ssid, ap_ssid);
-	wifi_config.ap.ssid_len = strlen(ap_ssid);
-	wifi_config.ap.channel = ESP_WIFI_CHANNEL;
-	strcpy((char*)wifi_config.ap.password, ap_key);
-	wifi_config.ap.max_connection = MAX_STA_CONN,
-	wifi_config.ap.authmode = WIFI_AUTH_WPA_WPA2_PSK;
-    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
-	ESP_ERROR_CHECK(esp_wifi_set_protocol(WIFI_IF_AP, WIFI_PROTOCOL_11B| WIFI_PROTOCOL_11G|WIFI_PROTOCOL_11N));
-    ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_AP, &wifi_config));
-    ESP_ERROR_CHECK(esp_wifi_start());
-	tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA ,"RTsd");
-	
-	// --- config wifi country
-	wifi_country_t country = {
-		.cc = "DE",
-        .schan = 1,
-        .nchan = 13, 
-        .max_tx_power = 78, 
-        .policy = WIFI_COUNTRY_POLICY_AUTO,
-    };
-    ESP_ERROR_CHECK(esp_wifi_set_country(&country));
-	ESP_ERROR_CHECK(esp_wifi_set_max_tx_power(78));
-	ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));
-	
-	// --- print message to log
-    ESP_LOGI(TAG, "wifi_init_softap finished. SSID:%s password:%s channel:%d",
-             ap_ssid, ap_key, ESP_WIFI_CHANNEL);
-	
-	// --- print ip info to oled
-	tcpip_adapter_ip_info_t ipInfo; 
-	tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_AP, &ipInfo);
-	//oled.print_hex_32u(0, 7, ipInfo.ip.addr);
-	oled.print_dec_8u(12, 7, (ipInfo.ip.addr>>24) & 0xff);
-	oled.print_char(11, 7, 0x2e);
-	oled.print_dec_8u(8, 7, (ipInfo.ip.addr>>16) & 0xff);
-	oled.print_char(7, 7, 0x2e);
-	oled.print_dec_8u(4, 7, (ipInfo.ip.addr>>8) & 0xff);
-	oled.print_char(3, 7, 0x2e);
-	oled.print_dec_8u(0, 7, ipInfo.ip.addr & 0xff);
-	oled.writefb();
 }

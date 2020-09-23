@@ -41,7 +41,7 @@ void oo_Session::open(uint8_t snr) {
 	nr = snr;
 	for(uint8_t i=0;i<16;i++) heats[i] = st_heat_empty;
 	// --- read session parameters, open session config file
-	sprintf(ctmp, "/data/%s/session%d/session.txt", event.name, nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/session.txt", event.name, nr);
 	sd.cfg_file_open(ctmp, "r");
 	if (sd.cfg_file != NULL) {
 		do {
@@ -63,7 +63,7 @@ void oo_Session::open(uint8_t snr) {
 	read_session_pilots();
 	
 	// --- read heats state
-	sprintf(ctmp, "%s/session%d/state.csv", event.name, nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/state.csv", event.name, nr);
 	sd.data_file_open(ctmp, "r");
 	if (sd.data_file != NULL) {
 		printf("csv file opened for reading '%s'\r\n", ctmp);
@@ -78,7 +78,7 @@ void oo_Session::open(uint8_t snr) {
 	}
 	
 	// --- read session results
-	sprintf(ctmp, "%s/session%d/results.csv", event.name, nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/results.csv", event.name, nr);
 	sd.data_file_open(ctmp, "r");
 	if (sd.data_file != NULL) {
 		printf("csv file opened for reading '%s'\r\n", ctmp);
@@ -112,7 +112,7 @@ void oo_Session::create_new(uint8_t sess_mode, uint8_t gen_mode) {
 	
 	// --- write session config file
 	// -- create file
-	sprintf(ctmp, "/data/%s/session%d/session.txt", event.name, event.sessions_cnt);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/session.txt", event.name, event.sessions_cnt);
 	sd.cfg_file_open(ctmp, "w");
 	if (sd.cfg_file != NULL) {
 		// -- write config data
@@ -147,7 +147,7 @@ void oo_Session::create_new(uint8_t sess_mode, uint8_t gen_mode) {
 	
 	// --- write state csv file
 	// -- create file
-	sprintf(ctmp, "%s/session%d/state.csv", event.name, event.sessions_cnt);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/state.csv", event.name, event.sessions_cnt);
 	printf("%s\r\n", ctmp);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
@@ -166,7 +166,7 @@ void oo_Session::create_new(uint8_t sess_mode, uint8_t gen_mode) {
 	
 	// --- create session results
 	// -- create file
-	sprintf(ctmp, "%s/session%d/results.csv", event.name, event.sessions_cnt);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/results.csv", event.name, event.sessions_cnt);
 	printf("%s\r\n", ctmp);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
@@ -184,7 +184,7 @@ void oo_Session::create_new(uint8_t sess_mode, uint8_t gen_mode) {
 	
 	// --- generate pilot field
 	// -- create file
-	sprintf(ctmp, "%s/session%d/pilots.csv", event.name, event.sessions_cnt);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/pilots.csv", event.name, event.sessions_cnt);
 	printf("%s\r\n", ctmp);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
@@ -263,7 +263,7 @@ void oo_Session::read_session_pilots(void) {
 	}
 	
 	// --- open session pilots file
-	sprintf(ctmp, "%s/session%d/pilots.csv", event.name, nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/pilots.csv", event.name, nr);
 	sd.data_file_open(ctmp, "r");
 	if (sd.data_file != NULL) {
 		// --- read by line

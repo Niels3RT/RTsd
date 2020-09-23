@@ -34,7 +34,7 @@ void oo_Heat::open(void) {
 	printf("HeatNr '%d'\r\n", current.nr);
 	// --- copy rssi from file to fpga sdram
 	rt.count = 0;
-	sprintf(ctmp, "%s/session%d/run%d/rssi.csv", event.name, session.nr, current.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/rssi.csv", event.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "r");
 	if (sd.data_file != NULL) {
 		printf("csv file opened for reading '%s'\r\n", ctmp);
@@ -55,7 +55,7 @@ void oo_Heat::open(void) {
 		sd.data_file_close();
 	}
 	// --- read trigger levels from results data file
-	sprintf(ctmp, "%s/session%d/run%d/results.csv", event.name, session.nr, current.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/results.csv", event.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "r");
 	if (sd.data_file != NULL) {
 		// -- walk through lines in file
@@ -121,7 +121,7 @@ void oo_Heat::commit(void) {
 	}
 	printf("1 current.state '%x' rt.state '%x'\r\n", current.state, rt.state);
 	// --- save results
-	sprintf(ctmp, "%s/session%d/run%d/results.csv", event.name, session.nr, current.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/results.csv", event.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
 		printf("csv file opened for writing '%s'\r\n", ctmp);
@@ -154,7 +154,7 @@ void oo_Heat::commit(void) {
 	char trssi[16];
 	uint16_t rtmp[8];
 	for (uint8_t i=0;i<rt.max_chn;i++) rtmp[i] = 0;
-	sprintf(ctmp, "%s/session%d/run%d/rssi.csv", event.name, session.nr, current.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/rssi.csv", event.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
 		printf("csv file opened for writing '%s'\r\n", ctmp);
@@ -179,7 +179,7 @@ void oo_Heat::commit(void) {
 	}
 	
 	// --- save heats states
-	sprintf(ctmp, "%s/session%d/state.csv", event.name, session.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/state.csv", event.name, session.nr);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
 		printf("csv file opened for writing '%s'\r\n", ctmp);
@@ -198,7 +198,7 @@ void oo_Heat::commit(void) {
 	save_exceptions();
 	
 	// --- save session results
-	sprintf(ctmp, "%s/session%d/results.csv", event.name, session.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/results.csv", event.name, session.nr);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
 		printf("csv file opened for writing '%s'\r\n", ctmp);
@@ -231,7 +231,7 @@ void oo_Heat::commit(void) {
 void oo_Heat::save_exceptions(void) {
 	char ctmp[256];
 	// --- open exception data file for writing
-	sprintf(ctmp, "%s/session%d/run%d/except.csv", event.name, session.nr, current.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/except.csv", event.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
 		// -- walk through channels
@@ -251,7 +251,7 @@ void oo_Heat::save_exceptions(void) {
 void oo_Heat::load_exceptions(void) {
 	char ctmp[256];
 	// --- open exception data file for writing
-	sprintf(ctmp, "%s/session%d/run%d/except.csv", event.name, session.nr, current.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/except.csv", event.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "r");
 	rt.excount[0] = 0;
 	rt.excount[1] = 0;

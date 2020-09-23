@@ -91,7 +91,7 @@ void oo_Event::open(uint8_t nr) {
 		// -- read event pilots
 		read_event_pilots();
 		// -- read event parameters, open event config file
-		sprintf(ctmp, "/data/%s/event.txt", name);
+		sprintf(ctmp, "/RTsd/data/%s/event.txt", name);
 		sd.cfg_file_open(ctmp, "r");
 		if (sd.cfg_file != NULL) {
 			do {
@@ -139,7 +139,7 @@ void oo_Event::open(uint8_t nr) {
 						sessions[sessions_cnt].nr = sessions_cnt;
 						// -- session info from config file
 						strncpy(sessions[sessions_cnt].name, sd.entry->d_name, 40);
-						sprintf(ctmp, "/data/%s/%s/session.txt", name, sessions[sessions_cnt].name);
+						sprintf(ctmp, "/RTsd/data/%s/%s/session.txt", name, sessions[sessions_cnt].name);
 						sd.cfg_file_open(ctmp, "r");
 						if (sd.cfg_file != NULL) {
 							do {
@@ -175,7 +175,7 @@ void oo_Event::open(uint8_t nr) {
 	
 	// --- read evént results
 	// - open file
-	sprintf(ctmp, "%s/results.csv", event.name);
+	sprintf(ctmp, "/RTsd/data/%s/results.csv", event.name);
 	sd.data_file_open(ctmp, "r");
 	uint8_t cnt_f = 0;
 	uint8_t cnt_q = 0;
@@ -235,7 +235,7 @@ void oo_Event::create_new(st_event * evtmp) {
 	sd.dir_create(&ctmp[0]);
 	
 	// --- open new event.txt
-	sprintf(ctmp, "/data/%s/event.txt", evtmp->name);
+	sprintf(ctmp, "/RTsd/data/%s/event.txt", evtmp->name);
 	sd.cfg_file_open(ctmp, "w");
 	
 	// --- write config data
@@ -256,7 +256,7 @@ void oo_Event::create_new(st_event * evtmp) {
 	}
 	
 	// --- touch new events pilots.csv
-	sprintf(ctmp, "%s/pilots.csv", evtmp->name);
+	sprintf(ctmp, "/RTsd/data/%s/pilots.csv", evtmp->name);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
 		sd.data_file_close();
@@ -268,7 +268,7 @@ void oo_Event::read_event_pilots(void) {
 	char ctmp[256];
 	
 	// --- open event pilots file
-	sprintf(ctmp, "%s/pilots.csv", name);
+	sprintf(ctmp, "/RTsd/data/%s/pilots.csv", name);
 	sd.data_file_open(ctmp, "r");
 	
 	// --- read event pilots from file
@@ -290,7 +290,7 @@ void oo_Event::write_event_pilots(void) {
 	char ctmp[256];
 	
 	// --- open event pilots file
-	sprintf(ctmp, "%s/pilots.csv", name);
+	sprintf(ctmp, "/RTsd/data/%s/pilots.csv", name);
 	sd.data_file_open(ctmp, "w");
 	
 	// --- write event pilots to file
@@ -313,7 +313,7 @@ void oo_Event::read_pilots(void) {
 	pilots_all_cnt = 0;
 
 	// --- open pilots data file
-	sd.data_file_open("pilots.csv", "r");
+	sd.data_file_open("/RTsd/data/pilots.csv", "r");
 	
 	// --- read pilots from file
 	if (sd.data_file != NULL) {
@@ -365,7 +365,7 @@ void oo_Event::collect_results(void) {
 			// -- read session pilots
 			pcount = 0;
 			// - open file
-			sprintf(ctmp, "%s/session%d/pilots.csv", event.name, s);
+			sprintf(ctmp, "/RTsd/data/%s/session%d/pilots.csv", event.name, s);
 			sd.data_file_open(ctmp, "r");
 			if (sd.data_file != NULL) {
 				// - read by line
@@ -379,7 +379,7 @@ void oo_Event::collect_results(void) {
 			}
 			// -- fetch results for pilots
 			// - open file
-			sprintf(ctmp, "%s/session%d/results.csv", event.name, s);
+			sprintf(ctmp, "/RTsd/data/%s/session%d/results.csv", event.name, s);
 			sd.data_file_open(ctmp, "r");
 			if (sd.data_file != NULL) {
 				// - read by line
@@ -425,7 +425,7 @@ void oo_Event::collect_results(void) {
 	
 	// --- write event result to file
 	// - open file
-	sprintf(ctmp, "%s/results.csv", event.name);
+	sprintf(ctmp, "/RTsd/data/%s/results.csv", event.name);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
 		// - write fastest laps

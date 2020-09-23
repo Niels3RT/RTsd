@@ -44,7 +44,8 @@ void oo_SD::init(void) {
 void oo_SD::cfg_file_open(char *tbuf, char const * rw) {
 	// --- build filename
 	char path[256];
-	sprintf(path, "/sdcard/RTsd%s", tbuf);
+	//sprintf(path, "/sdcard/RTsd%s", tbuf);
+	sprintf(path, "/sdcard%s", tbuf);
 
 	// --- dump wifi config file
 	cfg_file = fopen(path, rw);
@@ -59,7 +60,8 @@ void oo_SD::cfg_file_open(char *tbuf, char const * rw) {
 void oo_SD::data_file_open(const char *tbuf, char const * rw) {
 	// --- build filename
 	char path[256];
-	sprintf(path, "/sdcard/RTsd/data/%s", tbuf);
+	//sprintf(path, "/sdcard/RTsd/data/%s", tbuf);
+	sprintf(path, "/sdcard%s", tbuf);
 
 	// --- dump wifi config file
 	data_file = fopen(path, rw);
