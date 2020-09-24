@@ -38,6 +38,6 @@ void oo_Timer::init_timer_main(void) {
 	// --- Start the timer
     //ESP_ERROR_CHECK(esp_timer_start_periodic(timer_main, 100000));	//100ms
 	//ESP_ERROR_CHECK(esp_timer_start_periodic(timer_main, 1000000));	//1000ms
-	ESP_ERROR_CHECK(esp_timer_start_periodic(timer_main, 4000000));		//4000ms
+	ESP_ERROR_CHECK(esp_timer_start_periodic(timer_main, 3000000));		//3000ms
     ESP_LOGI(TAG, "Started timer main, time since boot: %lld us", esp_timer_get_time());
 }

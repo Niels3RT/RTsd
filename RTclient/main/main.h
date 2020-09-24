@@ -36,12 +36,14 @@
 	#include "timer.h"
 	#include "http_client.h"
 	#include "cfg.h"
+	#include "info.h"
 
 	// --- objects
 	extern oo_WiFi wifi;
 	extern oo_Timer timer;
 	extern oo_HTTPC httpc;
 	extern oo_CFG cfg;
+	extern oo_Info info;
 	
 	extern "C" {
 		void app_main();

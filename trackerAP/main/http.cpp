@@ -193,7 +193,22 @@ void oo_HTTP::reply_raceinfo(char *tbuf) {
 	
 	// --- line 3, heat
 	tbuf += strlen(tbuf);
-	sprintf(tbuf, "%x;%x;%x;%s;%02x;%02x;%02x;%02x;\r\n", heat.is_open, heat.current.nr, session.heat_cnt, heat.current.name, heat.current.pilots_nr[0], heat.current.pilots_nr[1], heat.current.pilots_nr[2], heat.current.pilots_nr[3]);
+	if (rt.max_chn == 4) {
+		sprintf(tbuf, "%x;%x;%x;%s;%02x;%02x;%02x;%02x;\r\n", heat.is_open, heat.current.nr, session.heat_cnt, heat.current.name, heat.current.pilots_nr[0]
+																																, heat.current.pilots_nr[1]
+																																, heat.current.pilots_nr[2]
+																																, heat.current.pilots_nr[3]);
+	}
+	if (rt.max_chn == 8) {
+		sprintf(tbuf, "%x;%x;%x;%s;%02x;%02x;%02x;%02x;%02x;%02x;%02x;%02x;\r\n", heat.is_open, heat.current.nr, session.heat_cnt, heat.current.name, heat.current.pilots_nr[0]
+																																					, heat.current.pilots_nr[1]
+																																					, heat.current.pilots_nr[2]
+																																					, heat.current.pilots_nr[3]
+																																					, heat.current.pilots_nr[4]
+																																					, heat.current.pilots_nr[5]
+																																					, heat.current.pilots_nr[6]
+																																					, heat.current.pilots_nr[7]);
+	}
 }
 
 // ****** reply session info

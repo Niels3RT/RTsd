@@ -6,6 +6,7 @@ oo_WiFi wifi;
 oo_Timer timer;
 oo_HTTPC httpc;
 oo_CFG cfg;
+oo_Info info;
 
 // -- handles
 esp_event_loop_handle_t main_loop_handle;
@@ -22,6 +23,11 @@ void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 	// --- open heat?
 	if (event_id == EVENT_TIMER_MAIN) {
 		//httpc.start_request();
+		if (httpc.tx_buf_work == httpc.tx_buf_top) {
+			httpc.request_pilotinfo();
+			httpc.request_raceinfo();
+			httpc.request_results();
+		}
 	}
 }
 
@@ -54,6 +60,9 @@ void app_main(void) {
 	
 	// --- init config, read cfg files
 	cfg.init();
+	
+	// --- init info
+	info.init();
 	
 	// --- init timer
 	timer.init();
