@@ -60,6 +60,7 @@
 	ESP_EVENT_DECLARE_BASE(TRACKER_EVENTS);         // declaration of the tracker events family
 
 	enum {
-		EVENT_TIMER_MAIN	                     // raised during an iteration of the loop within the task
+		EVENT_TIMER_MAIN,	                    	 // raised during an iteration of the loop within the task
+		EVENT_USE_RESULT	                    	 // raised when new results are in
 	};
 #endif

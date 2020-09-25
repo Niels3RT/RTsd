@@ -8,7 +8,9 @@ class oo_HTTPC {
 		volatile uint8_t tx_buf_work;
 		volatile uint8_t tx_buf_top;
 		uint32_t csv_array[16];
-		uint32_t t_etmp;
+		char csv_array_str[16][64];
+		uint8_t csv_split_cnt;
+		//uint32_t t_etmp;
 		
 	private:
 	
@@ -16,8 +18,10 @@ class oo_HTTPC {
 	public:
 		void init(void);
 		char * find_data(char *tbuf);
-		char * parse_hex2uint32(char *ptmp);
-		uint8_t parse_csv_line(char *ptmp);
+		uint32_t parse_hex2uint32(char *ptmp);
+		char * split_csv_line(char *ptmp);
+		void request_config(void);
+		bool parse_config(char *tbuf);
 		void request_pilotinfo(void);
 		bool parse_pilotinfo(char *tbuf);
 		void request_raceinfo(void);
@@ -37,11 +41,14 @@ class oo_HTTPC {
 #define HTTP_REQ_PREFIX 		"GET "
 #define HTTP_REQ_POST	 		" HTTP/1.1\r\nHost: 192.168.99.32\r\n\r\n"
 
+
+#define HTTP_GET_CFG			"/cfg_get;"
+#define TYPE_GET_CFG			0
 #define HTTP_GET_PILOTINFO		"/pilotinfo.csv"
-#define TYPE_GET_PILOTINFO		0
+#define TYPE_GET_PILOTINFO		1
 #define HTTP_GET_RACEINFO		"/raceinfo.csv"
-#define TYPE_GET_RACEINFO		1
+#define TYPE_GET_RACEINFO		2
 #define HTTP_GET_SESSIONINFO	"/sessioninfo.csv"
-#define TYPE_GET_SESSIONINFO	2
+#define TYPE_GET_SESSIONINFO	3
 #define HTTP_GET_RESULTS		"/results.csv"
-#define TYPE_GET_RESULTS		3
+#define TYPE_GET_RESULTS		4

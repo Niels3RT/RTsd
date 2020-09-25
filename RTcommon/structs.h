@@ -1,4 +1,4 @@
-// --- session
+// --- event
 struct st_event {
 	uint8_t nr;
 	char name[40];

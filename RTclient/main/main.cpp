@@ -15,19 +15,36 @@ ESP_EVENT_DEFINE_BASE(TRACKER_EVENTS);         // declaration of the tracker eve
 
 // ****** main event handler
 void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data) {
-	//// --- do heat commit?
-	//if (event_id == EVENT_RT_DO_COMMIT) {
-	//	heat.commit();
-	//}
-	//
+	
 	// --- open heat?
 	if (event_id == EVENT_TIMER_MAIN) {
 		//httpc.start_request();
 		if (httpc.tx_buf_work == httpc.tx_buf_top) {
-			httpc.request_pilotinfo();
-			httpc.request_raceinfo();
+			// -- event mod cnt changed?
+			if (info.event_mod_cnt != info.event_mod_cnt_new) {
+				info.event_mod_cnt = info.event_mod_cnt_new;
+				httpc.request_pilotinfo();
+				//httpc.request_raceinfo();
+			}
+			// -- session mod cnt changed?
+			if (info.session_mod_cnt != info.session_mod_cnt_new) {
+				info.session_mod_cnt = info.session_mod_cnt_new;
+				//httpc.request_raceinfo();
+			}
+			// -- heat mod cnt changed?
+			if (info.heat_mod_cnt != info.heat_mod_cnt_new) {
+				info.heat_mod_cnt = info.heat_mod_cnt_new;
+				httpc.request_raceinfo();
+			}
 			httpc.request_results();
 		}
+	}
+	
+	// --- new results are in! Do some stuff!
+	if (event_id == EVENT_USE_RESULT) {
+		// -- calc laps from hits
+		info.calc_laps();
+		info.print_heat();
 	}
 }
 
@@ -54,6 +71,7 @@ void app_main(void) {
     };
 	ESP_ERROR_CHECK(esp_event_loop_create(&loop_args, &main_loop_handle));
 	ESP_ERROR_CHECK(esp_event_handler_instance_register_with(main_loop_handle, TRACKER_EVENTS, EVENT_TIMER_MAIN, main_event_handler, main_loop_handle, NULL));
+	ESP_ERROR_CHECK(esp_event_handler_instance_register_with(main_loop_handle, TRACKER_EVENTS, EVENT_USE_RESULT, main_event_handler, main_loop_handle, NULL));
 	
 	// --- wait some for fpga to start up
 	//vTaskDelay(5000 / portTICK_PERIOD_MS);

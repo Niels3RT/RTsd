@@ -2,9 +2,9 @@
 class oo_CFG {
 	// -- vars
 	public:
+		uint8_t max_chn;
 	private:
 		
-
 	// -- functions
 	public:
 		void init(void);

@@ -25,7 +25,7 @@ char * oo_HTTPC::find_data(char *tbuf) {
 }
 
 // ****** parse ascii hex in buffer to uint32_t
-char * oo_HTTPC::parse_hex2uint32(char *ptmp) {
+uint32_t oo_HTTPC::parse_hex2uint32(char *ptmp) {
 	uint32_t etmp = 0;
 	bool gof = true;
 	do {
@@ -46,54 +46,95 @@ char * oo_HTTPC::parse_hex2uint32(char *ptmp) {
 			gof = false;
 		}
 	} while(gof);
-	t_etmp = etmp;
-	return(ptmp);
+	return(etmp);
 }
 
-// ****** parse csv line
-uint8_t oo_HTTPC::parse_csv_line(char *ptmp) {
-	uint8_t cnt = 0;
-	uint32_t etmp = 0;
+// ****** split csv line
+char * oo_HTTPC::split_csv_line(char *ptmp) {
+	csv_split_cnt = 0;
+	char * ptest = 0;
+	char * pend = 0;
+	uint8_t len = 0;
 	// --- clear transfer array
-	memset(csv_array, 0, sizeof(csv_array));
-	// -- parse csv line
-	bool go = true;
-	bool gof = true;
-	// -- walk through ';'
-	do {
-		// - parse and remember value
-		etmp = 0;
-		gof = true;
-		do {
-			//printf("%c", *ptmp);
-			if ((*ptmp >= 0x30) && (*ptmp < 0x3a)) {
-				etmp <<= 4;
-				etmp += *ptmp - 0x30;
-				ptmp++;
-			} else if((*ptmp > 0x40) && (*ptmp < 0x47)) {
-				etmp <<= 4;
-				etmp += *ptmp - 0x37;
-				ptmp++;
-			} else if((*ptmp > 0x60) && (*ptmp < 0x67)) {
-				etmp <<= 4;
-				etmp += *ptmp - 0x57;
-				ptmp++;
-			} else {
-				gof = false;
-			}
-		} while(gof);
-		csv_array[cnt] = etmp;
-		// - advance pointer?
-		if ((*ptmp == 0x3b) && (cnt < 15)) {
-			cnt++;
-			ptmp++;
+	memset(csv_array_str, 0, sizeof(csv_array_str));
+	// --- find end of line
+	ptest = strstr(ptmp, "\r\n");
+	if (ptest == NULL) {
+		return(ptest);
+	} else {
+		pend = ptest;
+	}
+	// -- parse csv line, walk through ';'
+	while(1) {
+		// - find next ';', copy field
+		ptest = strstr(ptmp, ";");
+		if (ptest == NULL) {
+			break;
 		} else {
-			go = false;
+			if (ptest >= pend) {
+				break;
+			}
+			len = ptest - ptmp;
+			strncpy(&csv_array_str[csv_split_cnt][0], ptmp, len);
+			ptmp = ptest + 1;
+			csv_split_cnt++;
 		}
-	} while(go);
+	};
 
-	// --- return csv field counter
-	return(cnt);
+	// --- return pointer to next line
+	return(ptmp+2);
+}
+
+// ****** request config
+void oo_HTTPC::request_config(void) {
+	// --- increment ring buffer top counter
+	tx_buf_top++;
+	tx_buf_top &= 0x0f;
+	
+	// --- pointer
+	char *tbuf_tx = &tx_buf[tx_buf_top][0];
+
+	// --- request results
+	strcpy(tbuf_tx, HTTP_REQ_PREFIX);		// prefix
+	tbuf_tx += strlen(tbuf_tx);
+	strcpy(tbuf_tx, HTTP_GET_CFG);			// request
+	tbuf_tx += strlen(tbuf_tx);
+	strcpy(tbuf_tx, HTTP_REQ_POST);			// post
+	
+	// --- set type in array
+	msg_type[tx_buf_top] = TYPE_GET_CFG;
+}
+
+// ****** parse config
+bool oo_HTTPC::parse_config(char *tbuf) {
+	printf("parse 'config'\r\n'%s'\r\n", tbuf);
+	//printf("parse 'config'\r\n");
+	
+	// --- jump http header to data
+	tbuf = find_data(tbuf);
+	
+	// --- parse pilots
+	uint8_t cnt_line = 0;
+	if (tbuf != NULL) {
+		// -- walk through lines
+		tbuf = split_csv_line(tbuf);
+		while(tbuf != NULL) {
+			//printf("%d: '%s;%s;%s;'\r\n", cnt_line, csv_array_str[0], csv_array_str[1], csv_array_str[2]);
+			switch(cnt_line) {
+				// - line 1, max chn
+				case 1:
+					cfg.max_chn = parse_hex2uint32(&csv_array_str[0][0]);
+					break;
+			}
+			cnt_line++;
+			tbuf = split_csv_line(tbuf);
+		}
+		// -- return good!
+		return(true);
+	} else {
+		// -- return not good, retry
+		return(false);
+	}
 }
 
 // ****** request pilotinfo
@@ -126,30 +167,27 @@ bool oo_HTTPC::parse_pilotinfo(char *tbuf) {
 	tbuf = find_data(tbuf);
 	
 	// --- parse pilots
+	info.pilot_count = 0;
 	if (tbuf != NULL) {
-		uint8_t len = 0;
-		info.pilot_count = 0;
-		while(1) {
-			// -- test if somewhat valid line
-			if (strstr(tbuf, ";") == NULL) break;
-			// -- parse field 0 for pilot nr
-			tbuf = parse_hex2uint32(tbuf) + 1;
-			info.pilots_data[info.pilot_count].nr = t_etmp;
-			// -- copy pilot name
-			len = strstr(tbuf, ";") - tbuf;
-			strncpy(&info.pilots_data[info.pilot_count].name[0], tbuf, len);
+		//printf("%s", tbuf);
+		// -- walk through lines
+		tbuf = split_csv_line(tbuf);
+		while(tbuf != NULL) {
+			// - pilot nr
+			info.pilots_data[info.pilot_count].nr = parse_hex2uint32(&csv_array_str[0][0]);
+			// - pilot name
+			memset(info.pilots_data[info.pilot_count].name, '\0', sizeof(info.pilots_data[info.pilot_count].name));
+			strncpy(info.pilots_data[info.pilot_count].name, csv_array_str[1], sizeof(info.pilots_data[info.pilot_count].name)-1);
 			//printf("%d : '%s'\r\n", info.pilots_data[info.pilot_count].nr, info.pilots_data[info.pilot_count].name);
 			info.pilot_count++;
-			tbuf = strstr(tbuf, "\r\n");
-			if (tbuf == NULL) break;
-			tbuf += 2;
+			tbuf = split_csv_line(tbuf);
 		}
+		// -- return good!
+		return(true);
 	} else {
-		// -- reply not good, retry
+		// -- return not good, retry
 		return(false);
 	}
-	// --- retrun good
-	return(true);
 }
 
 // ****** request raceinfo
@@ -174,6 +212,7 @@ void oo_HTTPC::request_raceinfo(void) {
 
 // ****** parse raceinfo
 bool oo_HTTPC::parse_raceinfo(char *tbuf) {
+	uint8_t cnt_line = 0;
 	//printf("parse 'raceinfo.csv'\r\n'%s'\r\n", tbuf);
 	printf("parse 'raceinfo.csv'\r\n");
 	
@@ -182,7 +221,71 @@ bool oo_HTTPC::parse_raceinfo(char *tbuf) {
 	
 	// --- parse line as csv
 	if (tbuf != NULL) {
-		printf("%s", tbuf);
+		//printf("%s", tbuf);
+		// -- walk through lines
+		tbuf = split_csv_line(tbuf);
+		while(tbuf != NULL) {
+			switch(cnt_line) {
+				// - line 0, state, heat mod_cnt
+				case 0:
+					info.state = parse_hex2uint32(&csv_array_str[0][0]);
+					info.heat_mod_cnt = parse_hex2uint32(&csv_array_str[1][0]);
+					printf("state: '%d'\r\nheat_mod_cnt: '%d'\r\n", info.state, info.heat_mod_cnt);
+					break;
+				// - line 1, event
+				case 1:
+					// event is open
+					if (parse_hex2uint32(&csv_array_str[0][0]) == 1) {
+						info.event_is_open = true;
+					} else {
+						info.event_is_open = false;
+					}
+					// event name
+					memset(info.event.name, '\0', sizeof(info.event.name));
+					strncpy(info.event.name, csv_array_str[3], sizeof(info.event.name)-1);
+					//sprintf(info.event.name, "%s", csv_array_str[3]);
+					break;
+				// - line 2, session
+				case 2:
+					// session is open
+					if (parse_hex2uint32(&csv_array_str[0][0]) == 1) {
+						info.session_is_open = true;
+					} else {
+						info.session_is_open = false;
+					}
+					// session name
+					memset(info.session.name, '\0', sizeof(info.session.name));
+					strncpy(info.session.name, csv_array_str[3], sizeof(info.session.name)-1);
+					break;
+				// - line 3, heat
+				case 3:
+					// heat is open
+					if (parse_hex2uint32(&csv_array_str[0][0]) == 1) {
+						info.heat_is_open = true;
+					} else {
+						info.heat_is_open = false;
+					}
+					// heat name
+					memset(info.heat.name, '\0', sizeof(info.heat.name));
+					strncpy(info.heat.name, csv_array_str[3], sizeof(info.heat.name)-1);
+					// pilots nr
+					info.heat.pilots_nr[0] = parse_hex2uint32(&csv_array_str[4][0]);
+					info.heat.pilots_nr[1] = parse_hex2uint32(&csv_array_str[5][0]);
+					info.heat.pilots_nr[2] = parse_hex2uint32(&csv_array_str[6][0]);
+					info.heat.pilots_nr[3] = parse_hex2uint32(&csv_array_str[7][0]);
+					info.heat.pilots_nr[4] = parse_hex2uint32(&csv_array_str[8][0]);
+					info.heat.pilots_nr[5] = parse_hex2uint32(&csv_array_str[9][0]);
+					info.heat.pilots_nr[6] = parse_hex2uint32(&csv_array_str[10][0]);
+					info.heat.pilots_nr[7] = parse_hex2uint32(&csv_array_str[11][0]);
+					break;
+			}
+			cnt_line++;
+			tbuf = split_csv_line(tbuf);
+		}
+		// -- pilots ok?
+		for (uint8_t i=0;i<cfg.max_chn;i++) {
+			if (info.heat.pilots_nr[i] == 0xff) info.heat.pilots_nr[i] = i;
+		}
 		// -- return good!
 		return(true);
 	} else {
@@ -213,7 +316,7 @@ void oo_HTTPC::request_results(void) {
 
 // ****** parse results
 bool oo_HTTPC::parse_results(char *tbuf) {
-	char ctmp[200];
+	uint8_t cnt_line = 0;
 
 	//printf("parse 'results.csv'\r\n'%s'\r\n", tbuf);
 	printf("parse 'results.csv'\r\n");
@@ -221,43 +324,50 @@ bool oo_HTTPC::parse_results(char *tbuf) {
 	// --- jump http header to data
 	tbuf = find_data(tbuf);
 	
+	// --- clear some stuff
+	memset(info.hitcount, 0, sizeof(info.hitcount));
+	memset(info.hits, 0, sizeof(info.hits));
+	
 	// --- parse line as csv
 	if (tbuf != NULL) {
-		int len = strstr(tbuf, "\r\n") - tbuf;
-		uint8_t field_cnt = 0;
-		while(len > 2) {
-			strncpy(ctmp, tbuf, len);
-			ctmp[len] = '\0';
-			//printf("'%s'\r\n", ctmp);
-			// -- parse line
-			switch (*tbuf) {
-				// is fastest lap line?
-				case 'f':
-					tbuf += 2;
-					len -= 2;
-					field_cnt = parse_csv_line(tbuf);
-					break;
-				// is position line?
-				case 'p':
-					tbuf += 2;
-					len -= 2;
-					field_cnt = parse_csv_line(tbuf);
-					break;
-				// default, parse line from byte 0
-				default:
-					field_cnt = parse_csv_line(tbuf);
-					break;
+		// -- walk through lines
+		tbuf = split_csv_line(tbuf);
+		while(tbuf != NULL) {
+			if (cnt_line == 0) {
+				// - line 0
+				info.timestamp = parse_hex2uint32(&csv_array_str[0][0]);
+				info.state = parse_hex2uint32(&csv_array_str[1][0]);
+				if (cfg.max_chn == 4) {
+					info.use_event_mode = parse_hex2uint32(&csv_array_str[7][0]);
+					info.event_mod_cnt_new = parse_hex2uint32(&csv_array_str[8][0]);
+					info.session_mod_cnt_new = parse_hex2uint32(&csv_array_str[9][0]);
+					info.heat_mod_cnt_new = parse_hex2uint32(&csv_array_str[10][0]);
+				} else {
+					info.use_event_mode = parse_hex2uint32(&csv_array_str[11][0]);
+					info.event_mod_cnt_new = parse_hex2uint32(&csv_array_str[12][0]);
+					info.session_mod_cnt_new = parse_hex2uint32(&csv_array_str[13][0]);
+					info.heat_mod_cnt_new = parse_hex2uint32(&csv_array_str[14][0]);
+				}
+			} else {
+				switch(csv_array_str[0][0]) {
+					// - hit
+					case 'h':
+						info.hits[parse_hex2uint32(&csv_array_str[1][0])][parse_hex2uint32(&csv_array_str[2][0])] = parse_hex2uint32(&csv_array_str[3][0]);
+						info.hitcount[parse_hex2uint32(&csv_array_str[1][0])] = parse_hex2uint32(&csv_array_str[2][0]) + 1;
+						break;
+					// - fastest laps
+					case 'f':
+						break;
+					// - position
+					case 'p':
+						break;
+				}
 			}
-			// -- DBG: print csv fields
-			//printf("csv: %d: ", field_cnt);
-			//for (uint8_t i=0;i<field_cnt;i++) {
-			//	printf("%x-", csv_array[i]);
-			//}
-			//printf("\r\n");
-			// -- calc length of next line
-			tbuf += len + 2;
-			len = strstr(tbuf, "\r\n") - tbuf;
+			cnt_line++;
+			tbuf = split_csv_line(tbuf);
 		}
+		// --- send event to main loop
+		ESP_ERROR_CHECK(esp_event_post_to(main_loop_handle, TRACKER_EVENTS, EVENT_USE_RESULT, NULL, 0, portMAX_DELAY));
 		// -- return good!
 		return(true);
 	} else {
@@ -352,7 +462,8 @@ static void tcp_client_task(void *pvParameters) {
 			}
 			
 			// -- connect socket
-			int err = connect(sock, (struct sockaddr *)&dest_addr, sizeof(struct sockaddr_in));
+			connect(sock, (struct sockaddr *)&dest_addr, sizeof(struct sockaddr_in));
+			//int err = connect(sock, (struct sockaddr *)&dest_addr, sizeof(struct sockaddr_in));
 			//printf("connect: sock '%x'  err '%i' errno %d: '%s'\r\n", sock, err, errno, strerror(errno));
 			
 			// -- send request
@@ -366,6 +477,10 @@ static void tcp_client_task(void *pvParameters) {
 				// - parse reply
 				bool it_worked = true;
 				switch(httpc.msg_type[httpc.tx_buf_work]) {
+					// get config
+					case TYPE_GET_CFG:
+						it_worked = httpc.parse_config(&httpc.rx_buf[0]);
+						break;
 					// pilotinfo
 					case TYPE_GET_PILOTINFO:
 						it_worked = httpc.parse_pilotinfo(&httpc.rx_buf[0]);

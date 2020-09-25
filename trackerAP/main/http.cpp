@@ -24,7 +24,7 @@ void oo_HTTP::init(void) {
 // ****** reply done
 void oo_HTTP::reply_done(char *tbuf) {
 	// --- reply done and new state
-	sprintf(tbuf, "Done;%x\r\n", rt.state);
+	sprintf(tbuf, "Done;%x;\r\n", rt.state);
 }
 
 // ****** get config
