@@ -126,3 +126,6 @@ Think of displays, input devices, barcode scanner,...
 The first pcbs are badly flawed, gerber files for usable ones will be published later.
 
 ![RTclient](pics/rtclient_small.png?raw=true "[RTclient]")
+
+Use case: show pilot names on MultiRX (racedata too, later).
+![RTclient_MultiRX](pics/RTclient_multirx_small.png?raw=true "[RTclient_MultiRX]")
