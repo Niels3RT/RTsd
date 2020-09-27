@@ -7,6 +7,7 @@ oo_Timer timer;
 oo_HTTPC httpc;
 oo_CFG cfg;
 oo_Info info;
+oo_UART uart;
 
 // -- handles
 esp_event_loop_handle_t main_loop_handle;
@@ -45,6 +46,8 @@ void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 		// -- calc laps from hits
 		info.calc_laps();
 		info.print_heat();
+		// -- write control message to uart
+		uart.send_msg();
 	}
 }
 
@@ -90,4 +93,7 @@ void app_main(void) {
 	
 	// --- init http
 	httpc.init();
+	
+	// --- init uart
+	uart.init();
 }

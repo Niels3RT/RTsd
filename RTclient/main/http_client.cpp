@@ -399,7 +399,7 @@ int oo_HTTPC::send_request(int sock) {
 		err = send(sock, &tx_buf[tx_buf_work][0], strlen(&tx_buf[tx_buf_work][0]), 0);
 		if (err < 0) {
 			error_cnt++;
-			if (error_cnt > 100) {
+			if (error_cnt > 60) {
 				printf("send failed: sock '%x'  err '%i' errno %d: '%s'\r\n", sock, err, errno, strerror(errno));
 				return(-1);
 				break;

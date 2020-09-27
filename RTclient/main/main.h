@@ -19,6 +19,7 @@
 	
 	#include "driver/spi_master.h"
 	#include "driver/gpio.h"
+	#include "driver/uart.h"
 	#include "driver/sdmmc_host.h"
 	#include "sdmmc_cmd.h"
 	
@@ -37,6 +38,7 @@
 	#include "http_client.h"
 	#include "cfg.h"
 	#include "info.h"
+	#include "uart.h"
 
 	// --- objects
 	extern oo_WiFi wifi;
@@ -44,6 +46,7 @@
 	extern oo_HTTPC httpc;
 	extern oo_CFG cfg;
 	extern oo_Info info;
+	extern oo_UART uart;
 	
 	extern "C" {
 		void app_main();
