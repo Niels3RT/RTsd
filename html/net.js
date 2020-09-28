@@ -823,6 +823,7 @@
 				buf_post += document.getElementById("event_mod_nb_qotime").value + ";";
 				buf_post += document.getElementById("sel_event_mod_rmode").value + ";";
 				buf_post += document.getElementById("event_mod_nb_rlaps").value + ";";
+				buf_post += document.getElementById("event_mod_nb_chn").value + ";";
 				commFile.onreadystatechange = function () {
 					// -- request completed?
 					if(commFile.readyState == 4) {

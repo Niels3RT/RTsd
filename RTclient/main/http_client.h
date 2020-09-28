@@ -28,6 +28,7 @@ class oo_HTTPC {
 		bool parse_raceinfo(char *tbuf);
 		void request_results(void);
 		bool parse_results(char *tbuf);
+		void handle_mod_cnt(void);
 		int create_socket(void);
 		int send_request(int sock);
 		int read_reply(int sock);

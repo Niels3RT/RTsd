@@ -19,24 +19,10 @@ void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 	
 	// --- open heat?
 	if (event_id == EVENT_TIMER_MAIN) {
-		//httpc.start_request();
+		// -- check mod counters
+		httpc.handle_mod_cnt();
+		// -- get results if everything else is ok
 		if (httpc.tx_buf_work == httpc.tx_buf_top) {
-			// -- event mod cnt changed?
-			if (info.event_mod_cnt != info.event_mod_cnt_new) {
-				info.event_mod_cnt = info.event_mod_cnt_new;
-				httpc.request_pilotinfo();
-				//httpc.request_raceinfo();
-			}
-			// -- session mod cnt changed?
-			if (info.session_mod_cnt != info.session_mod_cnt_new) {
-				info.session_mod_cnt = info.session_mod_cnt_new;
-				//httpc.request_raceinfo();
-			}
-			// -- heat mod cnt changed?
-			if (info.heat_mod_cnt != info.heat_mod_cnt_new) {
-				info.heat_mod_cnt = info.heat_mod_cnt_new;
-				httpc.request_raceinfo();
-			}
 			httpc.request_results();
 		}
 	}

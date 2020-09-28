@@ -131,6 +131,10 @@
 			<button id="btn_event_new" class="cls_event_btn">new</button>
 		</div>
 		<div id="div_event_mod">
+			<div id="div_event_mod_chn" class="cls_event_mod_part">
+				<input type="number" id="event_mod_nb_chn" class="cls_event_number" min="4" max="8" value="8">
+				<label for="event_mod_nb_chn" class="cls_event_rb_label">nr channels</label>
+			</div>
 			<div id="div_event_mod_qmode" class="cls_event_mod_part">
 				<select name="quali_mode" id="sel_event_mod_qmode" class="cls_event_select">
 					<option value="1">consecutive laps</option>
@@ -232,6 +236,7 @@
 	var p_event_btn_list_up   = document.getElementById("btn_event_list_up");
 	var p_event_btn_list_down = document.getElementById("btn_event_list_down");
 	
+	var p_event_mod_nb_chn    = document.getElementById("event_mod_nb_chn");
 	var p_txt_event_new_name  = document.getElementById("txt_event_new_name");
 	var p_sel_event_mod_qmode = document.getElementById("sel_event_mod_qmode");
 	var p_event_mod_nb_qlaps  = document.getElementById("event_mod_nb_qlaps");

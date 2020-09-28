@@ -86,7 +86,7 @@ void oo_UART::send_msg(void) {
 		add_crc(&utx_buf[1], strlen(utx_buf)-1);
 		
 		// --- debug: print message to serial log
-		printf("%s", utx_buf);
+		//printf("%s", utx_buf);
 
 		// Write data back to the UART
 		uart_write_bytes(UART_NUM_1, (const char *) utx_buf, strlen(utx_buf));
@@ -99,7 +99,32 @@ void oo_UART::send_msg(void) {
 	uart_write_bytes(UART_NUM_1, (const char *) utx_buf, strlen(utx_buf));
 	
 	// --- tune channels
+	//sprintf(utx_buf, "$V8X,00060000000000000000*1C\r\n");
+	//uart_write_bytes(UART_NUM_1, (const char *) utx_buf, strlen(utx_buf));
+	//vTaskDelay(30 / portTICK_PERIOD_MS);
+	//sprintf(utx_buf, "$V8X,00060000000000000003*1F\r\n");
+	//uart_write_bytes(UART_NUM_1, (const char *) utx_buf, strlen(utx_buf));
+	//vTaskDelay(30 / portTICK_PERIOD_MS);
+	//sprintf(utx_buf, "$V8X,00060000000000000303*1C\r\n");
+	//uart_write_bytes(UART_NUM_1, (const char *) utx_buf, strlen(utx_buf));
+	//vTaskDelay(30 / portTICK_PERIOD_MS);
+	//sprintf(utx_buf, "$V8X,00060000000000030303*1F\r\n");
+	//uart_write_bytes(UART_NUM_1, (const char *) utx_buf, strlen(utx_buf));
+	//vTaskDelay(30 / portTICK_PERIOD_MS);
+	//sprintf(utx_buf, "$V8X,00060000000003030303*1C\r\n");
+	//uart_write_bytes(UART_NUM_1, (const char *) utx_buf, strlen(utx_buf));
+	//vTaskDelay(30 / portTICK_PERIOD_MS);
+	//sprintf(utx_buf, "$V8X,00060000000303030303*1F\r\n");
+	//uart_write_bytes(UART_NUM_1, (const char *) utx_buf, strlen(utx_buf));
+	//vTaskDelay(30 / portTICK_PERIOD_MS);
+	//sprintf(utx_buf, "$V8X,00060000030303030303*1C\r\n");
+	//uart_write_bytes(UART_NUM_1, (const char *) utx_buf, strlen(utx_buf));
+	//vTaskDelay(30 / portTICK_PERIOD_MS);
+	//sprintf(utx_buf, "$V8X,00060003030303030303*1F\r\n");
+	//uart_write_bytes(UART_NUM_1, (const char *) utx_buf, strlen(utx_buf));
+	//vTaskDelay(30 / portTICK_PERIOD_MS);
 	//sprintf(utx_buf, "$V8X,00060303030303030303*1C\r\n");
+	//uart_write_bytes(UART_NUM_1, (const char *) utx_buf, strlen(utx_buf));
 	//printf("%s", utx_buf);
 	// Write data back to the UART
 	//uart_write_bytes(UART_NUM_1, (const char *) utx_buf, strlen(utx_buf));

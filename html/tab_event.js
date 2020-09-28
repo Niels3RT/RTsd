@@ -482,6 +482,7 @@
 		p_txt_event_new_name.style.marginTop = (font_size_main * 0.15) + "px";
 		//p_txt_event_new_name.style.width = (font_size_main * 6) + "px";
 		p_txt_event_new_name.style.width = "50%";
+		p_event_mod_nb_chn.style.fontSize = (font_size_main * 0.5) + "px";
 		p_sel_event_mod_qmode.style.fontSize = (font_size_main * 0.5) + "px";
 		p_event_mod_nb_qlaps.style.fontSize = (font_size_main * 0.5) + "px";
 		p_event_mod_nb_qotime.style.fontSize = (font_size_main * 0.5) + "px";

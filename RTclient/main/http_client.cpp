@@ -229,8 +229,10 @@ bool oo_HTTPC::parse_raceinfo(char *tbuf) {
 				// - line 0, state, heat mod_cnt
 				case 0:
 					info.state = parse_hex2uint32(&csv_array_str[0][0]);
-					info.heat_mod_cnt = parse_hex2uint32(&csv_array_str[1][0]);
-					printf("state: '%d'\r\nheat_mod_cnt: '%d'\r\n", info.state, info.heat_mod_cnt);
+					info.heat_mod_cnt_new = parse_hex2uint32(&csv_array_str[1][0]);
+					//printf("state: '%d'\r\nheat_mod_cnt: '%d'\r\n", info.state, info.heat_mod_cnt);
+					// - check mod counters
+					handle_mod_cnt();
 					break;
 				// - line 1, event
 				case 1:
@@ -348,6 +350,8 @@ bool oo_HTTPC::parse_results(char *tbuf) {
 					info.session_mod_cnt_new = parse_hex2uint32(&csv_array_str[13][0]);
 					info.heat_mod_cnt_new = parse_hex2uint32(&csv_array_str[14][0]);
 				}
+				// - check mod counters
+				handle_mod_cnt();
 			} else {
 				switch(csv_array_str[0][0]) {
 					// - hit
@@ -373,6 +377,26 @@ bool oo_HTTPC::parse_results(char *tbuf) {
 	} else {
 		// -- return not good, retry
 		return(false);
+	}
+}
+
+// ****** handle mod counter
+void oo_HTTPC::handle_mod_cnt(void) {
+	// -- event mod cnt changed?
+	if (info.event_mod_cnt != info.event_mod_cnt_new) {
+		info.event_mod_cnt = info.event_mod_cnt_new;
+		httpc.request_pilotinfo();
+		//httpc.request_raceinfo();
+	}
+	// -- session mod cnt changed?
+	if (info.session_mod_cnt != info.session_mod_cnt_new) {
+		info.session_mod_cnt = info.session_mod_cnt_new;
+		//httpc.request_raceinfo();
+	}
+	// -- heat mod cnt changed?
+	if (info.heat_mod_cnt != info.heat_mod_cnt_new) {
+		info.heat_mod_cnt = info.heat_mod_cnt_new;
+		httpc.request_raceinfo();
 	}
 }
 
