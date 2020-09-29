@@ -940,6 +940,36 @@
 					}
 				}
 			}
+			// --- modify event
+			if (comm_request == 29) {
+				commFile.open("POST", path + "event_mod;", true);
+				// -- walk through event config data
+				buf_post = "";
+				buf_post += document.getElementById("txt_event_new_name").value + ";"
+				buf_post += document.getElementById("sel_event_mod_qmode").value + ";";
+				buf_post += document.getElementById("event_mod_nb_qlaps").value + ";";
+				buf_post += document.getElementById("event_mod_nb_qotime").value + ";";
+				buf_post += document.getElementById("sel_event_mod_rmode").value + ";";
+				buf_post += document.getElementById("event_mod_nb_rlaps").value + ";";
+				buf_post += document.getElementById("event_mod_nb_chn").value + ";";
+				commFile.onreadystatechange = function () {
+					// -- request completed?
+					if(commFile.readyState == 4) {
+						switch (commFile.status) {
+							// - cmd is ok
+							case 200:
+								comm_state = 0;
+								count_err = 0;
+								break;
+							default:
+								comm_state = 0;
+								comm_request = 25;
+								count_err++;
+								break;
+						}
+					}
+				}
+			}
 			// --- common
 			comm_request_try = comm_request;
 			comm_request = 0;

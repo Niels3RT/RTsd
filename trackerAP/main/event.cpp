@@ -61,8 +61,8 @@ void oo_Event::clear() {
 	// --- session count
 	sessions_cnt = 0;
 	// --- event
-	nr = 1;
-	sprintf(name, "---");
+	current.nr = 1;
+	sprintf(current.name, "---");
 }
 
 // ****** open event
@@ -80,7 +80,7 @@ void oo_Event::open(uint8_t nr) {
 		while(sd.entry) {
 			if (sd.entry->d_type == DT_DIR) {
 				if (cnt == nr) {
-					strncpy(name, sd.entry->d_name, 39);
+					strncpy(current.name, sd.entry->d_name, 39);
 				}
 				cnt++;
 			}
@@ -91,37 +91,42 @@ void oo_Event::open(uint8_t nr) {
 		// -- read event pilots
 		read_event_pilots();
 		// -- read event parameters, open event config file
-		sprintf(ctmp, "/RTsd/data/%s/event.txt", name);
+		sprintf(ctmp, "/RTsd/data/%s/event.txt", current.name);
 		sd.cfg_file_open(ctmp, "r");
 		if (sd.cfg_file != NULL) {
 			do {
 				sd.cfg_file_getparm();
 				// -- don't work on comments or eof
 				if ((sd.cfg_parm[0] != '#') && (sd.cfg_parm[0] != 0xff)){
+					// -- heat channels
+					if (strcmp(sd.cfg_parm, CFG_HEAT_CHANNELS) == 0) {
+						current.channels = (uint8_t)buf.buf2uintX_t_dec(&sd.cfg_value[0]);
+						printf("heat channels from txt '%d'\r\n", current.channels);
+					}
 					// -- quali mode
 					if (strcmp(sd.cfg_parm, CFG_QUALI_MODE) == 0) {
-						quali_mode = (uint8_t)buf.buf2uintX_t_dec(&sd.cfg_value[0]);
-						printf("quali mode from txt '%d'\r\n", quali_mode);
+						current.quali_mode = (uint8_t)buf.buf2uintX_t_dec(&sd.cfg_value[0]);
+						printf("quali mode from txt '%d'\r\n", current.quali_mode);
 					}
 					// -- quali laps
 					if (strcmp(sd.cfg_parm, CFG_QUALI_LAPS) == 0) {
-						quali_laps = (uint8_t)buf.buf2uintX_t_dec(&sd.cfg_value[0]);
-						printf("quali laps from txt '%d'\r\n", quali_laps);
+						current.quali_laps = (uint8_t)buf.buf2uintX_t_dec(&sd.cfg_value[0]);
+						printf("quali laps from txt '%d'\r\n", current.quali_laps);
 					}
 					// -- quali overtime
 					if (strcmp(sd.cfg_parm, CFG_QUALI_OTIME) == 0) {
-						quali_otime = buf.buf2uintX_t_dec(&sd.cfg_value[0]);
-						printf("quali overtime from txt '%d'\r\n", quali_otime);
+						current.quali_otime = buf.buf2uintX_t_dec(&sd.cfg_value[0]);
+						printf("quali overtime from txt '%d'\r\n", current.quali_otime);
 					}
 					// -- race mode
 					if (strcmp(sd.cfg_parm, CFG_RACE_MODE) == 0) {
-						race_mode = (uint8_t)buf.buf2uintX_t_dec(&sd.cfg_value[0]);
-						printf("race mode from txt '%d'\r\n", race_mode);
+						current.race_mode = (uint8_t)buf.buf2uintX_t_dec(&sd.cfg_value[0]);
+						printf("race mode from txt '%d'\r\n", current.race_mode);
 					}
 					// -- race laps
 					if (strcmp(sd.cfg_parm, CFG_RACE_LAPS) == 0) {
-						race_laps = (uint8_t)buf.buf2uintX_t_dec(&sd.cfg_value[0]);
-						printf("race laps from txt '%d'\r\n", race_laps);
+						current.race_laps = (uint8_t)buf.buf2uintX_t_dec(&sd.cfg_value[0]);
+						printf("race laps from txt '%d'\r\n", current.race_laps);
 					}
 				}
 			} while(sd.cfg_parm[0] != 0xff);
@@ -129,7 +134,7 @@ void oo_Event::open(uint8_t nr) {
 			sd.cfg_file_close();
 			// -- fetch sessions
 			sessions_cnt = 0;
-			sprintf(ctmp, "/RTsd/data/%s", name);
+			sprintf(ctmp, "/RTsd/data/%s", current.name);
 			if (sd.dir_open(ctmp)) {
 				// -- read dir entries
 				sd.dir_get_entry();
@@ -139,7 +144,7 @@ void oo_Event::open(uint8_t nr) {
 						sessions[sessions_cnt].nr = sessions_cnt;
 						// -- session info from config file
 						strncpy(sessions[sessions_cnt].name, sd.entry->d_name, 40);
-						sprintf(ctmp, "/RTsd/data/%s/%s/session.txt", name, sessions[sessions_cnt].name);
+						sprintf(ctmp, "/RTsd/data/%s/%s/session.txt", current.name, sessions[sessions_cnt].name);
 						sd.cfg_file_open(ctmp, "r");
 						if (sd.cfg_file != NULL) {
 							do {
@@ -175,7 +180,7 @@ void oo_Event::open(uint8_t nr) {
 	
 	// --- read evént results
 	// - open file
-	sprintf(ctmp, "/RTsd/data/%s/results.csv", event.name);
+	sprintf(ctmp, "/RTsd/data/%s/results.csv", current.name);
 	sd.data_file_open(ctmp, "r");
 	uint8_t cnt_f = 0;
 	uint8_t cnt_q = 0;
@@ -240,6 +245,8 @@ void oo_Event::create_new(st_event * evtmp) {
 	
 	// --- write config data
 	if (sd.cfg_file != NULL) {
+		sprintf(sd.data_line, "heat_channels=%d;\r\n", evtmp->channels);
+		sd.cfg_file_writeline();
 		sprintf(sd.data_line, "quali_mode=%d;\r\n", evtmp->quali_mode);
 		sd.cfg_file_writeline();
 		sprintf(sd.data_line, "quali_laps=%d;\r\n", evtmp->quali_laps);
@@ -268,7 +275,7 @@ void oo_Event::read_event_pilots(void) {
 	char ctmp[256];
 	
 	// --- open event pilots file
-	sprintf(ctmp, "/RTsd/data/%s/pilots.csv", name);
+	sprintf(ctmp, "/RTsd/data/%s/pilots.csv", current.name);
 	sd.data_file_open(ctmp, "r");
 	
 	// --- read event pilots from file
@@ -290,7 +297,7 @@ void oo_Event::write_event_pilots(void) {
 	char ctmp[256];
 	
 	// --- open event pilots file
-	sprintf(ctmp, "/RTsd/data/%s/pilots.csv", name);
+	sprintf(ctmp, "/RTsd/data/%s/pilots.csv", current.name);
 	sd.data_file_open(ctmp, "w");
 	
 	// --- write event pilots to file
@@ -365,7 +372,7 @@ void oo_Event::collect_results(void) {
 			// -- read session pilots
 			pcount = 0;
 			// - open file
-			sprintf(ctmp, "/RTsd/data/%s/session%d/pilots.csv", event.name, s);
+			sprintf(ctmp, "/RTsd/data/%s/session%d/pilots.csv", current.name, s);
 			sd.data_file_open(ctmp, "r");
 			if (sd.data_file != NULL) {
 				// - read by line
@@ -379,7 +386,7 @@ void oo_Event::collect_results(void) {
 			}
 			// -- fetch results for pilots
 			// - open file
-			sprintf(ctmp, "/RTsd/data/%s/session%d/results.csv", event.name, s);
+			sprintf(ctmp, "/RTsd/data/%s/session%d/results.csv", current.name, s);
 			sd.data_file_open(ctmp, "r");
 			if (sd.data_file != NULL) {
 				// - read by line
@@ -425,7 +432,7 @@ void oo_Event::collect_results(void) {
 	
 	// --- write event result to file
 	// - open file
-	sprintf(ctmp, "/RTsd/data/%s/results.csv", event.name);
+	sprintf(ctmp, "/RTsd/data/%s/results.csv", current.name);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
 		// - write fastest laps

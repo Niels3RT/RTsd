@@ -174,7 +174,7 @@ void oo_HTTP::reply_raceinfo(char *tbuf) {
 	// --- line 1, event
 	tbuf += strlen(tbuf);
 	if (event.is_open) {
-		sprintf(tbuf, "%x;%x;%x;%s;\r\n", event.is_open, event.nr, event.events_cnt, event.name);
+		sprintf(tbuf, "%x;%x;%x;%s;\r\n", event.is_open, event.current.nr, event.events_cnt, event.current.name);
 	} else {
 		sprintf(tbuf, "%x;0;0;;\r\n", event.is_open);
 	}
@@ -465,12 +465,55 @@ void oo_HTTP::reply_new_event(char *tbuf_rx, char *tbuf_tx) {
 	// --- race laps
 	ptmp = strchr(ptmp, ';') + 1;
 	evtmp.race_laps = (uint8_t)buf.buf2uintX_t_dec(ptmp);
+	// --- number of channels per heat
+	ptmp = strchr(ptmp, ';') + 1;
+	evtmp.channels = (uint8_t)buf.buf2uintX_t_dec(ptmp);
 	
 	printf("Create new Event: '%s'\r\n%d:%d:%d\r\n", evtmp.name, evtmp.quali_mode, evtmp.quali_laps, evtmp.quali_otime);
-	printf("%d:%d\r\n", evtmp.race_mode, evtmp.race_laps);
+	printf("%d:%d:%d\r\n", evtmp.race_mode, evtmp.race_laps, evtmp.channels);
 	
 	// --- create new event
 	event.create_new(&evtmp);
+
+	// --- write response
+	http.reply_done(tbuf_tx + strlen(tbuf_tx));
+}
+
+// ****** modify current event
+void oo_HTTP::reply_mod_event(char *tbuf_rx, char *tbuf_tx) {
+	//st_event evtmp = event.empty;
+	printf("new event:\r\n%s", tbuf_rx);
+	st_event evtmp;
+	// --- parse new name
+	char * ptmp = tbuf_rx;
+	uint8_t len = strchr(ptmp, ';') - ptmp;
+	if (len > 39) len = 39;
+	strncpy(&evtmp.name[0], ptmp, len);
+	evtmp.name[len] = '\0';
+	// --- quali mode
+	ptmp = strchr(ptmp, ';') + 1;
+	evtmp.quali_mode = (uint8_t)buf.buf2uintX_t_dec(ptmp);
+	// --- quali laps
+	ptmp = strchr(ptmp, ';') + 1;
+	evtmp.quali_laps = (uint8_t)buf.buf2uintX_t_dec(ptmp);
+	// --- quali otime
+	ptmp = strchr(ptmp, ';') + 1;
+	evtmp.quali_otime = (uint16_t)buf.buf2uintX_t_dec(ptmp);
+	// --- race mode
+	ptmp = strchr(ptmp, ';') + 1;
+	evtmp.race_mode = (uint8_t)buf.buf2uintX_t_dec(ptmp);
+	// --- race laps
+	ptmp = strchr(ptmp, ';') + 1;
+	evtmp.race_laps = (uint8_t)buf.buf2uintX_t_dec(ptmp);
+	// --- number of channels per heat
+	ptmp = strchr(ptmp, ';') + 1;
+	evtmp.channels = (uint8_t)buf.buf2uintX_t_dec(ptmp);
+	
+	printf("Create new Event: '%s'\r\n%d:%d:%d\r\n", evtmp.name, evtmp.quali_mode, evtmp.quali_laps, evtmp.quali_otime);
+	printf("%d:%d:%d\r\n", evtmp.race_mode, evtmp.race_laps, evtmp.channels);
+	
+	// --- create new event
+	//event.mod_event(&evtmp);
 
 	// --- write response
 	http.reply_done(tbuf_tx + strlen(tbuf_tx));
@@ -1010,6 +1053,12 @@ static void httpn_server_task(void *pvParameters)
 							is_good_cmd = true;
 							strcpy(&http.tx_buf[use_buf][strlen(http.tx_buf[use_buf])], HTTP_CONTENT_CSV);
 							http.reply_new_event(strstr(http.rx_buf[use_buf], "\r\n\r\n")+4, &http.tx_buf[use_buf][strlen(http.tx_buf[use_buf])]);
+						}
+						// --- modify event
+						if (strstr(tmp_header, HTTP_SET_MOD_EVENT)) {
+							is_good_cmd = true;
+							strcpy(&http.tx_buf[use_buf][strlen(http.tx_buf[use_buf])], HTTP_CONTENT_CSV);
+							http.reply_mod_event(strstr(http.rx_buf[use_buf], "\r\n\r\n")+4, &http.tx_buf[use_buf][strlen(http.tx_buf[use_buf])]);
 						}
 						// --- set event pilots
 						if (strstr(tmp_header, HTTP_SET_EVENT_PILOTS)) {

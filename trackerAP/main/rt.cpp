@@ -264,7 +264,7 @@ void oo_RT::pd_fetch(void) {
 	
 	// --- limit time for laps in quali mode?
 	uint32_t time_limit = 0xffffffff;
-	if ((session.mode == SESSION_MODE_QUALI) && (event.quali_mode == QUALI_OVERTIME)) {
+	if ((session.mode == SESSION_MODE_QUALI) && (event.current.quali_mode == QUALI_OVERTIME)) {
 		time_limit = (uint32_t)event.current.quali_otime * 1000;
 	}
 	

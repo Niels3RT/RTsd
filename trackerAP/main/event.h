@@ -2,20 +2,13 @@
 class oo_Event {
 	// -- vars
 	public:
-		uint16_t nr;
 		uint16_t events_cnt;
-		char name[40];
 		uint8_t pilots[CFG_MAX_PILOTS];
 		st_pilot pilots_data[CFG_MAX_PILOTS];
 		uint8_t pilots_all_cnt;
 		uint8_t pilots_cnt;
 		st_session sessions[32];
 		uint8_t sessions_cnt;
-		uint8_t quali_mode;
-		uint8_t quali_laps;
-		uint16_t quali_otime;
-		uint8_t race_mode;
-		uint8_t race_laps;
 		bool is_open;
 		uint8_t mod_cnt;
 		st_event current;
@@ -44,6 +37,7 @@ class oo_Event {
 
 };
 
+#define CFG_HEAT_CHANNELS	"heat_channels"
 #define CFG_QUALI_MODE		"quali_mode"
 #define CFG_QUALI_LAPS		"quali_laps"
 #define CFG_QUALI_OTIME		"quali_otime"

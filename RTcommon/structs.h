@@ -2,6 +2,7 @@
 struct st_event {
 	uint8_t nr;
 	char name[40];
+	uint8_t channels;
 	uint8_t quali_mode;
 	uint8_t quali_laps;
 	uint16_t quali_otime;

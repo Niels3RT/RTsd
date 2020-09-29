@@ -22,5 +22,5 @@ class oo_WiFi {
 #define WIFI_CONNECTED_BIT 		BIT0
 #define WIFI_FAIL_BIT      		BIT1
 
-#define ESP_WIFI_STA_SSID		"Sumpfnetz"
-#define ESP_WIFI_STA_PASS		"&zoBy#Iga6-8"
+#define ESP_WIFI_STA_SSID		"YourSSID"
+#define ESP_WIFI_STA_PASS		"YourPass"

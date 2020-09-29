@@ -34,7 +34,7 @@ void oo_Heat::open(void) {
 	printf("HeatNr '%d'\r\n", current.nr);
 	// --- copy rssi from file to fpga sdram
 	rt.count = 0;
-	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/rssi.csv", event.name, session.nr, current.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/rssi.csv", event.current.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "r");
 	if (sd.data_file != NULL) {
 		printf("csv file opened for reading '%s'\r\n", ctmp);
@@ -55,7 +55,7 @@ void oo_Heat::open(void) {
 		sd.data_file_close();
 	}
 	// --- read trigger levels from results data file
-	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/results.csv", event.name, session.nr, current.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/results.csv", event.current.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "r");
 	if (sd.data_file != NULL) {
 		// -- walk through lines in file
@@ -110,18 +110,18 @@ void oo_Heat::commit(void) {
 	current.state = rt.state;
 	session.heats[current.nr] = current;
 	// --- limit lapcount in quali consecutive lap mode
-	if ((session.mode == SESSION_MODE_QUALI) && (event.quali_mode == QUALI_CONSEC_LAPS)) {
+	if ((session.mode == SESSION_MODE_QUALI) && (event.current.quali_mode == QUALI_CONSEC_LAPS)) {
 		// -- walk through channels
 		for(uint8_t i=0;i<rt.max_chn;i++) {
 			// - more laps flown than consecutive limit? Position time is already best n laps.
-			if (session.heats[current.nr].lapcount[i] > event.quali_laps) {
-				session.heats[current.nr].lapcount[i] = event.quali_laps;
+			if (session.heats[current.nr].lapcount[i] > event.current.quali_laps) {
+				session.heats[current.nr].lapcount[i] = event.current.quali_laps;
 			}
 		}
 	}
 	printf("1 current.state '%x' rt.state '%x'\r\n", current.state, rt.state);
 	// --- save results
-	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/results.csv", event.name, session.nr, current.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/results.csv", event.current.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
 		printf("csv file opened for writing '%s'\r\n", ctmp);
@@ -154,7 +154,7 @@ void oo_Heat::commit(void) {
 	char trssi[16];
 	uint16_t rtmp[8];
 	for (uint8_t i=0;i<rt.max_chn;i++) rtmp[i] = 0;
-	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/rssi.csv", event.name, session.nr, current.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/rssi.csv", event.current.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
 		printf("csv file opened for writing '%s'\r\n", ctmp);
@@ -179,7 +179,7 @@ void oo_Heat::commit(void) {
 	}
 	
 	// --- save heats states
-	sprintf(ctmp, "/RTsd/data/%s/session%d/state.csv", event.name, session.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/state.csv", event.current.name, session.nr);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
 		printf("csv file opened for writing '%s'\r\n", ctmp);
@@ -198,7 +198,7 @@ void oo_Heat::commit(void) {
 	save_exceptions();
 	
 	// --- save session results
-	sprintf(ctmp, "/RTsd/data/%s/session%d/results.csv", event.name, session.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/results.csv", event.current.name, session.nr);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
 		printf("csv file opened for writing '%s'\r\n", ctmp);
@@ -231,7 +231,7 @@ void oo_Heat::commit(void) {
 void oo_Heat::save_exceptions(void) {
 	char ctmp[256];
 	// --- open exception data file for writing
-	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/except.csv", event.name, session.nr, current.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/except.csv", event.current.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "w");
 	if (sd.data_file != NULL) {
 		// -- walk through channels
@@ -251,7 +251,7 @@ void oo_Heat::save_exceptions(void) {
 void oo_Heat::load_exceptions(void) {
 	char ctmp[256];
 	// --- open exception data file for writing
-	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/except.csv", event.name, session.nr, current.nr);
+	sprintf(ctmp, "/RTsd/data/%s/session%d/run%d/except.csv", event.current.name, session.nr, current.nr);
 	sd.data_file_open(ctmp, "r");
 	rt.excount[0] = 0;
 	rt.excount[1] = 0;
@@ -302,21 +302,21 @@ void oo_Heat::calc_position(void) {
 			// - quali
 			case SESSION_MODE_QUALI:
 				// calc heat time quali mode (from first pass)
-				switch(event.quali_mode) {
+				switch(event.current.quali_mode) {
 					// use overtime for heat time
 					case QUALI_OVERTIME:
 						current.heat_time[i] = rt.hits[i][current.lapcount[i]] - rt.hits[i][0];
 						break;
 					// fastest consecutive laps
 					case QUALI_CONSEC_LAPS:
-						if (current.lapcount[i] <= event.quali_laps) {
+						if (current.lapcount[i] <= event.current.quali_laps) {
 							current.heat_time[i] = rt.hits[i][current.lapcount[i]] - rt.hits[i][0];
 						} else {
 							// find fastest consecutive n laps
 							current.heat_time[i] = 0xffffffff;
-							for(uint8_t l=0;l<(current.lapcount[i]-event.quali_laps);l++) {
-								if (current.heat_time[i] > (rt.hits[i][l+event.quali_laps] - rt.hits[i][l])) {
-									current.heat_time[i] = rt.hits[i][l+event.quali_laps] - rt.hits[i][l];
+							for(uint8_t l=0;l<(current.lapcount[i]-event.current.quali_laps);l++) {
+								if (current.heat_time[i] > (rt.hits[i][l+event.current.quali_laps] - rt.hits[i][l])) {
+									current.heat_time[i] = rt.hits[i][l+event.current.quali_laps] - rt.hits[i][l];
 								}
 							}
 						}
