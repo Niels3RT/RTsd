@@ -963,7 +963,7 @@
 								break;
 							default:
 								comm_state = 0;
-								comm_request = 25;
+								comm_request = 29;
 								count_err++;
 								break;
 						}

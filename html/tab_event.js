@@ -57,9 +57,9 @@
 		p_event_btn_mod.onclick = function() {
 			if (chk_btn_active(p_event_btn_mod)) {
 				//comm_request = 25;
-				//batch_cmd = [25, 15];
-				//batch_cnt = 0;
-				//batch_cnt_top = 2;
+				batch_cmd = [29];
+				batch_cnt = 0;
+				batch_cnt_top = 1;
 			}
 		}
 		p_event_btn_pedit_edit.style.color = '#000000';

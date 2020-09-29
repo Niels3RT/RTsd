@@ -482,7 +482,7 @@ void oo_HTTP::reply_new_event(char *tbuf_rx, char *tbuf_tx) {
 // ****** modify current event
 void oo_HTTP::reply_mod_event(char *tbuf_rx, char *tbuf_tx) {
 	//st_event evtmp = event.empty;
-	printf("new event:\r\n%s", tbuf_rx);
+	printf("modify event:\r\n%s", tbuf_rx);
 	st_event evtmp;
 	// --- parse new name
 	char * ptmp = tbuf_rx;
@@ -509,7 +509,7 @@ void oo_HTTP::reply_mod_event(char *tbuf_rx, char *tbuf_tx) {
 	ptmp = strchr(ptmp, ';') + 1;
 	evtmp.channels = (uint8_t)buf.buf2uintX_t_dec(ptmp);
 	
-	printf("Create new Event: '%s'\r\n%d:%d:%d\r\n", evtmp.name, evtmp.quali_mode, evtmp.quali_laps, evtmp.quali_otime);
+	printf("Modify Event: '%s'\r\n%d:%d:%d\r\n", evtmp.name, evtmp.quali_mode, evtmp.quali_laps, evtmp.quali_otime);
 	printf("%d:%d:%d\r\n", evtmp.race_mode, evtmp.race_laps, evtmp.channels);
 	
 	// --- create new event
