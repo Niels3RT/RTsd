@@ -9,10 +9,10 @@ This repository as well as the whole project are still works in progress and i'm
 Please be patient :)
 
 # Features
--4 channels  
+-4/8 channels  
 -around 40kHz sampling rate per channel  
 -all channels are sampled simultaneously, at the same clock edges  
--all sampling, timing, peak detection etc. are done in an FPGA (right now a Xilinx Spartan6 XC6SLX16)  
+-all sampling, timing, peak detection etc. are done in an FPGA (right now a Xilinx Spartan6 XC6SLX16 or Artix7 XC7A35T)  
 -WiFi, HTTP server and race housekeeping are done by a ESP32 (ESP32-WROVER-IB module)  
 -WiFi works as Access Point or connects to existing network  
 -both communicate via an SPI interface with each other  
@@ -44,34 +44,34 @@ Klick screenshots to watch on youtube:
 
 # Parts List
 
-Note: Only 1 FPGA board is needed, Spartan6 is cheaper but completely full, the Artix7 one costs more but has space for future addons.
+Note: Only 1 FPGA board is needed, Spartan6 is cheaper but completely full (4chn only), the Artix7 one costs more but has space for future addons (4 or 8chn).
 
-| part info | nr |
-|------|-------------|
-| QM Tech board Spartan6 XC6SLX16 SDRAM (MT48LC16M16A2), NOT DDR3! Around $20 on AliExpress<br>![QM SP6](pics/QM-Tech_SP6_XC6SLX16_small.png?raw=true "QM SP6") | 1x |
-| QM Tech board Artix7 XC7A35T DDR3, [Here](https://de.aliexpress.com/item/1000006630084.html)<br>![QM XC7](pics/QM-Tech_Artix7_XC7A35T_small.png?raw=true "QM XC7") | 1x |
-| 0.96" OLED, 7pin spi, optional, only usable on Artix7 board<br>![oled](pics/oled_small.png?raw=true "oled") | 1x |
-| Xilinx USB plattorm cable (cheap chinese copy does the trick) | 1x |
-| rx5808 module, modified for SPI | 4x |
-| ESP32_WROVER-IB module | 1x |
-| u-FL to RP-SMA pigtail, most 2,4GHz WiFI Antennas are RP-SMA | 1x |
-| 2,4GHz WiFi antenna, see pigtail connector | 1x | 
-| USB FTDI-Adapter for programming the ESP32 (pictured with pins removed and prepared to fit pin header on pcb)<br>![FTDI](pics/FTDI_small.png?raw=true "FTDI") | 1x |
-| 2x7 pin socket (1x7 will do too) | 1x |
-| DCDC step down converter<br>![DCDC](pics/DCDC_small.png?raw=true "DCDC") | 2x |
-| MCP3201 SOP-8, buy a few more on AliExpress, i have seen DOA ones | 5x |
-| Micro SD-Card socket, look at picture, there are different layouts<br>![FTDI](pics/sd_socket_small.png?raw=true "FTDI") | 1x |
-| Micro-SD Card 32mb/32GB should work (32GB might be enough for a couple of seasons) | 1x |
-| Pin header | 143x |
-| 1206 100n (1uF should do too) ceramic capacitor | 10x |
-| 1210 1,0uF/min 35V ceramic capacitor | 10x |
-| 1206 330 Ohm resistor | 1x |
-| 1206 10 kOhm resistor | 1x |
-| SMD capacitor 470u min 6V ca. 6.Xmm diameter | 1x |
-| 1206 led (choose your color, might be brighter or a little darker) | 1x |
-| 32x2 stackable long pin socket/header<br>![FTDI](pics/long_pin_socket_header_small.png?raw=true "FTDI") | 2x |
-| a few cm silicone cable AWG20(ish) and a power connector of your choice | 1x |
-| some cardboard and self-adhesive copper tape for shielding | 1x |
+| part info | 4chn | 8chn |
+|------|-------------|----|
+| QM Tech board Spartan6 XC6SLX16 SDRAM (MT48LC16M16A2), NOT DDR3! Around $20 on AliExpress<br>![QM SP6](pics/QM-Tech_SP6_XC6SLX16_small.png?raw=true "QM SP6") | 1x | xxx |
+| QM Tech board Artix7 XC7A35T DDR3, [Here](https://de.aliexpress.com/item/1000006630084.html)<br>![QM XC7](pics/QM-Tech_Artix7_XC7A35T_small.png?raw=true "QM XC7") | 1x | 1x |
+| 0.96" OLED, 7pin spi, optional, only usable on Artix7 board<br>![oled](pics/oled_small.png?raw=true "oled") | 1x | 1x |
+| Xilinx USB plattorm cable (cheap chinese copy does the trick) | 1x | 1x |
+| rx5808 module, modified for SPI | 4x | 8x |
+| ESP32_WROVER-IB module | 1x | 1x |
+| u-FL to RP-SMA pigtail, most 2,4GHz WiFI Antennas are RP-SMA | 1x | 1x |
+| 2,4GHz WiFi antenna, see pigtail connector | 1x | 1x |
+| USB FTDI-Adapter for programming the ESP32 (pictured with pins removed and prepared to fit pin header on pcb)<br>![FTDI](pics/FTDI_small.png?raw=true "FTDI") | 1x | 1x |
+| 2x7 pin socket (1x7 will do too) | 1x | 1x |
+| DCDC step down converter<br>![DCDC](pics/DCDC_small.png?raw=true "DCDC") | 2x | 3x |
+| MCP3201 SOP-8, buy a few more on AliExpress, i have seen DOA ones | 5x | 9x |
+| Micro SD-Card socket, look at picture, there are different layouts<br>![FTDI](pics/sd_socket_small.png?raw=true "FTDI") | 1x | 1x |
+| Micro-SD Card 32mb/32GB should work (32GB might be enough for a couple of seasons) | 1x | 1x |
+| Pin header | 143x | 143x |
+| 1206 100n (1uF should do too) ceramic capacitor | 10x | 18x |
+| 1210 1,0uF/min 35V ceramic capacitor | 10x | 12x |
+| 1206 330 Ohm resistor | 1x | 2x |
+| 1206 10 kOhm resistor | 1x | 1x |
+| SMD capacitor 470u min 6V ca. 6.Xmm diameter | 1x | 1x |
+| 1206 led (choose your color, might be brighter or a little darker) | 1x | 2x |
+| 32x2 stackable long pin socket/header<br>![FTDI](pics/long_pin_socket_header_small.png?raw=true "FTDI") | 2x | 6x |
+| a few cm silicone cable AWG20(ish) and a power connector of your choice | 1x | 2x |
+| some cardboard and self-adhesive copper tape for shielding | 1x | 1x |
 
 
 # Programming the Xilinx Spartan6 board
@@ -91,6 +91,11 @@ Choose provided MCS file, select SPI PROM and M25P80, leave data width at 1.
 Left click on the Flash chip above the Xilinx one.  
 In the lower left half of the window, double click on program, leave all options as they are.  
 Done, one led should be blinking once per second and one led should slowly light up/get darker.  
+
+
+# Programming the Xilinx Artix7 board
+
+To program the Artix7 you will need the Xilinx Vivado IDE (or its lab tools..), more info on that will follow. The platform cable is the same as for the Spartan6.
 
 
 # Programming the ESP32
