@@ -123,7 +123,8 @@ Go racing :)
 
 RTclient is a small ESP32_WROVER-IB based pcb. Its purpose is to (cheaply) connect to the system by WiFi and provide racedata to anything you might want to use.
 Think of displays, input devices, barcode scanner,...  
-The first pcbs are badly flawed, gerber files for usable ones will be published later.
+~~The first pcbs are badly flawed, gerber files for usable ones will be published later.~~
+See gerber directory for RTclient pcb.
 
 ![RTclient](pics/rtclient_small.png?raw=true "[RTclient]")
 

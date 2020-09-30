@@ -39,6 +39,7 @@
 	#include "cfg.h"
 	#include "info.h"
 	#include "uart.h"
+	#include "../../RTcommon/sdcard.h"
 
 	// --- objects
 	extern oo_WiFi wifi;
@@ -47,6 +48,7 @@
 	extern oo_CFG cfg;
 	extern oo_Info info;
 	extern oo_UART uart;
+	extern oo_SD sd;
 	
 	extern "C" {
 		void app_main();

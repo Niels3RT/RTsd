@@ -8,6 +8,7 @@ oo_HTTPC httpc;
 oo_CFG cfg;
 oo_Info info;
 oo_UART uart;
+oo_SD sd;
 
 // -- handles
 esp_event_loop_handle_t main_loop_handle;
@@ -62,8 +63,11 @@ void app_main(void) {
 	ESP_ERROR_CHECK(esp_event_handler_instance_register_with(main_loop_handle, TRACKER_EVENTS, EVENT_TIMER_MAIN, main_event_handler, main_loop_handle, NULL));
 	ESP_ERROR_CHECK(esp_event_handler_instance_register_with(main_loop_handle, TRACKER_EVENTS, EVENT_USE_RESULT, main_event_handler, main_loop_handle, NULL));
 	
-	// --- wait some for fpga to start up
-	//vTaskDelay(5000 / portTICK_PERIOD_MS);
+	// --- wait some for stuff to start up
+	vTaskDelay(500 / portTICK_PERIOD_MS);
+	
+	// --- init sd card
+	sd.init();
 	
 	// --- init config, read cfg files
 	cfg.init();
