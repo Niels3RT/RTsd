@@ -26,6 +26,7 @@ class oo_Event {
 		void open(uint8_t nr);
 		void close(void);
 		void create_new(st_event * evtmp);
+		void save_event_cfg(st_event * evtmp);
 		void read_event_pilots(void);
 		void write_event_pilots(void);
 		void read_pilots(void);

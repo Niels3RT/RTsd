@@ -167,6 +167,12 @@
 	var lt_show_tmp = false;
 	
 	var max_chn = 4;
+	var cfg_event_channels = 4;
+	var cfg_event_quali_mode = 0;
+	var cfg_event_quali_laps = 3;
+	var cfg_event_quali_otime = 120;
+	var cfg_event_race_mode = 0;
+	var cfg_event_race_laps = 3;
 	
 	var col_btn_active = '#66f466';
 	var col_btn_active_rgb = 'rgb(102, 244, 102)';

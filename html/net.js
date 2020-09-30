@@ -945,7 +945,6 @@
 				commFile.open("POST", path + "event_mod;", true);
 				// -- walk through event config data
 				buf_post = "";
-				buf_post += document.getElementById("txt_event_new_name").value + ";"
 				buf_post += document.getElementById("sel_event_mod_qmode").value + ";";
 				buf_post += document.getElementById("event_mod_nb_qlaps").value + ";";
 				buf_post += document.getElementById("event_mod_nb_qotime").value + ";";
@@ -964,6 +963,36 @@
 							default:
 								comm_state = 0;
 								comm_request = 29;
+								count_err++;
+								break;
+						}
+					}
+				}
+			}
+			// --- get event config
+			if (comm_request == 30) {
+				commFile.open("GET", path + "event_get_cfg;", true);
+				commFile.onreadystatechange = function () {
+					// -- request completed?
+					if(commFile.readyState == 4) {
+						switch (commFile.status) {
+							// - cmd is ok
+							case 200:
+								comm_state = 0;
+								count_err = 0;
+								var Lines = commFile.responseText.split(/\r\n|\n/);
+								LFields = Lines[0].split(';');
+								cfg_event_channels = parseInt(LFields[0], 16);
+								cfg_event_quali_mode = parseInt(LFields[1], 16);
+								cfg_event_quali_laps = parseInt(LFields[2], 16);
+								cfg_event_quali_otime = parseInt(LFields[3], 16);
+								cfg_event_race_mode = parseInt(LFields[4], 16);
+								cfg_event_race_laps = parseInt(LFields[5], 16);
+								draw_tab_event();
+								break;
+							default:
+								comm_state = 0;
+								comm_request = 30;
 								count_err++;
 								break;
 						}
@@ -1074,6 +1103,8 @@
 		event_mod_cnt_new = parseInt(LFields[max_chn+4], 16);
 		if (event_mod_cnt != event_mod_cnt_new) {
 			event_mod_cnt = event_mod_cnt_new;
+			batch_cmd[batch_cnt_top] = 30;
+			batch_cnt_top++;
 			batch_cmd[batch_cnt_top] = 20;
 			batch_cnt_top++;
 			batch_cmd[batch_cnt_top] = 28;

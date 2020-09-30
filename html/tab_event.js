@@ -29,9 +29,9 @@
 			if (chk_btn_active(p_event_btn_open)) {
 				p_event_btn_open.style.background = col_btn_busy;
 				//comm_request = 16;
-				batch_cmd = [16, 17, 20, 28];
+				batch_cmd = [16, 30, 17, 20, 28];
 				batch_cnt = 0;
-				batch_cnt_top = 4;
+				batch_cnt_top = 5;
 			}
 		}
 		p_event_btn_close.style.color = '#000000';
@@ -57,9 +57,9 @@
 		p_event_btn_mod.onclick = function() {
 			if (chk_btn_active(p_event_btn_mod)) {
 				//comm_request = 25;
-				batch_cmd = [29];
+				batch_cmd = [29, 30];
 				batch_cnt = 0;
-				batch_cnt_top = 1;
+				batch_cnt_top = 2;
 			}
 		}
 		p_event_btn_pedit_edit.style.color = '#000000';
@@ -207,6 +207,14 @@
 			allow_pedit = false;
 		}
 		event_enable_pilot_edit();
+		
+		// --- event config stuff
+		p_event_mod_nb_chn.value = cfg_event_channels;
+		p_sel_event_mod_qmode.value = cfg_event_quali_mode;
+		p_event_mod_nb_qlaps.value = cfg_event_quali_laps;
+		p_event_mod_nb_qotime.value = cfg_event_quali_otime;
+		p_sel_event_mod_rmode.value = cfg_event_race_mode;
+		p_event_mod_nb_rlaps.value = cfg_event_race_laps;
 		
 		// --- event results table size
 		switch(event_result_show_type) {

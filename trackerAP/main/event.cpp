@@ -239,10 +239,24 @@ void oo_Event::create_new(st_event * evtmp) {
 	printf("create dir for event '%s'\r\n", ctmp);
 	sd.dir_create(&ctmp[0]);
 	
-	// --- open new event.txt
+	// --- save event config
+	save_event_cfg(evtmp);
+	
+	// --- touch new events pilots.csv
+	sprintf(ctmp, "/RTsd/data/%s/pilots.csv", evtmp->name);
+	sd.data_file_open(ctmp, "w");
+	if (sd.data_file != NULL) {
+		sd.data_file_close();
+	}
+}
+
+// ****** save event config
+void oo_Event::save_event_cfg(st_event * evtmp) {
+	char ctmp[256];
+	// --- open event.txt for writing
 	sprintf(ctmp, "/RTsd/data/%s/event.txt", evtmp->name);
 	sd.cfg_file_open(ctmp, "w");
-	
+
 	// --- write config data
 	if (sd.cfg_file != NULL) {
 		sprintf(sd.data_line, "heat_channels=%d;\r\n", evtmp->channels);
@@ -260,13 +274,6 @@ void oo_Event::create_new(st_event * evtmp) {
 		
 		// --- close config file
 		sd.cfg_file_close();
-	}
-	
-	// --- touch new events pilots.csv
-	sprintf(ctmp, "/RTsd/data/%s/pilots.csv", evtmp->name);
-	sd.data_file_open(ctmp, "w");
-	if (sd.data_file != NULL) {
-		sd.data_file_close();
 	}
 }
 

@@ -23,6 +23,7 @@ class oo_HTTP {
 		void reply_get_ex(char *tbuf_tx);
 		void reply_get_events(char *tbuf_tx);
 		void reply_open_event(char *tbuf_rx, char *tbuf_tx);
+		void reply_get_event_config(char *tbuf_tx);
 		void reply_get_event_pilots(char *tbuf_tx);
 		void reply_set_event_pilots(char *tbuf_rx, char *tbuf_tx);
 		void reply_close_event(char *tbuf_tx);
@@ -76,6 +77,7 @@ class oo_HTTP {
 #define HTTP_GET_OPEN_EVENT		"/event_open;"
 #define HTTP_SET_NEW_EVENT		"/event_new;"
 #define HTTP_SET_MOD_EVENT		"/event_mod;"
+#define HTTP_GET_EVENT_CONFIG	"/event_get_cfg;"
 #define HTTP_GET_EVENT_PILOTS	"/event_get_pilots;"
 #define HTTP_SET_EVENT_PILOTS	"/event_set_pilots;"
 #define HTTP_GET_EVENT_RESULTS	"/event_results;"

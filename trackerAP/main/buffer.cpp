@@ -1,5 +1,11 @@
 #include "main.h"
 
+// ****** init buffer
+void oo_Buf::init(void) {
+	// --- write to log, if only to suppress annoying warning about unused TAG in main.h :P
+	ESP_LOGI(TAG, "init buffer");
+}
+
 // ****** convert 4 digit Ascii Hex to uint16
 uint16_t oo_Buf::buf2uint16_t(uint8_t *bufptr) {
 	uint16_t tmp = 0;
