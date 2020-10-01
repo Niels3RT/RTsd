@@ -8,10 +8,6 @@ void oo_WiFi::init(void) {
 	// --- write to log
 	ESP_LOGI(TAG, "init WiFi");
 	
-	// --- init ssid, pass
-	strcpy(sta_ssid, ESP_WIFI_STA_SSID);
-	strcpy(sta_key, ESP_WIFI_STA_PASS);
-	
 	// --- init station
 	init_wifista();
 }
@@ -63,8 +59,8 @@ void oo_WiFi::init_wifista(void) {
     esp_netif_create_default_wifi_sta();
 
 	// --- init wifi config
-    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-    ESP_ERROR_CHECK(esp_wifi_init(&cfg));
+    wifi_init_config_t wifi_cfg = WIFI_INIT_CONFIG_DEFAULT();
+    ESP_ERROR_CHECK(esp_wifi_init(&wifi_cfg));
 
 	// --- register wifi event handler
     esp_event_handler_instance_t instance_any_id;
@@ -74,8 +70,8 @@ void oo_WiFi::init_wifista(void) {
 
 	// --- config and start wifi
     wifi_config_t wifi_config = { };
-	strcpy((char*)wifi_config.sta.ssid, sta_ssid);
-	strcpy((char*)wifi_config.sta.password, sta_key);
+	strcpy((char*)wifi_config.sta.ssid, cfg.wifi_sta_ssid);
+	strcpy((char*)wifi_config.sta.password, cfg.wifi_sta_key);
 	wifi_config.sta.threshold.authmode = WIFI_AUTH_WPA2_PSK;
 	wifi_config.sta.pmf_cfg.capable = true;
 	wifi_config.sta.pmf_cfg.required = false;
@@ -92,11 +88,9 @@ void oo_WiFi::init_wifista(void) {
 
     // --- xEventGroupWaitBits() returns the bits before the call returned, hence we can test which event actually happened
     if (bits & WIFI_CONNECTED_BIT) {
-        ESP_LOGI(TAG, "connected to ap SSID: %s password: %s",
-                sta_ssid, sta_key);
+        ESP_LOGI(TAG, "connected to ap SSID: %s password: %s", cfg.wifi_sta_ssid, cfg.wifi_sta_key);
     } else if (bits & WIFI_FAIL_BIT) {
-        ESP_LOGI(TAG, "Failed to connect to SSID: %s, password: %s",
-                sta_ssid, sta_key);
+        ESP_LOGI(TAG, "Failed to connect to SSID: %s, password: %s", cfg.wifi_sta_ssid, cfg.wifi_sta_key);
     } else {
         ESP_LOGE(TAG, "UNEXPECTED EVENT");
     }

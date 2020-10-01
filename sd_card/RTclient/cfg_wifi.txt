@@ -1,0 +1,2 @@
+wifi_sta_ssid=YourSSID;
+wifi_sta_key=YourPass;
