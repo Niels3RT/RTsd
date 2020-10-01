@@ -67,7 +67,7 @@
 		
 		// ------   results table      ------
         // --- create rows in result table
-        for (var r = 0; r < 4; r++) {
+        for (var r = 0; r < 8; r++) {
 			var row = document.createElement("tr");
 			var tbl = document.getElementById("table_cal");
 			// -- create and append cells to row
@@ -92,8 +92,8 @@
 	
 	// --- timer function, update table
 	function redraw_table() {
-		for (var i = 0; i < 4; i++) {
-			document.getElementById(i + "-0").textContent = " " + i;
+		for (var i = 0; i < 8; i++) {
+			document.getElementById(i + "-0").textContent = " " + (i+1);
 			document.getElementById(i + "-1").textContent = "min " + rssi_min[i];
 			document.getElementById(i + "-2").textContent = "max " + rssi_max[i];
 		}
