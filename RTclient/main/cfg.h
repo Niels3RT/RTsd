@@ -15,5 +15,8 @@ class oo_CFG {
 
 };
 
-#define CFG_WIFI_STA_SSID	"wifi_sta_ssid"
-#define CFG_WIFI_STA_KEY	"wifi_sta_key"
+#define CFG_WIFI_STA_SSID		"wifi_sta_ssid"
+#define CFG_WIFI_STA_KEY		"wifi_sta_key"
+
+#define DEFAULT_WIFI_STA_SSID	"YourSSID"
+#define DEFAULT_WIFI_STA_PASS	"YourPass"

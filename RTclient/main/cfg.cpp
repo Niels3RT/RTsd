@@ -6,8 +6,8 @@ void oo_CFG::init(void) {
 	ESP_LOGI(TAG, "init config");
 	
 	// --- copy default wifi ssid, pass
-	strcpy(wifi_sta_ssid, ESP_WIFI_STA_SSID);
-	strcpy(wifi_sta_key, ESP_WIFI_STA_PASS);
+	strcpy(wifi_sta_ssid, DEFAULT_WIFI_STA_SSID);
+	strcpy(wifi_sta_key, DEFAULT_WIFI_STA_PASS);
 	
 	// --- read wifi config from sd card
 	read_wifi_cfg();
