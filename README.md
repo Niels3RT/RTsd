@@ -64,7 +64,7 @@ Note: Only 1 FPGA board is needed, Spartan6 is cheaper but completely full (4chn
 | Micro-SD Card 32mb/32GB should work (32GB might be enough for a couple of seasons) | 1x | 1x |
 | Pin header | 143x | 143x |
 | 1206 100n (1uF should do too) ceramic capacitor | 10x | 18x |
-| 1210 1,0uF/min 35V ceramic capacitor | 10x | 12x |
+| 1210 1,0uF/min 35V ceramic capacitor | 4x | 6x |
 | 1206 330 Ohm resistor | 1x | 2x |
 | 1206 10 kOhm resistor | 1x | 1x |
 | SMD capacitor 470u min 6V ca. 6.Xmm diameter | 1x | 1x |
