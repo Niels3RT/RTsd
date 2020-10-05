@@ -39,7 +39,7 @@ void oo_oLed::print_hex_8u(uint8_t px, uint8_t py, uint8_t value) {
 // ****** print dec, 8bit
 void oo_oLed::print_dec_8u(uint8_t px, uint8_t py, uint8_t value) {
 	char ctmp[4];
-	sprintf(ctmp, "%02d", value);
+	sprintf(ctmp, "%03d", value);
 	print_char(px++, py, ctmp[0]);
 	print_char(px++, py, ctmp[1]);
 	print_char(px, py, ctmp[2]);

@@ -11,7 +11,6 @@ class oo_HTTPC {
 		char csv_array_str[16][64];
 		uint8_t csv_split_cnt;
 		//uint32_t t_etmp;
-		
 	private:
 	
 	// -- functions
@@ -37,7 +36,7 @@ class oo_HTTPC {
 		
 };
 
-#define PORT					80
+#define HTTP_CLIENT_PORT		80
 
 #define HTTP_REQ_PREFIX 		"GET "
 #define HTTP_REQ_POST	 		" HTTP/1.1\r\nHost: 192.168.99.32\r\n\r\n"

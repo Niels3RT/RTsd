@@ -8,6 +8,7 @@ oo_Timer timer;
 oo_oLed oled;
 oo_Buf buf;
 oo_HTTP http;
+oo_DNSs dnss;
 oo_RT rt;
 oo_SD sd;
 oo_CFG cfg;
@@ -88,6 +89,9 @@ void app_main(void) {
 	
 	// --- init wifi
 	wifi.init();
+	
+	// --- init dns server
+	dnss.init();
 	
 	// --- init http
 	http.init();

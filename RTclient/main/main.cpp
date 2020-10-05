@@ -5,6 +5,7 @@
 oo_WiFi wifi;
 oo_Timer timer;
 oo_HTTPC httpc;
+oo_DNSs dnss;
 oo_CFG cfg;
 oo_Info info;
 oo_UART uart;
@@ -36,6 +37,27 @@ void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 		// -- write control message to uart
 		uart.send_msg();
 	}
+	
+	// --- find rtsd hostname, if not known after last wifi connect
+	if (!wifi.rtsd_ip_found) {
+		wifi.rtsd_hostent = gethostbyname("rtsd");
+		if (wifi.rtsd_hostent != NULL) {
+			sprintf(wifi.rtsd_ip, "%d.%d.%d.%d", *(wifi.rtsd_hostent->h_addr)
+												, *(wifi.rtsd_hostent->h_addr+1)
+												, *(wifi.rtsd_hostent->h_addr+2)
+												, *(wifi.rtsd_hostent->h_addr+3));
+			ESP_LOGI(TAG, "gethostbyname rtsd '%s'", wifi.rtsd_ip);
+			wifi.rtsd_ip_found = true;
+		} else {
+			ESP_LOGI(TAG, "gethostbyname rtsd failed '%s'", esp_err_to_name(h_errno));
+		}
+	}
+	
+	// --- rtc test
+	time(&timer.rtc_time);
+	timer.timeinfo = localtime (&timer.rtc_time);
+	
+	printf("time '%02d:%02d:%02d'\r\n", timer.timeinfo->tm_hour, timer.timeinfo->tm_min, timer.timeinfo->tm_sec);
 }
 
 // ****** main
@@ -80,6 +102,9 @@ void app_main(void) {
 	
 	// --- init wifi
 	wifi.init();
+	
+	// --- init dns server
+	dnss.init();
 	
 	// --- init http
 	httpc.init();

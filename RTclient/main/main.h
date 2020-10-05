@@ -40,11 +40,13 @@
 	#include "info.h"
 	#include "uart.h"
 	#include "../../RTcommon/sdcard.h"
+	#include "../../RTcommon/dns_server.h"
 
 	// --- objects
 	extern oo_WiFi wifi;
 	extern oo_Timer timer;
 	extern oo_HTTPC httpc;
+	extern oo_DNSs dnss;
 	extern oo_CFG cfg;
 	extern oo_Info info;
 	extern oo_UART uart;

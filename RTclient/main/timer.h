@@ -3,6 +3,8 @@ class oo_Timer {
 	// -- vars
 	public:
 		volatile uint32_t tick;
+		time_t rtc_time;
+		struct tm * timeinfo;
 	private:
 		
 

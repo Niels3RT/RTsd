@@ -2,7 +2,9 @@
 class oo_WiFi {
 	// -- vars
 	public:
-		
+		struct hostent *rtsd_hostent;
+		char rtsd_ip[16];
+		bool rtsd_ip_found;
 	private:
 		
 

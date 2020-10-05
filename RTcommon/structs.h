@@ -44,3 +44,9 @@ struct st_result {
 	uint8_t laps;
 	uint32_t time;
 };
+
+// --- ip union
+union union_ip {
+	int ip32;
+	char ip8x4[4];
+};

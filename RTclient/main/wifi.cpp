@@ -1,6 +1,5 @@
 #include "main.h"
 
-static int s_retry_num = 0;
 static EventGroupHandle_t s_wifi_event_group;
 
 // ****** init WiFi
@@ -8,44 +7,43 @@ void oo_WiFi::init(void) {
 	// --- write to log
 	ESP_LOGI(TAG, "init WiFi");
 	
+	// --- set rtsd ip to default
+	strcpy(rtsd_ip, "192.168.0.1");
+	rtsd_ip_found = true;
+	
+	// --- default host ip address for dns server
+	dnss.host_ap_addr.ip8x4[0] = 192;
+	dnss.host_ap_addr.ip8x4[1] = 168;
+	dnss.host_ap_addr.ip8x4[2] = 0;
+	dnss.host_ap_addr.ip8x4[3] = 1;
+	
 	// --- init station
 	init_wifista();
 }
 
 // ****** wifi event handler
 void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data) {
-	// --- AP: station connected
-    if (event_id == WIFI_EVENT_AP_STACONNECTED) {
-        wifi_event_ap_staconnected_t* event = (wifi_event_ap_staconnected_t*) event_data;
-        ESP_LOGI(TAG, "station " MACSTR " join, AID=%d", MAC2STR(event->mac), event->aid);
-
-	// --- AP: station disconnected	
-    } else if (event_id == WIFI_EVENT_AP_STADISCONNECTED) {
-        wifi_event_ap_stadisconnected_t* event = (wifi_event_ap_stadisconnected_t*) event_data;
-        ESP_LOGI(TAG, "station " MACSTR " leave, AID=%d", MAC2STR(event->mac), event->aid);
-    }
-	
 	// --- wifi station
 	if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
         esp_wifi_connect();
     } else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
-        if (s_retry_num < ESP_MAXIMUM_RETRY) {
-            esp_wifi_connect();
-            s_retry_num++;
-            ESP_LOGI(TAG, "retry to connect to the AP");
-        } else {
-            xEventGroupSetBits(s_wifi_event_group, WIFI_FAIL_BIT);
-        }
-        ESP_LOGI(TAG,"connect to the AP fail");
+		vTaskDelay(6000 / portTICK_PERIOD_MS);
+		ESP_LOGE(TAG, "WiFi disconnected, retry to connect to the AP");
+		esp_wifi_connect();
+	} else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_CONNECTED) {
+		ESP_LOGI(TAG, "WiFi connected to ap SSID: '%s' password: '%s'", cfg.wifi_sta_ssid, cfg.wifi_sta_key);
     } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
+		// -- print host ip from dhcp
         ip_event_got_ip_t* event = (ip_event_got_ip_t*) event_data;
-        ESP_LOGI(TAG, "got ip:" IPSTR, IP2STR(&event->ip_info.ip));
-		//char stmp[20];
-		//sprintf(stmp, "%03d.%03d.%03d.%03d", event->ip_info.ip.addr & 0xff, (event->ip_info.ip.addr>>8) & 0xff, (event->ip_info.ip.addr>>16) & 0xff, (event->ip_info.ip.addr>>24) & 0xff);
-		//oled.print_string(1, 7, &stmp[0]);
-		//oled.writefb();
-        s_retry_num = 0;
-        xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
+        ESP_LOGI(TAG, "WiFi got ip:" IPSTR, IP2STR(&event->ip_info.ip));
+		// -- reset signal to request rtsd ip by hostname
+		wifi.rtsd_ip_found = false;
+		// -- remember host ip for dns server
+		dnss.host_ap_addr.ip32 = event->ip_info.ip.addr;
+		// -- print nameserver ip
+		esp_netif_dns_info_t dns_info;
+		esp_netif_get_dns_info(event->esp_netif, ESP_NETIF_DNS_MAIN, &dns_info);
+		ESP_LOGI(TAG, "Name Server1: " IPSTR, IP2STR(&dns_info.ip.u_addr.ip4));
     }
 }
 
@@ -77,26 +75,6 @@ void oo_WiFi::init_wifista(void) {
 	wifi_config.sta.pmf_cfg.required = false;
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA) );
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );
+	ESP_ERROR_CHECK(tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA ,"RTclient"));
     ESP_ERROR_CHECK(esp_wifi_start() );
-	tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA ,"RTclient");
-
-    ESP_LOGI(TAG, "wifi_init_sta finished.");
-
-    /* Waiting until either the connection is established (WIFI_CONNECTED_BIT) or connection failed for the maximum
-     * number of re-tries (WIFI_FAIL_BIT). The bits are set by event_handler() (see above) */
-    EventBits_t bits = xEventGroupWaitBits(s_wifi_event_group, WIFI_CONNECTED_BIT | WIFI_FAIL_BIT, pdFALSE, pdFALSE, portMAX_DELAY);
-
-    // --- xEventGroupWaitBits() returns the bits before the call returned, hence we can test which event actually happened
-    if (bits & WIFI_CONNECTED_BIT) {
-        ESP_LOGI(TAG, "connected to ap SSID: %s password: %s", cfg.wifi_sta_ssid, cfg.wifi_sta_key);
-    } else if (bits & WIFI_FAIL_BIT) {
-        ESP_LOGI(TAG, "Failed to connect to SSID: %s, password: %s", cfg.wifi_sta_ssid, cfg.wifi_sta_key);
-    } else {
-        ESP_LOGE(TAG, "UNEXPECTED EVENT");
-    }
-
-    // --- The event will not be processed after unregister
-    ESP_ERROR_CHECK(esp_event_handler_instance_unregister(IP_EVENT, IP_EVENT_STA_GOT_IP, instance_got_ip));
-    ESP_ERROR_CHECK(esp_event_handler_instance_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID, instance_any_id));
-    vEventGroupDelete(s_wifi_event_group);
 }

@@ -464,16 +464,20 @@ int oo_HTTPC::read_reply(int sock) {
 // ****** tcp client task
 static void tcp_client_task(void *pvParameters) {
 	struct sockaddr_in dest_addr;
-	char host_ip[] = "192.168.99.32";
+	//char host_ip[] = "192.168.99.32";
+	//char host_ip[] = "192.168.4.1";
 	uint8_t tx_buf_use_retry = 0;
 	
 	// --- fill sockaddr
-	dest_addr.sin_addr.s_addr = inet_addr(host_ip);
+	dest_addr.sin_addr.s_addr = inet_addr(wifi.rtsd_ip);
 	dest_addr.sin_family = AF_INET;
-	dest_addr.sin_port = htons(PORT);
+	dest_addr.sin_port = htons(HTTP_CLIENT_PORT);
 	
 	while(1) {
 		if (httpc.tx_buf_work != httpc.tx_buf_top) {
+			// --- update ip address in sockaddr
+			dest_addr.sin_addr.s_addr = inet_addr(wifi.rtsd_ip);
+		
 			// --- increment buffer use signal, remember for retry
 			tx_buf_use_retry = httpc.tx_buf_work;
 			httpc.tx_buf_work++;
@@ -482,7 +486,7 @@ static void tcp_client_task(void *pvParameters) {
 			// --- create socket
 			int sock = httpc.create_socket();
 			if (sock > 0) {
-				ESP_LOGI(TAG, "Socket created, connecting to %s:%d", host_ip, PORT);
+				ESP_LOGI(TAG, "Socket created, connecting to %s:%d", wifi.rtsd_ip, HTTP_CLIENT_PORT);
 			}
 			
 			// -- connect socket

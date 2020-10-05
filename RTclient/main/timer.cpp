@@ -12,6 +12,57 @@ void oo_Timer::init(void) {
 	
 	// --- init main timer
 	init_timer_main();
+	
+	// --- test rtc
+	//time_t rtc_time;
+	//struct tm * timeinfo;
+	
+	struct tm * tm_set;
+	//time(&rtc_time);
+	rtc_time = 0;
+	tm_set = localtime (&rtc_time);
+	
+	tm_set->tm_sec = 0;
+	tm_set->tm_min = 0;
+	tm_set->tm_hour = 0;
+	tm_set->tm_mday = 01;
+	tm_set->tm_mon = 1;
+	tm_set->tm_year = 120;
+	tm_set->tm_isdst = 0;
+	
+	printf("time to set '%02d:%02d:%02d'\r\n", tm_set->tm_hour, tm_set->tm_min, tm_set->tm_sec);
+	
+	struct timeval tv_test;
+	tv_test.tv_sec = mktime(tm_set);
+	tv_test.tv_usec = 0;
+	
+	rtc_time = tv_test.tv_sec;
+	tm_set = localtime(&rtc_time);
+	printf("time to set (reverse test) '%02d:%02d:%02d'\r\n", tm_set->tm_hour, tm_set->tm_min, tm_set->tm_sec);
+	
+	timezone tz = { 0, 0 };
+	int rc=settimeofday(&tv_test, &tz);
+	if(rc==0) {
+		printf("settimeofday() successful.\r\n");
+	} else {
+		printf("settimeofday() failed '%d'\r\n",errno);
+	}
+	
+	time(&rtc_time);
+	timeinfo = localtime(&rtc_time);
+	
+	printf("time '%02d:%02d:%02d'\r\n", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+	
+	char ctmp[128];
+	
+	// --- touch test file
+	sprintf(ctmp, "/time_test.txt");
+	sd.data_file_open(ctmp, "w");
+	if (sd.data_file != NULL) {
+		sprintf(sd.data_line, "time '%02d:%02d:%02d'\r\n", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+		sd.data_file_writeline();
+		sd.data_file_close();
+	}
 }
 
 // ****** timer main callback routine

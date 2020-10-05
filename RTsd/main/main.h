@@ -41,6 +41,7 @@
 	#include "http.h"
 	#include "rt.h"
 	#include "../../RTcommon/sdcard.h"
+	#include "../../RTcommon/dns_server.h"
 	#include "cfg.h"
 	#include "heat.h"
 	#include "session.h"
@@ -53,6 +54,7 @@
 	extern oo_oLed oled;
 	extern oo_Buf buf;
 	extern oo_HTTP http;
+	extern oo_DNSs dnss;
 	extern oo_RT rt;
 	extern oo_SD sd;
 	extern oo_CFG cfg;
