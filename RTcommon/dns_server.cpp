@@ -15,7 +15,7 @@ static void dns_server_task(void *pvParameters) {
 	char addr_str[128];
     int addr_family = (int)pvParameters;
     int ip_protocol = 0;
-    struct sockaddr_in6 dest_addr;
+    struct sockaddr_in dest_addr;
 
     while (1) {
 		struct sockaddr_in *dest_addr_ip4 = (struct sockaddr_in *)&dest_addr;
@@ -75,7 +75,7 @@ static void dns_server_task(void *pvParameters) {
 					strncpy(hn_tmp, &rx_buffer[13], hn_len);
 					hn_tmp[hn_len] = '\0';
 					ESP_LOGI(TAG, "DNS Server, request from '%s' for '%s'", addr_str, hn_tmp);
-					if ((hn_len == 4) && (strncmp(hn_tmp, "rtsd", 4) == 0)) reply_localhost = false;
+					if ((hn_len == strlen(CFG_HOSTNAME)) && (strncmp(hn_tmp, CFG_HOSTNAME, strlen(CFG_HOSTNAME)) == 0)) reply_localhost = false;
 				} else {
 					ESP_LOGI(TAG, "DNS Server, malformed request from '%s'", addr_str);
 					break;

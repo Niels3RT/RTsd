@@ -11,6 +11,8 @@ class oo_HTTPC {
 		char csv_array_str[16][64];
 		uint8_t csv_split_cnt;
 		//uint32_t t_etmp;
+		int64_t time_last_good_result;
+		bool in_progress;
 	private:
 	
 	// -- functions

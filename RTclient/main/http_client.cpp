@@ -7,6 +7,10 @@ void oo_HTTPC::init(void) {
 	// --- write to log
 	ESP_LOGI(TAG, "init HTTP client");
 	
+	// --- some vars
+	time_last_good_result = 0;
+	in_progress = false;
+	
 	// --- start httpc client thread
 	start_client_thread();
 }
@@ -314,6 +318,9 @@ void oo_HTTPC::request_results(void) {
 	
 	// --- set type in array
 	msg_type[tx_buf_top] = TYPE_GET_RESULTS;
+	
+	// --- set in progress flag
+	in_progress = true;
 }
 
 // ****** parse results
@@ -370,7 +377,10 @@ bool oo_HTTPC::parse_results(char *tbuf) {
 			cnt_line++;
 			tbuf = split_csv_line(tbuf);
 		}
-		// --- send event to main loop
+		// -- remember time and reset in progress flag
+		time_last_good_result = esp_timer_get_time();
+		in_progress = false;
+		// -- send event to main loop
 		ESP_ERROR_CHECK(esp_event_post_to(main_loop_handle, TRACKER_EVENTS, EVENT_USE_RESULT, NULL, 0, portMAX_DELAY));
 		// -- return good!
 		return(true);

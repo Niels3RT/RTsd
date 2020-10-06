@@ -15,6 +15,8 @@ class oo_CFG {
 
 };
 
+#define CFG_HOSTNAME			"rtclient"
+
 #define CFG_WIFI_STA_SSID		"wifi_sta_ssid"
 #define CFG_WIFI_STA_KEY		"wifi_sta_key"
 

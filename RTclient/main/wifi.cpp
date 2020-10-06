@@ -75,6 +75,6 @@ void oo_WiFi::init_wifista(void) {
 	wifi_config.sta.pmf_cfg.required = false;
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA) );
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );
-	ESP_ERROR_CHECK(tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA ,"RTclient"));
+	ESP_ERROR_CHECK(tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA ,CFG_HOSTNAME));
     ESP_ERROR_CHECK(esp_wifi_start() );
 }

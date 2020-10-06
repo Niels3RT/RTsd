@@ -14,6 +14,8 @@ class oo_CFG {
 
 };
 
+#define CFG_HOSTNAME		"rtsd"
+
 #define CFG_FREQ_RX0		"freq_rx0"
 #define CFG_FREQ_RX1		"freq_rx1"
 #define CFG_FREQ_RX2		"freq_rx2"

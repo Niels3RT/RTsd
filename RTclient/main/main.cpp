@@ -23,8 +23,12 @@ void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 	if (event_id == EVENT_TIMER_MAIN) {
 		// -- check mod counters
 		httpc.handle_mod_cnt();
-		// -- get results if everything else is ok
-		if (httpc.tx_buf_work == httpc.tx_buf_top) {
+		// -- calc delta time, in us
+		int64_t time_last_good_delta = esp_timer_get_time() - httpc.time_last_good_result;
+		// -- get results if everything else is ok and delta time from last result is big enough
+		if ((httpc.tx_buf_work == httpc.tx_buf_top) && (time_last_good_delta > 2500000) && (httpc.in_progress == false)) {
+			//printf("DeltaTest '%llu'\r\n", time_last_good_delta);
+			// - request results
 			httpc.request_results();
 		}
 	}
@@ -36,6 +40,8 @@ void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 		info.print_heat();
 		// -- write control message to uart
 		uart.send_msg();
+		// -- remember time
+		//httpc.time_last_good_result = esp_timer_get_time();
 	}
 	
 	// --- find rtsd hostname, if not known after last wifi connect
@@ -54,10 +60,12 @@ void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 	}
 	
 	// --- rtc test
-	time(&timer.rtc_time);
-	timer.timeinfo = localtime (&timer.rtc_time);
+	//time_t rtc_time;
+	//time(&rtc_time);
+	//struct tm * timeinfo = localtime(&rtc_time);
+	//timeinfo = localtime (&rtc_time);
 	
-	printf("time '%02d:%02d:%02d'\r\n", timer.timeinfo->tm_hour, timer.timeinfo->tm_min, timer.timeinfo->tm_sec);
+	//printf("time '%02d:%02d:%02d'\r\n", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
 }
 
 // ****** main
