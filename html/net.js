@@ -74,7 +74,8 @@
 			//commFile.timeout = 1000;
 			// --- request results
 			if (comm_request == 1) {
-				commFile.open("GET", path + file, true);
+				var now = new Date();
+				commFile.open("GET", path + "results.csv/" + now.getFullYear() + "." + now.getMonth() + "." + now.getDate() + "." + now.getHours() + "." + now.getMinutes() + "." + now.getSeconds() + "." + now.getMilliseconds(), true);
 				commFile.onreadystatechange = function () {
 					// -- request completed?
 					if(commFile.readyState == 4) {

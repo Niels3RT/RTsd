@@ -10,8 +10,37 @@ void oo_Timer::init(void) {
 	// --- some vars to default
 	tick = 0;
 	
+	// --- set rtc to some default time
+	struct tm tm_set;
+	tm_set.tm_sec = 0;
+	tm_set.tm_min = 0;
+	tm_set.tm_hour = 0;
+	tm_set.tm_mday = 01;
+	tm_set.tm_mon = 1;
+	tm_set.tm_year = 120;
+	tm_set.tm_isdst = 0;
+	set_rtc(&tm_set, 0, 0);
+	rtc_is_set = false;
+	
 	// --- init main timer
 	init_timer_main();
+}
+
+// ****** set rtc
+void oo_Timer::set_rtc(struct tm * tm_set, int ms, int add_sec) {
+	// --- convert to timeval
+	struct timeval tv_test;
+	tv_test.tv_sec = mktime(tm_set) + add_sec;
+	tv_test.tv_usec = ms * 1000;
+	
+	// --- set rtc
+	timezone tz = { 0, 0 };
+	int rc=settimeofday(&tv_test, &tz);
+	if(rc==0) {
+		ESP_LOGI(TAG, "set RTC to '%02d:%02d:%02d' OK", tm_set->tm_hour, tm_set->tm_min, tm_set->tm_sec);
+	} else {
+		ESP_LOGI(TAG, "set RTC to '%02d:%02d:%02d' failed '%s'", tm_set->tm_hour, tm_set->tm_min, tm_set->tm_sec, strerror(errno));
+	}
 }
 
 // ****** timer main callback routine

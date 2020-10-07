@@ -82,8 +82,62 @@ void oo_HTTP::reply_set_cfg(char *tbuf_header, char *tbuf_tx) {
 	http.reply_done(tbuf_tx + strlen(tbuf_tx));
 }
 
+// ****** decode dec helper for reply results
+char * oo_HTTP::dec_hlp(char *tbuf) {
+	dectmp = 0;
+	while(1) {
+		if ((*tbuf >= 0x30) && (*tbuf <= 0x39)) {
+			dectmp *= 10;
+			dectmp += *(tbuf++) - 0x30;
+		} else {
+			break;
+		}
+	}
+	return(tbuf+1);
+}
+
 // ****** reply results
-void oo_HTTP::reply_results(char *tbuf) {
+void oo_HTTP::reply_results(char *tbuf_header, char *tbuf) {
+	// --- parse clock time in request
+	//GET /results.csv/2020.9.7.10.49.3.745 HTTP/1.1
+	tbuf_header = strnstr(tbuf_header, "csv/", 90);
+	if (tbuf_header != NULL) {
+		// -- tm
+		struct tm tm_tmp;
+		// -- jmp csv
+		tbuf_header += 4;
+		// -- year
+		tbuf_header = dec_hlp(tbuf_header);
+		tm_tmp.tm_year = dectmp - 1900;
+		// -- month
+		tbuf_header = dec_hlp(tbuf_header);
+		tm_tmp.tm_mon = dectmp;
+		// -- day
+		tbuf_header = dec_hlp(tbuf_header);
+		tm_tmp.tm_mday = dectmp;
+		// -- hour
+		tbuf_header = dec_hlp(tbuf_header);
+		tm_tmp.tm_hour = dectmp;
+		// -- minute
+		tbuf_header = dec_hlp(tbuf_header);
+		tm_tmp.tm_min = dectmp;
+		// -- second
+		tbuf_header = dec_hlp(tbuf_header);
+		tm_tmp.tm_sec = dectmp;
+		// -- ms
+		tbuf_header = dec_hlp(tbuf_header);
+		int ms_tmp = dectmp;
+		// -- set rtc?
+		if (!timer.rtc_is_set) {
+			if ((ms_tmp > 900) && (ms_tmp < 960)) {	// get rtc a little closer to the truth
+				tm_tmp.tm_isdst = 0;
+				timer.set_rtc(&tm_tmp, 0, 1);		// add a second, see ms above
+				timer.rtc_is_set = true;
+				printf("set rtc to result request clock '%d:%d:%d:%d:%d:%d'\r\n", tm_tmp.tm_year, tm_tmp.tm_mon, tm_tmp.tm_mday, tm_tmp.tm_hour, tm_tmp.tm_min, tm_tmp.tm_sec);
+			}
+		}
+	}
+
 	// --- peak detect
 	if (rt.pd_isready()) {
 		// -- fetch results from pd memory
@@ -831,7 +885,7 @@ static void httpn_server_task(void *pvParameters)
 						if (strstr(tmp_header, HTTP_GET_RESULTS)) {
 							is_good_cmd = true;
 							strcpy(&http.tx_buf[use_buf][strlen(http.tx_buf[use_buf])], HTTP_CONTENT_CSV);
-							http.reply_results(&http.tx_buf[use_buf][strlen(http.tx_buf[use_buf])]);
+							http.reply_results(&tmp_header[0], &http.tx_buf[use_buf][strlen(http.tx_buf[use_buf])]);
 						}
 						// --- race info
 						if (strstr(tmp_header, HTTP_GET_RACEINFO)) {

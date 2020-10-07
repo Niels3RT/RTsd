@@ -5,6 +5,7 @@ class oo_HTTP {
 		char rx_buf[4][4096];
 		char tx_buf[4][4096];
 		uint16_t rxpos[4];
+		int dectmp;
 	private:
 	
 	// -- functions
@@ -13,7 +14,8 @@ class oo_HTTP {
 		void reply_done(char *tbuf);
 		void reply_get_cfg(char *tbuf);
 		void reply_set_cfg(char *tbuf_header, char *tbuf_tx);
-		void reply_results(char *tbuf);
+		char * dec_hlp(char *tbuf);
+		void reply_results(char *tbuf_header, char *tbuf);
 		void reply_raceinfo(char *tbuf);
 		void reply_sessioninfo(char *tbuf);
 		void reply_pilotinfo(char *tbuf);

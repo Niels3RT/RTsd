@@ -25,8 +25,9 @@
 	var refreshID = setInterval(function(){ timerfunc(); }, 100);
 	//var path = "http://192.168.97.111/";
 	//var path = "http://192.168.4.1/";
-	var path = "http://192.168.99.32/";
-	var file = "results.csv";
+	//var path = "http://192.168.99.32/";
+	var path = "http://rtsd/";
+	//var file = "results.csv";
 	var exfile = "unwichtich";
 	var pilots_names = [];
 	var pilots_nr = [];
