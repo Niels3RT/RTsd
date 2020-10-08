@@ -22,7 +22,8 @@
 	var show_tab = 0;
 	var totalRows = 1;
 	var cellsInRow = 8;
-	var refreshID = setInterval(function(){ timerfunc(); }, 100);
+	//var refreshID = setInterval(function(){ timerfunc(); }, 100);
+	var refreshID = setInterval(function(){ timerfunc(); }, 111);
 	//var path = "http://192.168.97.111/";
 	//var path = "http://192.168.4.1/";
 	//var path = "http://192.168.99.32/";

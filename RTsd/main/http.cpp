@@ -99,9 +99,8 @@ char * oo_HTTP::dec_hlp(char *tbuf) {
 // ****** reply results
 void oo_HTTP::reply_results(char *tbuf_header, char *tbuf) {
 	// --- parse clock time in request
-	//GET /results.csv/2020.9.7.10.49.3.745 HTTP/1.1
 	tbuf_header = strnstr(tbuf_header, "csv/", 90);
-	if (tbuf_header != NULL) {
+	if ((tbuf_header != NULL) && (!timer.rtc_is_set)) {
 		// -- tm
 		struct tm tm_tmp;
 		// -- jmp csv
@@ -128,13 +127,34 @@ void oo_HTTP::reply_results(char *tbuf_header, char *tbuf) {
 		tbuf_header = dec_hlp(tbuf_header);
 		int ms_tmp = dectmp;
 		// -- set rtc?
-		if (!timer.rtc_is_set) {
-			if ((ms_tmp > 900) && (ms_tmp < 960)) {	// get rtc a little closer to the truth
+		//if ((!timer.rtc_is_set) && (ms_tmp < 960)) {
+		if (ms_tmp < 960) {		// prevent overflow when adding some extra ms later on
+			// -- calc delta between rtc update and esp from start timer, try to find minimum network delay
+			struct timeval tv_delta;
+			tv_delta.tv_sec = mktime(&tm_tmp);
+			int64_t timer_delta = esp_timer_get_time() / 1000;
+			timer_delta = ((tv_delta.tv_sec * 1000) + ms_tmp) - timer_delta;
+			// -- write some stuff to read
+			ESP_LOGI(TAG, "RTC update from result request '%d:%d:%d:%d:%d:%d' delta '%llu' delta_min '%llu'", tm_tmp.tm_year + 1900, tm_tmp.tm_mon, tm_tmp.tm_mday, tm_tmp.tm_hour, tm_tmp.tm_min, tm_tmp.tm_sec, timer_delta, timer.rtc_upd_delta_min);
+			
+			// -- look for smallest delta
+			if (timer_delta < timer.rtc_upd_delta_min) {
+				ESP_LOGI(TAG, "RTC update found new minimum delta '%llu' upd_count '%d'", timer_delta, timer.rtc_upd_count);
+				// - update rtc
 				tm_tmp.tm_isdst = 0;
-				timer.set_rtc(&tm_tmp, 0, 1);		// add a second, see ms above
-				timer.rtc_is_set = true;
-				printf("set rtc to result request clock '%d:%d:%d:%d:%d:%d'\r\n", tm_tmp.tm_year, tm_tmp.tm_mon, tm_tmp.tm_mday, tm_tmp.tm_hour, tm_tmp.tm_min, tm_tmp.tm_sec);
+				timer.set_rtc(&tm_tmp, ms_tmp + 10, 0);
+				// - remember new minimum delta
+				timer.rtc_upd_delta_min = timer_delta;
 			}
+			
+			// - rtc update finished?
+			if (timer.rtc_upd_count >= 16) {
+				timer.rtc_is_set = true;
+				ESP_LOGI(TAG, "RTC update finished!");
+			}
+			
+			// -- increment update counter
+			timer.rtc_upd_count++;
 		}
 	}
 

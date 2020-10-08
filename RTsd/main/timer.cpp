@@ -21,6 +21,8 @@ void oo_Timer::init(void) {
 	tm_set.tm_isdst = 0;
 	set_rtc(&tm_set, 0, 0);
 	rtc_is_set = false;
+	rtc_upd_count = 0;
+	rtc_upd_delta_min = 0x7fffffffffffffff;
 	
 	// --- init main timer
 	init_timer_main();

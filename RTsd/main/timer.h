@@ -4,6 +4,8 @@ class oo_Timer {
 	public:
 		volatile uint32_t tick;
 		bool rtc_is_set;
+		uint8_t rtc_upd_count;
+		int64_t rtc_upd_delta_min;
 	private:
 		
 
