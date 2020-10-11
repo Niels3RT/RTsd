@@ -720,20 +720,27 @@ bool oo_HTTP::reply_file(char *tbuf_rx, int tcs, int buf_nr) {
 	// --- try to fetch/build filename
 	tbuf_rx = strstr(tbuf_rx, " ") + 1;
 	len = strstr(tbuf_rx, " ") - tbuf_rx;
+	printf("file_path len '%d'\r\n", len);
 	bzero(filename, sizeof(filename));
 	sprintf(&filename[0], "%s", HTTP_SD_PATH);
-	strncpy(&filename[strlen(&filename[0])], tbuf_rx, len);
+	// --- hit landing page? i.e. index.html
+	if (len > 1) {
+		// -- get file from request
+		strncpy(&filename[strlen(&filename[0])], tbuf_rx, len);
+	} else {
+		strcpy(&filename[strlen(&filename[0])], HTTP_LANDING_INDEX);
+	}
 	
 	// --- decide on content type
-	if (strstr(tbuf_rx, ".html"))
+	if (strstr(filename, ".html"))
 		strcpy(&http.tx_buf[buf_nr][strlen(http.tx_buf[buf_nr])], HTTP_CONTENT_HTML);
-	if (strstr(tbuf_rx, ".js"))
+	if (strstr(filename, ".js"))
 		strcpy(&http.tx_buf[buf_nr][strlen(http.tx_buf[buf_nr])], HTTP_CONTENT_JS);
-	if (strstr(tbuf_rx, ".css"))
+	if (strstr(filename, ".css"))
 		strcpy(&http.tx_buf[buf_nr][strlen(http.tx_buf[buf_nr])], HTTP_CONTENT_CSS);
-	if (strstr(tbuf_rx, ".png"))
+	if (strstr(filename, ".png"))
 		strcpy(&http.tx_buf[buf_nr][strlen(http.tx_buf[buf_nr])], HTTP_CONTENT_PNG);
-	if (strstr(tbuf_rx, ".jpg"))
+	if (strstr(filename, ".jpg"))
 		strcpy(&http.tx_buf[buf_nr][strlen(http.tx_buf[buf_nr])], HTTP_CONTENT_JPG);
 	
 	// --- open file

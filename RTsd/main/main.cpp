@@ -34,10 +34,10 @@ void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 	}
 	
 	// --- rtc test
-	time_t rtc_time;
-	time(&rtc_time);
-	struct tm * timeinfo = localtime(&rtc_time);
-	printf("rtc says '%04d:%02d:%02d-%02d:%02d:%02d'\r\n", timeinfo->tm_year + 1900, timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+	//time_t rtc_time;
+	//time(&rtc_time);
+	//struct tm * timeinfo = localtime(&rtc_time);
+	//printf("rtc says '%04d:%02d:%02d-%02d:%02d:%02d'\r\n", timeinfo->tm_year + 1900, timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
 }
 
 // ****** main

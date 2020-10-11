@@ -60,6 +60,7 @@ class oo_HTTP {
 #define HTTP_CONTENT_JPG		"Content-Type: image/jpg\r\n\r\n"
 #define HTTP_404 				"HTTP/1.1 404 Not Found\r\nAccess-Control-Allow-Origin: *\r\nConnection: Keep-Alive\r\nContent-Type: text/csv\r\n\r\n"
 #define HTTP_202 				"HTTP/1.1 202 Accepted\r\nAccess-Control-Allow-Origin: *\r\nConnection: Keep-Alive\r\nContent-Type: text/csv\r\n\r\n"
+#define HTTP_LANDING_INDEX 		"/index.html"
 #define HTTP_DBG_CFG			"1664;1664;171D;1664;000B;004F;0514;0005;\r\n"
 
 #define HTTP_GET 				"GET"
