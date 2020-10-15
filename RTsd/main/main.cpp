@@ -6,6 +6,7 @@ oo_WiFi wifi;
 oo_RT_spi rtspi;
 oo_Timer timer;
 oo_oLed oled;
+oo_Audio audio;
 oo_Buf buf;
 oo_HTTP http;
 oo_DNSs dnss;
@@ -32,6 +33,9 @@ void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 	if (event_id == EVENT_RT_DO_OPEN) {
 		heat.open();
 	}
+	
+	// --- play audio test
+	//audio.play_sample(4);
 	
 	// --- rtc test
 	//time_t rtc_time;
@@ -80,6 +84,17 @@ void app_main(void) {
 	
 	// --- init rt
 	rt.init();
+	
+	// --- init audio
+	audio.init();
+	
+	//while(1) {
+	//	for (uint8_t i=0;i<16;i++) {
+	//		// --- play audio test
+	//		audio.play_sample(i);
+	//		vTaskDelay(1000 / portTICK_PERIOD_MS);
+	//	}
+	//}
 	
 	// --- init event
 	event.init();

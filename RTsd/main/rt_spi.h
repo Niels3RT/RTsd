@@ -53,9 +53,14 @@ class oo_RT_spi {
 #define RT_QUOT_BASE		0x48
 #define RT_TRIGGER_BASE		0x50
 
-#define RT_SDRAM2REG		0x60
+#define RT_SDRAM2REG_RSSI	0x60
 #define RT_PEAK2REG			0x61
-#define RT_REG2SDRAM		0x62
+#define RT_REG2SDRAM_RSSI	0x62
+#define RT_REG2SAMPLE_TABLE	0x63
+#define RT_PLAY_SAMPLE		0x64
+
+//#define RT_SDRAM2REG		0x63
+//#define RT_REG2SDRAM		0x64
 
 // --- oled
 #define RT_PRINT_CHAR		0x80

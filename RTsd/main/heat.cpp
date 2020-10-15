@@ -49,7 +49,7 @@ void oo_Heat::open(void) {
 			trssi[6] = (sd.csv_array[4] >> 8) & 0xff;				// word 3
 			trssi[7] = sd.csv_array[4] & 0xff;
 			rtspi.write64(&trssi[0]);								// write 64bit word to transfer register
-			rtspi.transmit24(RT_REG2SDRAM, sd.csv_array[0], 0);		// set sdram address (rssi block nr)
+			rtspi.transmit24(RT_REG2SDRAM_RSSI, sd.csv_array[0], 0);		// set sdram address (rssi block nr)
 		}
 		// -- close data file
 		sd.data_file_close();
@@ -160,7 +160,7 @@ void oo_Heat::commit(void) {
 		printf("csv file opened for writing '%s'\r\n", ctmp);
 		for (uint16_t i=0;i<rt.count;i++) {
 			// -- read line (4 words a 16bits) of rssi from sdram
-			rtspi.transmit24(RT_SDRAM2REG, i, 0);			// set sdram address (rssi block nr)
+			rtspi.transmit24(RT_SDRAM2REG_RSSI, i, 0);			// set sdram address (rssi block nr)
 			rtspi.read64(&trssi[0]);						// fetch 64bit word from transfer register
 			// -- write line of rssi to file
 			for (uint8_t i=0;i<rt.max_chn;i++) rtmp[i] = ((trssi[i]<<8) + trssi[i+1]) & 0xfff;

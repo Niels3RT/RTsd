@@ -37,6 +37,7 @@
 	#include "rt_spi.h"
 	#include "timer.h"
 	#include "oled.h"
+	#include "audio.h"
 	#include "buffer.h"
 	#include "http.h"
 	#include "rt.h"
@@ -52,6 +53,7 @@
 	extern oo_RT_spi rtspi;
 	extern oo_Timer timer;
 	extern oo_oLed oled;
+	extern oo_Audio audio;
 	extern oo_Buf buf;
 	extern oo_HTTP http;
 	extern oo_DNSs dnss;

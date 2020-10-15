@@ -324,7 +324,7 @@ void oo_HTTP::reply_rssi(char *tbuf_rx, char *tbuf_tx) {
 		// -- print timestamp
 		tbuf_tx += strlen(tbuf_tx);
 		sprintf(tbuf_tx, "%06x;", tmp_start+i);
-		rtspi.transmit24(RT_SDRAM2REG, tmp_start+i, 0);		// set sdram address (rssi block nr)
+		rtspi.transmit24(RT_SDRAM2REG_RSSI, tmp_start+i, 0);		// set sdram address (rssi block nr)
 		switch(rt.max_chn) {
 			case 4:
 				rtspi.read64(&trssi[0]);							// fetch 64bit word from transfer register

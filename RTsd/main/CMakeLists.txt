@@ -1,2 +1,2 @@
-idf_component_register(SRCS "main.cpp" "wifi.cpp" "rt_spi.cpp" "timer.cpp" "oled.cpp" "buffer.cpp" "http.cpp" "rt.cpp" "../../RTcommon/sdcard.cpp" "cfg.cpp" "heat.cpp" "session.cpp" "event.cpp" "../../RTcommon/dns_server.cpp"
+idf_component_register(SRCS "main.cpp" "wifi.cpp" "rt_spi.cpp" "timer.cpp" "oled.cpp" "audio.cpp" "buffer.cpp" "http.cpp" "rt.cpp" "../../RTcommon/sdcard.cpp" "cfg.cpp" "heat.cpp" "session.cpp" "event.cpp" "../../RTcommon/dns_server.cpp"
                     INCLUDE_DIRS ".")
