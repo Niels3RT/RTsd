@@ -16,7 +16,8 @@ class oo_UART {
 };
 
 #define ECHO_TEST_TXD  (GPIO_NUM_18)
-#define ECHO_TEST_RXD  (GPIO_NUM_19)
+//#define ECHO_TEST_RXD  (GPIO_NUM_19)
+#define ECHO_TEST_RXD  (GPIO_NUM_21)
 #define ECHO_TEST_RTS  (UART_PIN_NO_CHANGE)
 #define ECHO_TEST_CTS  (UART_PIN_NO_CHANGE)
 

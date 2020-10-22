@@ -82,6 +82,7 @@
 		EVENT_TIMER_MAIN,	                     // raised during an iteration of the loop within the task
 		EVENT_RT_DO_COMMIT,
 		EVENT_RT_DO_OPEN,
-		EVENT_RT_START
+		EVENT_RT_START_BEGIN,
+		EVENT_RT_START_RUN
 	};
 #endif

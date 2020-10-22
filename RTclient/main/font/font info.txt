@@ -1,0 +1,6 @@
+The base for the font was taken from:
+	https://github.com/filmote/Font4x6/blob/master/src/fonts/Font4x6.cpp
+And slightly modified.
+
+Many thanks to Simon Holmes aka filmote, though he is not connected to this project in any way.
+	https://github.com/filmote

@@ -24,6 +24,9 @@
 	var cellsInRow = 8;
 	//var refreshID = setInterval(function(){ timerfunc(); }, 100);
 	var refreshID = setInterval(function(){ timerfunc(); }, 111);
+	var heatStartTime;
+	var heatStartTimer;
+	var heatStartTimerCount = 0;
 	//var path = "http://192.168.97.111/";
 	//var path = "http://192.168.4.1/";
 	//var path = "http://192.168.99.32/";
@@ -205,6 +208,19 @@
 	var win_size_y = 0;
 	var font_size_main = 16;
 	
+	// --- text to speech
+	//var speak = new SpeechSynthesisUtterance();
+	////speak.text = 'Hello my friend';
+	//speak.lang = 'en-US';
+	//speak.volume = 1; // 0 to 1
+	//speak.rate = 1; // 0.1 to 10
+	//speak.pitch = 2; //0 to 2
+	var wav_ding = new Audio('../audio/ding.wav');
+	var wav_1 = new Audio('../audio/1.wav');
+	var wav_2 = new Audio('../audio/2.wav');
+	var wav_3 = new Audio('../audio/3.wav');
+	var wav_go = new Audio('../audio/go.wav');
+	
 	// ****** laptime to string
 	function laptime2string(ttime) {
 		var stmp = "---";
@@ -228,5 +244,40 @@
 		} else {
 			return(false);
 		}
+	}
+	
+	// ****** heat start timer function
+	function heatStartFunc() {
+		heatStartStepTime = new Date().getTime();
+		//document.title = heatStartTimerCount + " - " + (heatStartStepTime - heatStartTime);
+		//ding.play();
+		switch(10-heatStartTimerCount) {
+			case 0:
+				wav_go.play();
+				break;
+			case 1:
+				wav_1.play();
+				break;
+			case 2:
+				wav_2.play();
+				break;
+			case 3:
+				wav_3.play();
+				break;
+		}
+		
+		//var speak = new SpeechSynthesisUtterance();
+		////speak.text = 'Hello my friend';
+		//speak.lang = 'en-US';
+		//speak.volume = 1; // 0 to 1
+		//speak.rate = 1; // 0.1 to 10
+		//speak.pitch = 2; //0 to 2
+		//speak.text = 10 - heatStartTimerCount;
+		//speechSynthesis.speak(speak);
+		//window.speechSynthesis.speak(new SpeechSynthesisUtterance('Test'));
+		if (heatStartTimerCount == 10) {
+			clearInterval(heatStartTimer);
+		}
+		heatStartTimerCount++;
 	}
 	

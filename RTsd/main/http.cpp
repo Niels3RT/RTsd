@@ -1047,8 +1047,7 @@ static void httpn_server_task(void *pvParameters)
 						// --- cmd start
 						if (strstr(tmp_header, HTTP_CMD_START)) {
 							is_good_cmd = true;
-							rt.start();
-							rt.get_state();
+							timer.start_begin = true;
 							strcpy(&http.tx_buf[use_buf][strlen(http.tx_buf[use_buf])], HTTP_CONTENT_CSV);
 							strcat(&http.tx_buf[use_buf][strlen(http.tx_buf[use_buf])], "Start ");
 							http.reply_done(&http.tx_buf[use_buf][strlen(http.tx_buf[use_buf])]);

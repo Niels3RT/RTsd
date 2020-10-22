@@ -2,6 +2,14 @@
 #ifndef tracker_H
 #define tracker_H
 	// --- this does not need to be included frome every .c
+	
+	// -- rgb struct for ws strips
+	struct st_rgb {
+		char r;
+		char g;
+		char b;
+	};
+	
 	// -- esp libraries
 	#include <string.h>
 	#include "freertos/FreeRTOS.h"
@@ -39,8 +47,11 @@
 	#include "cfg.h"
 	#include "info.h"
 	#include "uart.h"
+	#include "rt_spi.h"
 	#include "../../RTcommon/sdcard.h"
 	#include "../../RTcommon/dns_server.h"
+	#include "ws2812.h"
+	#include "./font/font.h"
 
 	// --- objects
 	extern oo_WiFi wifi;
@@ -50,7 +61,10 @@
 	extern oo_CFG cfg;
 	extern oo_Info info;
 	extern oo_UART uart;
+	extern oo_RT_spi rtspi;
 	extern oo_SD sd;
+	extern oo_WS ws;
+	extern oo_Font font;
 	
 	extern "C" {
 		void app_main();

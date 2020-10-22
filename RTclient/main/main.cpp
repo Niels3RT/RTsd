@@ -9,7 +9,10 @@ oo_DNSs dnss;
 oo_CFG cfg;
 oo_Info info;
 oo_UART uart;
+oo_RT_spi rtspi;
 oo_SD sd;
+oo_WS ws;
+oo_Font font;
 
 // -- handles
 esp_event_loop_handle_t main_loop_handle;
@@ -30,6 +33,23 @@ void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 			//printf("DeltaTest '%llu'\r\n", time_last_good_delta);
 			// - request results
 			httpc.request_results();
+		}
+		// DEBUG
+		if ((timer.tick & 0x07) == 0) {
+			if (ws.tmp_cnt < 100) {
+				ws.tmp_cnt++;
+			} else {
+				ws.tmp_cnt = 0;
+			}
+			//st_rgb ctmp = { 8, 8, 8 };
+			st_rgb ctmp = { 8, 0, 0 };
+			ws.print_7s_2d(ctmp, ws.tmp_cnt);
+			//ws.print_digit(0, ctmp, ws.tmp_cnt);
+			//ws.print_digit(1, ctmp, ws.tmp_cnt);
+			ws.transfer_fb(0, 64);
+			ws.transfer_fb(1, 64);
+			ws.trigger_write(0);
+			ws.trigger_write(1);
 		}
 	}
 	
@@ -58,6 +78,22 @@ void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 			ESP_LOGI(TAG, "gethostbyname rtsd failed '%s'", esp_err_to_name(h_errno));
 		}
 	}
+	
+	// --- scroll sad message if too long no good result
+	int64_t time_last_good_delta = (esp_timer_get_time() - httpc.time_last_good_result) / 1000000;
+	if (time_last_good_delta > 20) {
+		char ctmp[256];
+		//sprintf(ctmp, "RTsign scrolltext Test 21.10.2020 VfB Forever! Corona nervt gewaltig. 2021 hoffentlich wieder Rennen?");
+		sprintf(ctmp, "RTsign sadly no see RTsd for %llu seconds :(", time_last_good_delta);
+		ws.write_scrolltext(&ctmp[0], strlen(ctmp));
+	}
+	
+	// --- draw scroltlext
+	//int64_t timer_start = esp_timer_get_time();
+	//ws.matrix_draw_plasma();
+	//ws.matrix_draw_scroll({ 0, 8, 0 });
+	//int64_t timer_delta = esp_timer_get_time() - timer_start;
+	//printf("p+s time %lluus\r\n", timer_delta);
 	
 	// --- rtc test
 	//time_t rtc_time;
@@ -94,7 +130,7 @@ void app_main(void) {
 	ESP_ERROR_CHECK(esp_event_handler_instance_register_with(main_loop_handle, TRACKER_EVENTS, EVENT_USE_RESULT, main_event_handler, main_loop_handle, NULL));
 	
 	// --- wait some for stuff to start up
-	vTaskDelay(500 / portTICK_PERIOD_MS);
+	vTaskDelay(3000 / portTICK_PERIOD_MS);
 	
 	// --- init sd card
 	sd.init();
@@ -104,6 +140,12 @@ void app_main(void) {
 	
 	// --- init info
 	info.init();
+	
+	// --- init rt spi
+	rtspi.init();
+	
+	// --- init ws2812
+	ws.init();
 	
 	// --- init timer
 	timer.init();

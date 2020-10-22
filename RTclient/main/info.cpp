@@ -44,4 +44,16 @@ void oo_Info::print_heat(void) {
 			printf("   %d %d\r\n", l+1, laps[i][l]);
 		}
 	}
+	
+	// --- fill scrolltext with pilot names
+	char ctmp[512];
+	sprintf(ctmp, "1.%s  2.%s  3.%s  4.%s  5.%s  6.%s  7.%s  8.%s  ", pilots_data[heat.pilots_nr[0]].name,
+																		pilots_data[heat.pilots_nr[1]].name,
+																		pilots_data[heat.pilots_nr[2]].name,
+																		pilots_data[heat.pilots_nr[3]].name,
+																		pilots_data[heat.pilots_nr[4]].name,
+																		pilots_data[heat.pilots_nr[5]].name,
+																		pilots_data[heat.pilots_nr[6]].name,
+																		pilots_data[heat.pilots_nr[7]].name);
+	ws.write_scrolltext(&ctmp[0], strlen(ctmp));
 }

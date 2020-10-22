@@ -114,6 +114,8 @@ void oo_RT::stop(void) {
 	// --- set state and write to spi
 	state = 2;
 	set_state();
+	// -- end start sequence, if running
+	timer.start_run = false;
 }
 
 // ****** set rt counter through spi

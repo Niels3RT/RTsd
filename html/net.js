@@ -119,6 +119,12 @@
 									comm_request = 2;
 									count_err++;
 								}
+								// - initiate heat start sequence?
+								if (exfile == "cmd_start;") {
+									heatStartTime = new Date().getTime();
+									heatStartTimer = setInterval(function(){ heatStartFunc(); }, 1000);
+									heatStartTimerCount = 1;
+								}
 								break;
 							default:
 								comm_state = 0;
