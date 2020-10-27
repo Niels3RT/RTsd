@@ -4,6 +4,9 @@
 void oo_oLed::init(void) {
 	// --- write to log
 	ESP_LOGI(TAG, "init oled");
+	
+	//oled.clearfb();
+	//oled.writefb();
 }
 
 // ****** print character to bw oled
@@ -26,6 +29,13 @@ void oo_oLed::print_string(uint8_t px, uint8_t py, char *t_buf) {
 void oo_oLed::writefb(void) {
 	// --- write fb
 	rtspi.transmit_cmd(RT_WRITE_FB);
+}
+
+// ****** clear oled bw framebuffer
+void oo_oLed::clearfb(void) {
+	// --- clear fb
+	rtspi.transmit_cmd(RT_CLEAR_FB);
+	printf("Clear FB!\r\n");
 }
 
 // ****** print hex, 8bit

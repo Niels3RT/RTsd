@@ -157,6 +157,7 @@ void oo_WiFi::init_softap(void) {
 	
 	// --- print ip info to oled
 	char stmp[20];
+	oled.clearfb();
 	sprintf(stmp, "%03d.%03d.%03d.%03d", dnss.host_ap_addr.ip8x4[0], dnss.host_ap_addr.ip8x4[1], dnss.host_ap_addr.ip8x4[2], dnss.host_ap_addr.ip8x4[3]);
 	oled.print_string(1, 7, &stmp[0]);
 	oled.writefb();

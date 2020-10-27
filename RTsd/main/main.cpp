@@ -115,6 +115,9 @@ void app_main(void) {
 	// --- init rt
 	rt.init();
 	
+	// --- init oled
+	oled.init();
+	
 	// --- init audio
 	audio.init();
 	
