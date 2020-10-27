@@ -3,6 +3,7 @@ class oo_Timer {
 	// -- vars
 	public:
 		volatile uint32_t tick;
+		bool dont_print_sad;
 	private:
 		
 

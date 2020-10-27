@@ -173,7 +173,7 @@ void oo_HTTP::reply_results(char *tbuf_header, char *tbuf) {
 
 	// --- print timestamp
 	sprintf(tbuf, "%08x;", rt.count);
-	oled.print_hex_32u(8, 0, rt.count);
+	oled.print_hex_32u(16, 0, rt.count);
 	oled.writefb();
 	
 	// --- print state

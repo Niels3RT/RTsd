@@ -42,7 +42,8 @@ void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 				ws.tmp_cnt = 0;
 			}
 			//st_rgb ctmp = { 8, 8, 8 };
-			st_rgb ctmp = { 8, 0, 0 };
+			st_rgb ctmp = { 8, 0, 0 };	// red
+			//st_rgb ctmp = { 0x0e, 0x00, 0x07 };	// pink
 			ws.print_7s_2d(ctmp, ws.tmp_cnt);
 			//ws.print_digit(0, ctmp, ws.tmp_cnt);
 			//ws.print_digit(1, ctmp, ws.tmp_cnt);
@@ -82,10 +83,19 @@ void main_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 	// --- scroll sad message if too long no good result
 	int64_t time_last_good_delta = (esp_timer_get_time() - httpc.time_last_good_result) / 1000000;
 	if (time_last_good_delta > 20) {
+		//if (!timer.dont_print_sad) {
 		char ctmp[256];
 		//sprintf(ctmp, "RTsign scrolltext Test 21.10.2020 VfB Forever! Corona nervt gewaltig. 2021 hoffentlich wieder Rennen?");
 		sprintf(ctmp, "RTsign sadly no see RTsd for %llu seconds :(", time_last_good_delta);
 		ws.write_scrolltext(&ctmp[0], strlen(ctmp));
+		
+		//while(1) {
+		//if (!timer.dont_print_sad) {
+		//	timer.dont_print_sad = true;
+		//	//vTaskDelay(1000 / portTICK_PERIOD_MS);
+		//	int64_t ti_delta = esp_timer_get_time() / 1000000;
+		//	printf("still running '%llu'\r\n", ti_delta);
+		//}
 	}
 	
 	// --- draw scroltlext
@@ -131,6 +141,12 @@ void app_main(void) {
 	
 	// --- wait some for stuff to start up
 	vTaskDelay(3000 / portTICK_PERIOD_MS);
+	
+	//while(1) {
+	//	vTaskDelay(1000 / portTICK_PERIOD_MS);
+	//	int64_t ti_delta = esp_timer_get_time() / 1000000;
+	//	printf("still running '%llu'\r\n", ti_delta);
+	//}
 	
 	// --- init sd card
 	sd.init();

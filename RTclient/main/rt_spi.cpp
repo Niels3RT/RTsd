@@ -38,6 +38,8 @@ void oo_RT_spi::init(void) {
 		
     spi_device_interface_config_t devcfg = { };
         devcfg.clock_speed_hz=10*1000*1000,					//Clock out at 10 MHz
+		//devcfg.clock_speed_hz=6*1000*1000,					//Clock out at 6 MHz
+		//devcfg.clock_speed_hz=2*1000*1000,					//Clock out at 2 MHz
 		//devcfg.clock_speed_hz=1*1000*1000,				//Clock out at 1 MHz
         devcfg.mode=0,									//SPI mode 0
         devcfg.spics_io_num=PIN_NUM_CS,					//CS pin

@@ -9,6 +9,7 @@ void oo_Timer::init(void) {
 	
 	// --- some vars to default
 	tick = 0;
+	dont_print_sad = false;
 	
 	// --- init main timer
 	init_timer_main();

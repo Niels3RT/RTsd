@@ -9,10 +9,10 @@ void oo_oLed::init(void) {
 // ****** print character to bw oled
 void oo_oLed::print_char(uint8_t x, uint8_t y, uint8_t value) {
 	// --- calc coordinates
-	uint8_t postmp = ((x << 4) & 0xf0) + (y & 0x0f);
+	uint16_t postmp = (((uint16_t)x << 4) & 0x01f0) + (y & 0x0f);
 	
 	// --- print char
-	rtspi.transmit16(RT_PRINT_CHAR, (postmp<<8)+value);
+	rtspi.transmit16(RT_PRINT_CHAR, (postmp<<7)+(value&0x7f));
 }
 
 // ****** print string
