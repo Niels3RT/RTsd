@@ -7,3 +7,4 @@ freq_rx2=5806;
 freq_rx3=5917;
 deadtime=8;
 auto_percent=76;
+use_i2s_audio=0;

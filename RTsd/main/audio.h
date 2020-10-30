@@ -3,6 +3,7 @@ class oo_Audio {
 	// -- vars
 	public:
 		uint32_t sample_adr;
+		bool use_i2s;
 	private:
 		
 

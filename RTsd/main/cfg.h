@@ -26,6 +26,7 @@ class oo_CFG {
 #define CFG_FREQ_RX7		"freq_rx7"
 #define CFG_DEADTIME		"deadtime"
 #define CFG_AUTO_PERCENT	"auto_percent"
+#define CFG_USE_I2S			"use_i2s_audio"
 #define CFG_WIFI_MODE		"wifi_mode"
 #define CFG_WIFI_MODE_AP	"softAP"
 #define CFG_WIFI_MODE_STA	"sta"

@@ -16,29 +16,35 @@ void oo_Audio::init(void) {
 	sample_adr = 0x800000;
 	//sample_cnt = 0;
 	
-	// -- time sd card read
-	int64_t timer_start = esp_timer_get_time();
-	
-	// --- load sample files
-	sample_file_load(WAVE_GO, 0);
-	sample_file_load(WAVE_1, 1);
-	sample_file_load(WAVE_2, 2);
-	sample_file_load(WAVE_3, 3);
-	sample_file_load(WAVE_STOP, 4);
-	sample_file_load(WAVE_GUN, 5);
-	sample_file_load(WAVE_DING, 6);
-	sample_file_load(WAVE_DONG, 7);
-	sample_file_load(WAVE_N1, 8);
-	sample_file_load(WAVE_N2, 9);
-	sample_file_load(WAVE_N3, 10);
-	sample_file_load(WAVE_N4, 11);
-	sample_file_load(WAVE_N5, 12);
-	sample_file_load(WAVE_N6, 13);
-	sample_file_load(WAVE_N7, 14);
-	sample_file_load(WAVE_N8, 15);
-	
-	int64_t timer_delta = esp_timer_get_time() - timer_start;
-	printf("card read time %llums\r\n", timer_delta / 1000);
+	// --- load samples?
+	if (use_i2s) {
+		// -- time sd card read
+		int64_t timer_start = esp_timer_get_time();
+		
+		// -- load sample files
+		sample_file_load(WAVE_GO, 0);
+		sample_file_load(WAVE_1, 1);
+		sample_file_load(WAVE_2, 2);
+		sample_file_load(WAVE_3, 3);
+		sample_file_load(WAVE_STOP, 4);
+		sample_file_load(WAVE_GUN, 5);
+		sample_file_load(WAVE_DING, 6);
+		sample_file_load(WAVE_DONG, 7);
+		sample_file_load(WAVE_N1, 8);
+		sample_file_load(WAVE_N2, 9);
+		sample_file_load(WAVE_N3, 10);
+		sample_file_load(WAVE_N4, 11);
+		sample_file_load(WAVE_N5, 12);
+		sample_file_load(WAVE_N6, 13);
+		sample_file_load(WAVE_N7, 14);
+		sample_file_load(WAVE_N8, 15);
+		
+		// -- print sample load time
+		int64_t timer_delta = esp_timer_get_time() - timer_start;
+		printf("I2S: card read samples time %llums\r\n", timer_delta / 1000);
+	} else {
+		printf("I2S: skip reading samples\r\n");
+	}
 }
 
 // ****** play sample

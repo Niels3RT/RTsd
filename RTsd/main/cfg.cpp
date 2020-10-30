@@ -61,6 +61,9 @@ void oo_CFG::init(void) {
 	// --- detect auto level percentage
 	rt.det_quot_perc = 74;
 	
+	// --- use i2s audio
+	audio.use_i2s = true;
+	
 	// --- read rt config file
 	sprintf(cfgname, "/RTsd/cfg_rt.txt");
 	sd.cfg_file_open(cfgname, "r");
@@ -72,43 +75,56 @@ void oo_CFG::init(void) {
 				//printf("%s : %s\r\n", sd.cfg_parm, sd.cfg_value);
 				// -- rx0 frequency
 				if (strcmp(sd.cfg_parm, CFG_FREQ_RX0) == 0) {
-					rt.chn_freq[0] = buf.buf2uint16_t_dec((uint8_t*)sd.cfg_value);
+					rt.chn_freq[0] = buf.parse_dec2uint32(&sd.cfg_value[0]);
 					printf("%s : %d\r\n", CFG_FREQ_RX0, rt.chn_freq[0]);
 				}
 				// -- rx1 frequency
 				if (strcmp(sd.cfg_parm, CFG_FREQ_RX1) == 0) {
-					rt.chn_freq[1] = buf.buf2uint16_t_dec((uint8_t*)sd.cfg_value);
+					rt.chn_freq[1] = buf.parse_dec2uint32(&sd.cfg_value[0]);
 					printf("%s : %d\r\n", CFG_FREQ_RX1, rt.chn_freq[1]);
 				}
 				// -- rx2 frequency
 				if (strcmp(sd.cfg_parm, CFG_FREQ_RX2) == 0) {
-					rt.chn_freq[2] = buf.buf2uint16_t_dec((uint8_t*)sd.cfg_value);
+					rt.chn_freq[2] = buf.parse_dec2uint32(&sd.cfg_value[0]);
 					printf("%s : %d\r\n", CFG_FREQ_RX2, rt.chn_freq[2]);
 				}
 				// -- rx3 frequency
 				if (strcmp(sd.cfg_parm, CFG_FREQ_RX3) == 0) {
-					rt.chn_freq[3] = buf.buf2uint16_t_dec((uint8_t*)sd.cfg_value);
+					rt.chn_freq[3] = buf.parse_dec2uint32(&sd.cfg_value[0]);
 					printf("%s : %d\r\n", CFG_FREQ_RX3, rt.chn_freq[3]);
 				}
 				// -- rx4 frequency
 				if (strcmp(sd.cfg_parm, CFG_FREQ_RX4) == 0) {
-					rt.chn_freq[4] = buf.buf2uint16_t_dec((uint8_t*)sd.cfg_value);
+					rt.chn_freq[4] = buf.parse_dec2uint32(&sd.cfg_value[0]);
 					printf("%s : %d\r\n", CFG_FREQ_RX4, rt.chn_freq[4]);
 				}
 				// -- rx5 frequency
 				if (strcmp(sd.cfg_parm, CFG_FREQ_RX5) == 0) {
-					rt.chn_freq[5] = buf.buf2uint16_t_dec((uint8_t*)sd.cfg_value);
+					rt.chn_freq[5] = buf.parse_dec2uint32(&sd.cfg_value[0]);
 					printf("%s : %d\r\n", CFG_FREQ_RX5, rt.chn_freq[5]);
 				}
 				// -- rx6 frequency
 				if (strcmp(sd.cfg_parm, CFG_FREQ_RX6) == 0) {
-					rt.chn_freq[6] = buf.buf2uint16_t_dec((uint8_t*)sd.cfg_value);
+					rt.chn_freq[6] = buf.parse_dec2uint32(&sd.cfg_value[0]);
 					printf("%s : %d\r\n", CFG_FREQ_RX6, rt.chn_freq[6]);
 				}
 				// -- rx7 frequency
 				if (strcmp(sd.cfg_parm, CFG_FREQ_RX7) == 0) {
-					rt.chn_freq[7] = buf.buf2uint16_t_dec((uint8_t*)sd.cfg_value);
+					rt.chn_freq[7] = buf.parse_dec2uint32(&sd.cfg_value[0]);
 					printf("%s : %d\r\n", CFG_FREQ_RX7, rt.chn_freq[7]);
+				}
+				// -- use i2s audio on rt
+				if (strcmp(sd.cfg_parm, CFG_USE_I2S) == 0) {
+					//if (sd.cfg_value[0] == 0x30) {
+					if (buf.parse_hex2uint32(&sd.cfg_value[0]) != 0) {
+						// - use i2s audio
+						audio.use_i2s = true;
+						printf("%s : true\r\n", CFG_USE_I2S);
+					} else {
+						// - don't use i2s audio
+						audio.use_i2s = false;
+						printf("%s : false\r\n", CFG_USE_I2S);
+					}
 				}
 			}
 		} while(sd.cfg_parm[0] != 0xff);

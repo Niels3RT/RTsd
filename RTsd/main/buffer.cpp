@@ -60,6 +60,48 @@ uint32_t oo_Buf::buf2uint32_t(uint8_t *bufptr) {
 	return(tmp);
 }
 
+// ****** parse ascii hex in buffer to uint32_t
+uint32_t oo_Buf::parse_hex2uint32(char *ptmp) {
+	uint32_t etmp = 0;
+	bool gof = true;
+	do {
+		//printf("%c", *ptmp);
+		if ((*ptmp >= 0x30) && (*ptmp < 0x3a)) {
+			etmp <<= 4;
+			etmp += *ptmp - 0x30;
+			ptmp++;
+		} else if((*ptmp > 0x40) && (*ptmp < 0x47)) {
+			etmp <<= 4;
+			etmp += *ptmp - 0x37;
+			ptmp++;
+		} else if((*ptmp > 0x60) && (*ptmp < 0x67)) {
+			etmp <<= 4;
+			etmp += *ptmp - 0x57;
+			ptmp++;
+		} else {
+			gof = false;
+		}
+	} while(gof);
+	return(etmp);
+}
+
+// ****** parse ascii dec in buffer to uint32_t
+uint32_t oo_Buf::parse_dec2uint32(char *ptmp) {
+	uint32_t etmp = 0;
+	bool gof = true;
+	do {
+		//printf("%c", *ptmp);
+		if ((*ptmp >= 0x30) && (*ptmp < 0x3a)) {
+			etmp *= 10;
+			etmp += *ptmp - 0x30;
+			ptmp++;
+		} else {
+			gof = false;
+		}
+	} while(gof);
+	return(etmp);
+}
+
 // ****** convert 4 digit Ascii Decimal to uint16
 uint16_t oo_Buf::buf2uint16_t_dec(uint8_t *bufptr) {
 	uint16_t tmp = 0;
